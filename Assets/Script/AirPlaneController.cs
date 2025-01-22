@@ -6,37 +6,57 @@ public class AirplaneController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float smoothness = 0.1f;
 
-    [Header("Screen Boundaries")]
+    [Header("Movement Boundaries")]
+    [SerializeField] private float maxForwardDistance = 4f;
+    [SerializeField] private float maxBackwardDistance = -2f;
     [SerializeField] private float horizontalBoundary = 8f;
-    [SerializeField] private float verticalBoundary = 4f;
 
     private Vector2 touchStart;
     private Vector2 movement;
     private Vector3 velocity = Vector3.zero;
     private bool isTouching = false;
+    private Vector3 startPosition;
+    private bool isFrozen = false;
+    private Rigidbody rb; // Reference till Rigidbody om det finns
+
+    private void Start()
+    {
+        startPosition = transform.position;
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void Update()
     {
-        // Hantera input för både touch och tangentbord
+        if (isFrozen)
+        {
+            // Om planet är fryst, stoppa all rörelse omedelbart
+            if (rb != null)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            return;
+        }
+
         HandleInput();
+        UpdatePosition();
+    }
 
-        // Beräkna ny position
-        Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * moveSpeed * Time.deltaTime;
-
-        // Begränsa position inom skärmgränserna
-        targetPosition.x = Mathf.Clamp(targetPosition.x, -horizontalBoundary, horizontalBoundary);
-        targetPosition.z = Mathf.Clamp(targetPosition.z, -verticalBoundary, verticalBoundary);
-
-        // Applicera mjuk rörelse
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothness);
+    private void UpdatePosition()
+    {
+        if (!isFrozen)
+        {
+            Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * moveSpeed * Time.deltaTime;
+            targetPosition.x = Mathf.Clamp(targetPosition.x, startPosition.x - horizontalBoundary, startPosition.x + horizontalBoundary);
+            targetPosition.z = Mathf.Clamp(targetPosition.z, startPosition.z + maxBackwardDistance, startPosition.z + maxForwardDistance);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothness);
+        }
     }
 
     private void HandleInput()
     {
-        // Återställ movement
         movement = Vector2.zero;
 
-        // Hantera touch input
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -52,7 +72,6 @@ public class AirplaneController : MonoBehaviour
                 case TouchPhase.Stationary:
                     if (isTouching)
                     {
-                        // Beräkna förflyttning baserat på touch-position
                         Vector2 touchDelta = touch.position - touchStart;
                         movement = touchDelta.normalized;
                     }
@@ -65,7 +84,6 @@ public class AirplaneController : MonoBehaviour
             }
         }
 
-        // Hantera tangentbordsinput för testning i Unity Editor
 #if UNITY_EDITOR
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
@@ -76,17 +94,54 @@ public class AirplaneController : MonoBehaviour
 #endif
     }
 
-    // Funktion för att justera inställningar via Unity Inspector
-    public void SetMovementSettings(float speed, float smooth)
+    public void FreezePosition()
     {
-        moveSpeed = speed;
-        smoothness = smooth;
+        Debug.Log("Freezing plane position");
+        isFrozen = true;
+        velocity = Vector3.zero;
+        movement = Vector2.zero;
+
+        // Om det finns en Rigidbody, hantera den också
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true; // Gör Rigidbody opåverkad av fysik
+        }
+
+        // Se till att scriptet är aktivt men stoppar rörelse
+        this.enabled = true;
     }
 
-    // Funktion för att justera skärmgränser
-    public void SetBoundaries(float horizontal, float vertical)
+    public void UnfreezePosition()
     {
+        Debug.Log("Unfreezing plane position");
+        isFrozen = false;
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
+    }
+
+    public void ResetPosition()
+    {
+        transform.position = startPosition;
+        velocity = Vector3.zero;
+        movement = Vector2.zero;
+        isFrozen = false;
+
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = false;
+        }
+    }
+
+    public void SetMovementBoundaries(float forward, float backward, float horizontal)
+    {
+        maxForwardDistance = forward;
+        maxBackwardDistance = backward;
         horizontalBoundary = horizontal;
-        verticalBoundary = vertical;
     }
 }

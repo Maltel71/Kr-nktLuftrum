@@ -13,67 +13,94 @@ public class PlaneHealthSystem : MonoBehaviour
     [SerializeField] private float maxShield = 100f;
     private float currentShield;
 
+    [Header("References")]
+    [SerializeField] private GameMessageSystem messageSystem;
+    [SerializeField] private GameObject planeModel;
+
     [Header("Slider Animation")]
     [SerializeField] private float sliderSpeed = 5f;
     private float targetHealthValue;
     private float targetShieldValue;
 
     [Header("Test Settings")]
-    [SerializeField] private float testDamageAmount = 10f;  // Skada som tas när man trycker T
+    [SerializeField] private float testDamageAmount = 10f;
+
+    private bool isDead = false;
+    private AirplaneController airplaneController;
 
     private void Start()
     {
-        // Sätt upp health slider
-        if (healthSlider != null)
+        if (messageSystem == null)
         {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = maxHealth;
+            messageSystem = FindObjectOfType<GameMessageSystem>();
+            Debug.Log(messageSystem != null ? "GameMessageSystem found!" : "GameMessageSystem not found!");
         }
 
-        // Sätt upp shield slider
-        if (shieldSlider != null)
+        if (planeModel == null)
         {
-            shieldSlider.maxValue = maxShield;
-            shieldSlider.value = maxShield;  // Börjar på max
+            planeModel = gameObject;
+            Debug.Log("Using this GameObject as plane model");
         }
+
+        airplaneController = GetComponent<AirplaneController>();
 
         currentHealth = maxHealth;
         targetHealthValue = currentHealth;
-        currentShield = maxShield;  // Börjar på max
+        currentShield = maxShield;
         targetShieldValue = currentShield;
+
+        UpdateSlidersImmediate();
     }
 
     private void Update()
     {
-        // Test knappar för utveckling
+        if (isDead) return;
+
         if (Input.GetKeyDown(KeyCode.T))
         {
-            // Ta skada på både health och shield samtidigt
             TakeDamage(testDamageAmount);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // Återställ både health och shield
             RestoreAll();
         }
 
-        // Animera health slider
+        UpdateSliders();
+    }
+
+    private void UpdateSliders()
+    {
         if (healthSlider != null)
         {
             healthSlider.value = Mathf.Lerp(healthSlider.value, targetHealthValue, Time.deltaTime * sliderSpeed);
         }
 
-        // Animera shield slider
         if (shieldSlider != null)
         {
             shieldSlider.value = Mathf.Lerp(shieldSlider.value, targetShieldValue, Time.deltaTime * sliderSpeed);
         }
     }
 
+    private void UpdateSlidersImmediate()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+
+        if (shieldSlider != null)
+        {
+            shieldSlider.maxValue = maxShield;
+            shieldSlider.value = currentShield;
+        }
+    }
+
     public void TakeDamage(float damage)
     {
-        // Minska både shield och health direkt
+        if (isDead) return;
+
         currentShield = Mathf.Max(0, currentShield - damage);
         targetShieldValue = currentShield;
 
@@ -84,30 +111,66 @@ public class PlaneHealthSystem : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
+            targetHealthValue = 0;
+            UpdateSlidersImmediate();
             Die();
         }
     }
 
     public void RestoreAll()
     {
-        // Återställ både health och shield till max
+        if (isDead) return;
+
         currentHealth = maxHealth;
         targetHealthValue = currentHealth;
-
         currentShield = maxShield;
         targetShieldValue = currentShield;
 
-        Debug.Log("Health and Shield restored to max!");
+        UpdateSlidersImmediate();
+
+        if (messageSystem != null)
+        {
+            messageSystem.ShowBoostMessage("Health & Shield");
+        }
     }
 
     private void Die()
     {
+        if (isDead) return;
+
+        isDead = true;
         Debug.Log("Plane destroyed!");
-        // Implementera här vad som ska hända när planet förstörs
+
+        if (messageSystem != null)
+        {
+            messageSystem.ShowDeathMessage();
+        }
+
+        if (airplaneController != null)
+        {
+            airplaneController.FreezePosition();
+        }
+
+        if (planeModel != null)
+        {
+            // Stäng av alla renderers (för 3D-modeller)
+            Renderer[] renderers = planeModel.GetComponentsInChildren<Renderer>();
+            foreach (var renderer in renderers)
+            {
+                renderer.enabled = false;
+            }
+
+            // Stäng av alla sprite renderers (för 2D-sprites)
+            SpriteRenderer[] spriteRenderers = planeModel.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var spriteRenderer in spriteRenderers)
+            {
+                spriteRenderer.enabled = false;
+            }
+        }
     }
 
-    // Getters för andra scripts
+    public bool IsDead() => isDead;
     public float GetHealthPercentage() => currentHealth / maxHealth;
     public float GetShieldPercentage() => currentShield / maxShield;
-    public bool IsDead() => currentHealth <= 0;
 }
