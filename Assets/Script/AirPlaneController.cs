@@ -29,10 +29,10 @@ public class AirplaneController : MonoBehaviour
     {
         if (isFrozen)
         {
-            // Om planet är fryst, stoppa all rörelse omedelbart
+            // Om planet ï¿½r fryst, stoppa all rï¿½relse omedelbart
             if (rb != null)
             {
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
             return;
@@ -101,15 +101,15 @@ public class AirplaneController : MonoBehaviour
         velocity = Vector3.zero;
         movement = Vector2.zero;
 
-        // Om det finns en Rigidbody, hantera den också
+        // Om det finns en Rigidbody, hantera den ocksï¿½
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // Gör Rigidbody opåverkad av fysik
+            rb.isKinematic = true; // Gï¿½r Rigidbody opï¿½verkad av fysik
         }
 
-        // Se till att scriptet är aktivt men stoppar rörelse
+        // Se till att scriptet ï¿½r aktivt men stoppar rï¿½relse
         this.enabled = true;
     }
 
@@ -132,7 +132,7 @@ public class AirplaneController : MonoBehaviour
 
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = false;
         }
