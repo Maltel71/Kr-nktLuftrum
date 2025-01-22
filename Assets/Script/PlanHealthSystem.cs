@@ -12,15 +12,14 @@ public class PlaneHealthSystem : MonoBehaviour
     [SerializeField] private Slider shieldSlider;
     [SerializeField] private float maxShield = 100f;
     private float currentShield;
-    [SerializeField] private float shieldBoostAmount = 50f;
 
     [Header("Slider Animation")]
-    [SerializeField] private float sliderSpeed = 5f; // Hur snabbt slidern rör sig
+    [SerializeField] private float sliderSpeed = 5f;
     private float targetHealthValue;
     private float targetShieldValue;
 
     [Header("Test Settings")]
-    [SerializeField] private float testDamageAmount = 10f;
+    [SerializeField] private float testDamageAmount = 10f;  // Skada som tas när man trycker T
 
     private void Start()
     {
@@ -35,12 +34,12 @@ public class PlaneHealthSystem : MonoBehaviour
         if (shieldSlider != null)
         {
             shieldSlider.maxValue = maxShield;
-            shieldSlider.value = 0;
+            shieldSlider.value = maxShield;  // Börjar på max
         }
 
         currentHealth = maxHealth;
         targetHealthValue = currentHealth;
-        currentShield = 0;
+        currentShield = maxShield;  // Börjar på max
         targetShieldValue = currentShield;
     }
 
@@ -49,27 +48,24 @@ public class PlaneHealthSystem : MonoBehaviour
         // Test knappar för utveckling
         if (Input.GetKeyDown(KeyCode.T))
         {
+            // Ta skada på både health och shield samtidigt
             TakeDamage(testDamageAmount);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            AddHealth(testDamageAmount);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            AddShieldBoost();
+            // Återställ både health och shield
+            RestoreAll();
         }
 
         // Animera health slider
-        if (healthSlider != null && healthSlider.value != targetHealthValue)
+        if (healthSlider != null)
         {
             healthSlider.value = Mathf.Lerp(healthSlider.value, targetHealthValue, Time.deltaTime * sliderSpeed);
         }
 
         // Animera shield slider
-        if (shieldSlider != null && shieldSlider.value != targetShieldValue)
+        if (shieldSlider != null)
         {
             shieldSlider.value = Mathf.Lerp(shieldSlider.value, targetShieldValue, Time.deltaTime * sliderSpeed);
         }
@@ -77,27 +73,14 @@ public class PlaneHealthSystem : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (currentShield > 0)
-        {
-            if (damage <= currentShield)
-            {
-                currentShield -= damage;
-                targetShieldValue = currentShield;
-                Debug.Log($"Shield took damage. Shield remaining: {currentShield}");
-                return;
-            }
-            else
-            {
-                damage -= currentShield;
-                currentShield = 0;
-                targetShieldValue = 0;
-                Debug.Log("Shield depleted!");
-            }
-        }
+        // Minska både shield och health direkt
+        currentShield = Mathf.Max(0, currentShield - damage);
+        targetShieldValue = currentShield;
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
         targetHealthValue = currentHealth;
-        Debug.Log($"Health took damage. Health remaining: {currentHealth}");
+
+        Debug.Log($"Damage taken! Health: {currentHealth}, Shield: {currentShield}");
 
         if (currentHealth <= 0)
         {
@@ -105,24 +88,22 @@ public class PlaneHealthSystem : MonoBehaviour
         }
     }
 
-    public void AddShieldBoost()
+    public void RestoreAll()
     {
-        currentShield = shieldBoostAmount;
-        targetShieldValue = currentShield;
-        Debug.Log($"Shield boosted to: {currentShield}");
-    }
-
-    public void AddHealth(float amount)
-    {
-        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        // Återställ både health och shield till max
+        currentHealth = maxHealth;
         targetHealthValue = currentHealth;
-        Debug.Log($"Health restored to: {currentHealth}");
+
+        currentShield = maxShield;
+        targetShieldValue = currentShield;
+
+        Debug.Log("Health and Shield restored to max!");
     }
 
     private void Die()
     {
         Debug.Log("Plane destroyed!");
-        gameObject.SetActive(false);
+        // Implementera här vad som ska hända när planet förstörs
     }
 
     // Getters för andra scripts
