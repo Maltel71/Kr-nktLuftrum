@@ -2,9 +2,26 @@ using UnityEngine;
 
 public class BombHandler : MonoBehaviour
 {
+    private AudioManager audioManager;
+    private bool hasPlayedFallingSound = false;
+
+    private void Start()
+    {
+        audioManager = AudioManager.Instance;
+    }
+
+    private void Update()
+    {
+        if (!hasPlayedFallingSound && GetComponent<Rigidbody>().linearVelocity.y < 0)
+        {
+            audioManager?.PlayHitSound();  // AnvÃ¤nd den befintliga HitSound fÃ¶r fallande ljud
+            hasPlayedFallingSound = true;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        // Här kan du lägga till explosionseffekten senare
+        audioManager?.PlayBombSound();  // AnvÃ¤nd den befintliga BombSound
         Destroy(gameObject);
     }
 }
