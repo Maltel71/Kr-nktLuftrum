@@ -13,6 +13,16 @@ public class PlaneHealthSystem : MonoBehaviour
     [SerializeField] private float maxShield = 100f;
     private float currentShield;
 
+    [Header("Damage Effects")]
+    [SerializeField] private ParticleSystem smokeEffect1;
+    [SerializeField] private ParticleSystem smokeEffect2;
+    [SerializeField] private ParticleSystem smokeEffect3;
+    [SerializeField] private ParticleSystem fireEffect;
+    [SerializeField] private float smoke1HPTrigger = 75f;
+    [SerializeField] private float smoke2HPTrigger = 50f;
+    [SerializeField] private float smoke3HPTrigger = 25f;
+    [SerializeField] private float fireHPTrigger = 25f;
+
     [Header("References")]
     [SerializeField] private GameMessageSystem messageSystem;
     [SerializeField] private GameObject planeModel;
@@ -43,12 +53,10 @@ public class PlaneHealthSystem : MonoBehaviour
         }
 
         airplaneController = GetComponent<AirplaneController>();
-
         currentHealth = maxHealth;
         targetHealthValue = currentHealth;
         currentShield = maxShield;
         targetShieldValue = currentShield;
-
         UpdateSlidersImmediate();
     }
 
@@ -97,6 +105,28 @@ public class PlaneHealthSystem : MonoBehaviour
         }
     }
 
+    private void UpdateDamageEffects()
+    {
+        UpdateEffect(smokeEffect1, currentHealth <= smoke1HPTrigger);
+        UpdateEffect(smokeEffect2, currentHealth <= smoke2HPTrigger);
+        UpdateEffect(smokeEffect3, currentHealth <= smoke3HPTrigger);
+        UpdateEffect(fireEffect, currentHealth <= fireHPTrigger);
+    }
+
+    private void UpdateEffect(ParticleSystem effect, bool shouldPlay)
+    {
+        if (effect == null) return;
+
+        if (shouldPlay && !effect.isPlaying)
+        {
+            effect.Play();
+        }
+        else if (!shouldPlay && effect.isPlaying)
+        {
+            effect.Stop();
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -106,6 +136,8 @@ public class PlaneHealthSystem : MonoBehaviour
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
         targetHealthValue = currentHealth;
+
+        UpdateDamageEffects();
 
         Debug.Log($"Damage taken! Health: {currentHealth}, Shield: {currentShield}");
 
@@ -127,6 +159,7 @@ public class PlaneHealthSystem : MonoBehaviour
         currentShield = maxShield;
         targetShieldValue = currentShield;
 
+        UpdateDamageEffects();
         UpdateSlidersImmediate();
 
         if (messageSystem != null)
@@ -141,6 +174,12 @@ public class PlaneHealthSystem : MonoBehaviour
 
         isDead = true;
         Debug.Log("Plane destroyed!");
+
+        // Stop all effects
+        UpdateEffect(smokeEffect1, false);
+        UpdateEffect(smokeEffect2, false);
+        UpdateEffect(smokeEffect3, false);
+        UpdateEffect(fireEffect, false);
 
         if (messageSystem != null)
         {
@@ -167,6 +206,7 @@ public class PlaneHealthSystem : MonoBehaviour
             }
         }
 
+        ScoreManager.Instance.StopGame();
         ScoreManager.Instance.ShowHighScores();
     }
 

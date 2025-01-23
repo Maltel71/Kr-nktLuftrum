@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int enemyShipPoints = 100;
     [SerializeField] private int bossPoints = 1000;
     [SerializeField] private int bombTargetPoints = 50;
+    [SerializeField] private int pointsPerSecond = 10;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -19,6 +20,8 @@ public class ScoreManager : MonoBehaviour
     private List<int> highScores = new List<int>();
     private const int MAX_SCORES = 5;
     private static ScoreManager instance;
+    private bool isGameActive = true;
+    private float timeSurvived = 0f;
 
     public static ScoreManager Instance => instance;
 
@@ -40,6 +43,24 @@ public class ScoreManager : MonoBehaviour
     {
         UpdateScoreDisplay();
         highScorePanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (isGameActive)
+        {
+            timeSurvived += Time.deltaTime;
+            if (timeSurvived >= 1f)
+            {
+                AddPoints((int)(timeSurvived * pointsPerSecond));
+                timeSurvived = 0f;
+            }
+        }
+    }
+
+    public void StopGame()
+    {
+        isGameActive = false;
     }
 
     public void AddEnemyShipPoints() => AddPoints(enemyShipPoints);
@@ -104,9 +125,12 @@ public class ScoreManager : MonoBehaviour
     }
 
     public void HideHighScores() => highScorePanel.SetActive(false);
+
     public void ResetScore()
     {
         currentScore = 0;
         UpdateScoreDisplay();
     }
+
+    public int GetCurrentScore() => currentScore;
 }
