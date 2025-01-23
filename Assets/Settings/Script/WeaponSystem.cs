@@ -9,6 +9,11 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float bulletLifetime = 2f;
 
+    [Header("VFX Settings")]
+    [SerializeField] private ParticleSystem muzzleFlash;
+    [SerializeField] private ParticleSystem smokeEffect;
+    [SerializeField] private float smokeLifetime = 1f;
+
     [Header("Shell Settings")]
     [SerializeField] private Transform shellEjectionPoint;
     [SerializeField] private GameObject shellPrefab;
@@ -30,6 +35,23 @@ public class WeaponSystem : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.Instance;
+        InitializeVFX();
+    }
+
+    private void InitializeVFX()
+    {
+        if (muzzleFlash != null)
+        {
+            var main = muzzleFlash.main;
+            main.loop = false;
+        }
+
+        if (smokeEffect != null)
+        {
+            var main = smokeEffect.main;
+            main.loop = false;
+            main.duration = smokeLifetime;
+        }
     }
 
     private void Update()
@@ -62,6 +84,10 @@ public class WeaponSystem : MonoBehaviour
     {
         if (weaponPoint == null || bulletPrefab == null) return;
 
+        // Play VFX
+        if (muzzleFlash != null) muzzleFlash.Play();
+        if (smokeEffect != null) smokeEffect.Play();
+
         // Spawn bullet
         GameObject bullet = Instantiate(bulletPrefab, weaponPoint.position, Quaternion.identity);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
@@ -79,7 +105,6 @@ public class WeaponSystem : MonoBehaviour
             Rigidbody shellRb = shell.GetComponent<Rigidbody>();
             if (shellRb != null)
             {
-                // Add random variation to ejection
                 Vector3 ejectionDir = (shellEjectionPoint.right + Vector3.up * 0.5f).normalized;
                 shellRb.AddForce(ejectionDir * shellEjectionForce, ForceMode.Impulse);
                 shellRb.AddTorque(Random.insideUnitSphere * shellTorque, ForceMode.Impulse);

@@ -4,6 +4,7 @@ public class AirplaneController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float backwardSpeedMultiplier = 1.5f;
     [SerializeField] private float smoothness = 0.1f;
 
     [Header("Movement Boundaries")]
@@ -17,7 +18,7 @@ public class AirplaneController : MonoBehaviour
     private bool isTouching = false;
     private Vector3 startPosition;
     private bool isFrozen = false;
-    private Rigidbody rb; // Reference till Rigidbody om det finns
+    private Rigidbody rb;
 
     private void Start()
     {
@@ -29,7 +30,6 @@ public class AirplaneController : MonoBehaviour
     {
         if (isFrozen)
         {
-            // Om planet �r fryst, stoppa all r�relse omedelbart
             if (rb != null)
             {
                 rb.linearVelocity = Vector3.zero;
@@ -46,7 +46,8 @@ public class AirplaneController : MonoBehaviour
     {
         if (!isFrozen)
         {
-            Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * moveSpeed * Time.deltaTime;
+            float speedMultiplier = movement.y < 0 ? backwardSpeedMultiplier : 1f;
+            Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * moveSpeed * speedMultiplier * Time.deltaTime;
             targetPosition.x = Mathf.Clamp(targetPosition.x, startPosition.x - horizontalBoundary, startPosition.x + horizontalBoundary);
             targetPosition.z = Mathf.Clamp(targetPosition.z, startPosition.z + maxBackwardDistance, startPosition.z + maxForwardDistance);
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothness);
@@ -101,15 +102,13 @@ public class AirplaneController : MonoBehaviour
         velocity = Vector3.zero;
         movement = Vector2.zero;
 
-        // Om det finns en Rigidbody, hantera den ocks�
         if (rb != null)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // G�r Rigidbody op�verkad av fysik
+            rb.isKinematic = true;
         }
 
-        // Se till att scriptet �r aktivt men stoppar r�relse
         this.enabled = true;
     }
 
