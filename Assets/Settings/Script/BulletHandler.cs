@@ -35,7 +35,11 @@ public class BulletHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Add impact effects here later
-        Destroy(gameObject);
+        // Om kulan träffar något som inte är en annan kula
+        if (!collision.gameObject.CompareTag("Bullet"))
+        {
+            AudioManager.Instance?.PlayHitSound();
+            Destroy(gameObject);
+        }
     }
 }
