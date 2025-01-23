@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class AirplaneController : MonoBehaviour
 {
@@ -97,7 +97,6 @@ public class AirplaneController : MonoBehaviour
 
     public void FreezePosition()
     {
-        Debug.Log("Freezing plane position");
         isFrozen = true;
         velocity = Vector3.zero;
         movement = Vector2.zero;
@@ -108,13 +107,10 @@ public class AirplaneController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
-
-        this.enabled = true;
     }
 
     public void UnfreezePosition()
     {
-        Debug.Log("Unfreezing plane position");
         isFrozen = false;
         if (rb != null)
         {
