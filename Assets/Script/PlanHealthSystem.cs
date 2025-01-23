@@ -154,20 +154,20 @@ public class PlaneHealthSystem : MonoBehaviour
 
         if (planeModel != null)
         {
-            // Stäng av alla renderers (för 3D-modeller)
             Renderer[] renderers = planeModel.GetComponentsInChildren<Renderer>();
             foreach (var renderer in renderers)
             {
                 renderer.enabled = false;
             }
 
-            // Stäng av alla sprite renderers (för 2D-sprites)
             SpriteRenderer[] spriteRenderers = planeModel.GetComponentsInChildren<SpriteRenderer>();
             foreach (var spriteRenderer in spriteRenderers)
             {
                 spriteRenderer.enabled = false;
             }
         }
+
+        ScoreManager.Instance.ShowHighScores();
     }
 
     public bool IsDead() => isDead;
