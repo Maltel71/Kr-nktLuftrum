@@ -5,6 +5,7 @@ public class AirplaneController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float smoothness = 0.1f;
+    [SerializeField] private float backwardSpeedMultiplier = 1.5f;
 
     [Header("Movement Boundaries")]
     [SerializeField] private float maxForwardDistance = 4f;
@@ -46,7 +47,8 @@ public class AirplaneController : MonoBehaviour
     {
         if (!isFrozen)
         {
-            Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * moveSpeed * Time.deltaTime;
+            float currentSpeed = movement.y < 0 ? moveSpeed * backwardSpeedMultiplier : moveSpeed;
+            Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * currentSpeed * Time.deltaTime;
             targetPosition.x = Mathf.Clamp(targetPosition.x, startPosition.x - horizontalBoundary, startPosition.x + horizontalBoundary);
             targetPosition.z = Mathf.Clamp(targetPosition.z, startPosition.z + maxBackwardDistance, startPosition.z + maxForwardDistance);
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothness);
