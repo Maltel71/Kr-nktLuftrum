@@ -63,10 +63,12 @@ public class WeaponSystem : MonoBehaviour
         if (weaponPoint == null || bulletPrefab == null) return;
 
         // Spawn bullet
+        //GameObject bullet = Instantiate(bulletPrefab, weaponPoint.position, bulletPrefab.transform.rotation);
         GameObject bullet = Instantiate(bulletPrefab, weaponPoint.position, Quaternion.identity);
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         if (bulletRb != null)
         {
+            //bulletRb.linearVelocity = bullet.transform.forward * bulletSpeed;
             bulletRb.linearVelocity = Vector3.forward * bulletSpeed;
             bulletRb.useGravity = false;
         }
