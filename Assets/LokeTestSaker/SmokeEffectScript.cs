@@ -1,63 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SmokeEffectScript : MonoBehaviour
 {
-    public ParticleSystem normalSmokeEffect; // Normal rök particle
-    public ParticleSystem damagedSmokeEffect; // Skadad rök particle
-    public ParticleSystem criticalSmokeEffect; // Kritisk rök particle
-    public int health = 100; // Hälsovärde
+    [Header("Particle Systems")]
+    [SerializeField] private ParticleSystem normalSmokeEffect;
+    [SerializeField] private ParticleSystem damagedSmokeEffect;
+    [SerializeField] private ParticleSystem criticalSmokeEffect;
 
-    void Start()
+    [Header("Health Settings")]
+    [SerializeField] private int health = 100;
+    [SerializeField] private int damagedThreshold = 50;
+    [SerializeField] private int criticalThreshold = 20;
+
+    private ParticleSystem currentActiveEffect;
+
+    private void Start()
     {
-        Debug.Log("SmokeEffectScript started.");
-
-        if (normalSmokeEffect != null)
-        {
-            Debug.Log("Starting normal smoke effect.");
-            normalSmokeEffect.Play();
-        }
-        else
-        {
-            Debug.LogError("Normal smoke effect is not assigned.");
-        }
-    }
-
-    void Update()
-    {
-        // Uppdaterar motorrök baserat på hälsa
+        ValidateComponents();
         UpdateSmoke();
     }
 
-    void UpdateSmoke()
+    private void ValidateComponents()
     {
-        // Stoppa alla partikelsystem först
-        if (normalSmokeEffect != null) normalSmokeEffect.Stop();
-        if (damagedSmokeEffect != null) damagedSmokeEffect.Stop();
-        if (criticalSmokeEffect != null) criticalSmokeEffect.Stop();
+        if (normalSmokeEffect == null)
+            Debug.LogWarning("Normal smoke effect is not assigned to " + gameObject.name);
+        if (damagedSmokeEffect == null)
+            Debug.LogWarning("Damaged smoke effect is not assigned to " + gameObject.name);
+        if (criticalSmokeEffect == null)
+            Debug.LogWarning("Critical smoke effect is not assigned to " + gameObject.name);
+    }
 
-        // Kontrollera hälsa och spela rätt partikelsystem
-        if (health > 50)
+    public void UpdateHealth(int newHealth)
+    {
+        health = Mathf.Clamp(newHealth, 0, 100);
+        UpdateSmoke();
+    }
+
+    private void UpdateSmoke()
+    {
+        // Stop current effect if it exists
+        if (currentActiveEffect != null)
+            currentActiveEffect.Stop();
+
+        // Determine and play new effect
+        ParticleSystem newEffect = DetermineEffectBasedOnHealth();
+        if (newEffect != null)
         {
-            if (normalSmokeEffect != null)
-            {
-                normalSmokeEffect.Play();
-            }
+            newEffect.Play();
+            currentActiveEffect = newEffect;
         }
-        else if (health > 20)
-        {
-            if (damagedSmokeEffect != null)
-            {
-                damagedSmokeEffect.Play();
-            }
-        }
+    }
+
+    private ParticleSystem DetermineEffectBasedOnHealth()
+    {
+        if (health > damagedThreshold)
+            return normalSmokeEffect;
+        else if (health > criticalThreshold)
+            return damagedSmokeEffect;
         else
-        {
-            if (criticalSmokeEffect != null)
-            {
-                criticalSmokeEffect.Play();
-            }
-        }
+            return criticalSmokeEffect;
     }
 }
