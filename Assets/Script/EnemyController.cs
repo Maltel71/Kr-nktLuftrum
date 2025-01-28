@@ -161,7 +161,7 @@ public class EnemyController : MonoBehaviour
     private void FireSpiral()
     {
         currentRotation += spiralRotationSpeed * Time.deltaTime;
-        Vector3 direction = Quaternion.Euler(0, currentRotation, 0) * Vector3.forward;
+        Vector3 direction = (target.position - transform.position).normalized;
         FireBullet(direction);
     }
 
@@ -172,7 +172,8 @@ public class EnemyController : MonoBehaviour
         {
             float angle = i * angleStep;
             float waveOffset = Mathf.Sin(Time.time * waveFrequency + angle * Mathf.Deg2Rad) * waveAmplitude;
-            Vector3 direction = Quaternion.Euler(0, angle + waveOffset, 0) * Vector3.forward;
+            Vector3 baseDirection = (target.position - transform.position).normalized;
+            Vector3 direction = Quaternion.Euler(0, angle + waveOffset, 0) * baseDirection;
             FireBullet(direction);
         }
     }
@@ -223,7 +224,8 @@ public class EnemyController : MonoBehaviour
         for (int i = 0; i < bulletCount; i++)
         {
             float angle = i * angleStep;
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+            Vector3 baseDirection = (target.position - transform.position).normalized;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * baseDirection;
             FireBullet(direction);
         }
     }
