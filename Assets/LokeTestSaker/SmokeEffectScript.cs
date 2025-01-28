@@ -13,11 +13,12 @@ public class SmokeEffectScript : MonoBehaviour
     [SerializeField] private int criticalThreshold = 20;
 
     private ParticleSystem currentActiveEffect;
+    private bool isInitialized = false;
 
     private void Start()
     {
         ValidateComponents();
-        UpdateSmoke();
+        InitializeSmoke();
     }
 
     private void ValidateComponents()
@@ -30,24 +31,51 @@ public class SmokeEffectScript : MonoBehaviour
             Debug.LogWarning("Critical smoke effect is not assigned to " + gameObject.name);
     }
 
+    private void InitializeSmoke()
+    {
+        // Make sure all effects are stopped initially
+        normalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        damagedSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        criticalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        // Clear any existing particles
+        normalSmokeEffect?.Clear();
+        damagedSmokeEffect?.Clear();
+        criticalSmokeEffect?.Clear();
+
+        isInitialized = true;
+        UpdateSmoke(); // Start the appropriate smoke effect
+    }
+
     public void UpdateHealth(int newHealth)
     {
+        int oldHealth = health;
         health = Mathf.Clamp(newHealth, 0, 100);
-        UpdateSmoke();
+
+        if (oldHealth != health)
+        {
+            UpdateSmoke();
+        }
     }
 
     private void UpdateSmoke()
     {
+        if (!isInitialized) return;
+
         // Stop current effect if it exists
         if (currentActiveEffect != null)
-            currentActiveEffect.Stop();
-
-        // Determine and play new effect
-        ParticleSystem newEffect = DetermineEffectBasedOnHealth();
-        if (newEffect != null)
         {
-            newEffect.Play();
+            currentActiveEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            currentActiveEffect.Clear();
+        }
+
+        // Get and play new effect
+        ParticleSystem newEffect = DetermineEffectBasedOnHealth();
+        if (newEffect != null && newEffect != currentActiveEffect)
+        {
             currentActiveEffect = newEffect;
+            currentActiveEffect.Clear();
+            currentActiveEffect.Play();
         }
     }
 
@@ -59,5 +87,11 @@ public class SmokeEffectScript : MonoBehaviour
             return damagedSmokeEffect;
         else
             return criticalSmokeEffect;
+    }
+
+    // Test method to damage the object (you can call this from other scripts)
+    public void TakeDamage(int amount)
+    {
+        UpdateHealth(health - amount);
     }
 }
