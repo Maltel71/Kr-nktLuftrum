@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   splineContainer: {fileID: 0}
   speed: 100
-  loopPath: 1
+  loopPath: 0
 --- !u!114 &6927417615880013616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,12 +149,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPlane: {fileID: -8679921383154817045, guid: e62676fa5db43584fb13cf3466bc6968, type: 3}
   shootingRange: 1500
+  minShootingRange: 0.2
   bulletPrefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
   fireRate: 0.1
-  bulletSpeed: 10
+  bulletSpeed: 20
   bulletDamage: 10
+  bulletLifetime: 10
+  showDebugInfo: 1
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0

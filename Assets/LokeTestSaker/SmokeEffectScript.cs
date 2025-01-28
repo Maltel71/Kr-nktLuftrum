@@ -13,11 +13,24 @@ public class SmokeEffectScript : MonoBehaviour
     [SerializeField] private int criticalThreshold = 20;
 
     private ParticleSystem currentActiveEffect;
+    private bool isInitialized = false;
+
+    // Track current health state
+    private enum HealthState { Normal, Damaged, Critical }
+    private HealthState currentState;
 
     private void Start()
     {
         ValidateComponents();
-        UpdateSmoke();
+        InitializeSmoke();
+        SetInitialState();
+    }
+
+    private void SetInitialState()
+    {
+        if (health > damagedThreshold) currentState = HealthState.Normal;
+        else if (health > criticalThreshold) currentState = HealthState.Damaged;
+        else currentState = HealthState.Critical;
     }
 
     private void ValidateComponents()
@@ -30,34 +43,85 @@ public class SmokeEffectScript : MonoBehaviour
             Debug.LogWarning("Critical smoke effect is not assigned to " + gameObject.name);
     }
 
+    private void InitializeSmoke()
+    {
+        normalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        damagedSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        criticalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        isInitialized = true;
+        UpdateSmoke();
+    }
+
     public void UpdateHealth(int newHealth)
     {
+        int oldHealth = health;
         health = Mathf.Clamp(newHealth, 0, 100);
-        UpdateSmoke();
+
+        HealthState newState;
+        if (health > damagedThreshold) newState = HealthState.Normal;
+        else if (health > criticalThreshold) newState = HealthState.Damaged;
+        else newState = HealthState.Critical;
+
+        if (currentState != newState)
+        {
+            currentState = newState;
+            UpdateSmoke();
+        }
     }
 
     private void UpdateSmoke()
     {
-        // Stop current effect if it exists
-        if (currentActiveEffect != null)
-            currentActiveEffect.Stop();
+        if (!isInitialized) return;
 
-        // Determine and play new effect
         ParticleSystem newEffect = DetermineEffectBasedOnHealth();
-        if (newEffect != null)
+
+        if (newEffect != null && newEffect != currentActiveEffect)
         {
-            newEffect.Play();
+            if (currentActiveEffect != null)
+            {
+                var main = currentActiveEffect.main;
+                main.stopAction = ParticleSystemStopAction.None;
+                currentActiveEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            }
+
             currentActiveEffect = newEffect;
+            if (!currentActiveEffect.isPlaying)
+            {
+                var main = currentActiveEffect.main;
+                main.stopAction = ParticleSystemStopAction.None;
+                currentActiveEffect.Play();
+            }
         }
     }
 
     private ParticleSystem DetermineEffectBasedOnHealth()
     {
-        if (health > damagedThreshold)
-            return normalSmokeEffect;
-        else if (health > criticalThreshold)
-            return damagedSmokeEffect;
-        else
-            return criticalSmokeEffect;
+        switch (currentState)
+        {
+            case HealthState.Normal:
+                return normalSmokeEffect;
+            case HealthState.Damaged:
+                return damagedSmokeEffect;
+            case HealthState.Critical:
+                return criticalSmokeEffect;
+            default:
+                return normalSmokeEffect;
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        UpdateHealth(health - amount);
+    }
+
+    public void HealHealth(int amount)
+    {
+        UpdateHealth(health + amount);
+    }
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 200, 20), $"Health: {health} (State: {currentState})");
     }
 }
