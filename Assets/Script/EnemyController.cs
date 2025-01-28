@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyController : MonoBehaviour
 {
@@ -7,15 +8,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private Transform target;
     [SerializeField] private EnemyMovementType movementType;
-    [SerializeField] private float sinWaveAmplitude = 2f;    // För sinusvög-rörelse
-    [SerializeField] private float sinWaveFrequency = 2f;    // För sinusvög-rörelse
-    [SerializeField] private float circleRadius = 3f;        // För cirkelö�relse
-
-    [Header("Health Settings")]
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float currentHealth;
-    [SerializeField] private GameObject healthBarPrefab;     // UI prefab för health bar
-    [SerializeField] private Vector3 healthBarOffset = new Vector3(0, 2f, 0); // Positionsoffset för health bar
+    [SerializeField] private float sinWaveAmplitude = 2f;
+    [SerializeField] private float sinWaveFrequency = 2f;
+    [SerializeField] private float circleRadius = 3f;
 
     [Header("Attack Settings")]
     [SerializeField] private EnemyAttackType attackType;
@@ -23,42 +18,46 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackDamage = 20f;
     [SerializeField] private float attackInterval = 2f;
     [SerializeField] private float bulletSpeed = 5f;
-    [SerializeField] private int burstCount = 3;             // Antal skott i en burst
-    [SerializeField] private float burstInterval = 0.2f;     // Tid mellan skott i en burst
+
+    [Header("Advanced Attack Settings")]
+    [SerializeField] private int burstCount = 3;
+    [SerializeField] private float burstInterval = 0.2f;
+    [SerializeField] private float spreadAngle = 45f;
+    [SerializeField] private int spreadCount = 5;
+    [SerializeField] private float spiralRotationSpeed = 120f;
+    [SerializeField] private int waveBulletCount = 8;
+    [SerializeField] private float waveFrequency = 2f;
+    [SerializeField] private float waveAmplitude = 1f;
 
     private float nextAttackTime = 0f;
-    private float timeSinceSpawn = 0f;
-    private Vector3 startPosition;
-    private bool isDead = false;
-    private Slider healthBar;
-    private Canvas healthBarCanvas;
-    private Camera mainCamera;
+    private float currentRotation = 0f;
+    private float timeSinceLastBurst = 0f;
+    private int currentBurstShot = 0;
 
-    // Enum f�r olika r�relsem�nster
+    // Existing enums
     public enum EnemyMovementType
     {
-        Direct,         // R�r sig rakt mot spelaren
-        SineWave,      // R�r sig i en sinusväg
-        Circle,        // Cirklar runt spelaren
-        Zigzag         // Zigzag-m�nster
+        Direct,
+        SineWave,
+        Circle,
+        Zigzag
     }
 
-    // Enum f�r olika attackm�nster
     public enum EnemyAttackType
     {
-        None,          // Ingen attack
-        SingleShot,    // Ett skott i taget
-        Burst,         // Flera skott i snabb följd
-        Spread,        // Sprider skott i en kon
-        Circle         // Skjuter i en cirkel
+        None,
+        SingleShot,
+        Burst,
+        Spread,
+        Circle,
+        Spiral,
+        Wave,
+        Tracking,
+        RandomSpread
     }
 
     private void Start()
     {
-        currentHealth = maxHealth;
-        startPosition = transform.position;
-        mainCamera = Camera.main;
-
         if (target == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -67,42 +66,17 @@ public class EnemyController : MonoBehaviour
                 target = player.transform;
             }
         }
-
-        SetupHealthBar();
-    }
-
-    private void SetupHealthBar()
-    {
-        if (healthBarPrefab != null)
-        {
-            // Skapa health bar
-            GameObject healthBarObj = Instantiate(healthBarPrefab, transform.position + healthBarOffset, Quaternion.identity);
-            healthBar = healthBarObj.GetComponent<Slider>();
-            healthBarCanvas = healthBarObj.GetComponent<Canvas>();
-
-            // G�r health bar till barn till fienden
-            healthBarObj.transform.SetParent(transform);
-
-            // Konfigurera health bar
-            healthBar.maxValue = maxHealth;
-            healthBar.value = currentHealth;
-        }
     }
 
     private void Update()
     {
-        if (isDead) return;
-
-        timeSinceSpawn += Time.deltaTime;
+        if (target == null) return;
         HandleMovement();
         HandleAttack();
-        UpdateHealthBar();
     }
 
     private void HandleMovement()
     {
-        if (target == null) return;
-
         Vector3 direction = (target.position - transform.position).normalized;
         Vector3 movement = Vector3.zero;
 
@@ -113,20 +87,20 @@ public class EnemyController : MonoBehaviour
                 break;
 
             case EnemyMovementType.SineWave:
-                float sin = Mathf.Sin(timeSinceSpawn * sinWaveFrequency) * sinWaveAmplitude;
+                float sin = Mathf.Sin(Time.time * sinWaveFrequency) * sinWaveAmplitude;
                 Vector3 sideVector = Vector3.Cross(direction, Vector3.up);
                 movement = (direction + sideVector * sin).normalized * moveSpeed;
                 break;
 
             case EnemyMovementType.Circle:
-                float angle = timeSinceSpawn * moveSpeed;
+                float angle = Time.time * moveSpeed;
                 Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * circleRadius;
                 Vector3 targetPos = target.position + offset;
                 movement = (targetPos - transform.position).normalized * moveSpeed;
                 break;
 
             case EnemyMovementType.Zigzag:
-                float zigzag = Mathf.PingPong(timeSinceSpawn * moveSpeed, 2) - 1;
+                float zigzag = Mathf.PingPong(Time.time * moveSpeed, 2) - 1;
                 Vector3 sideDir = Vector3.Cross(direction, Vector3.up);
                 movement = (direction + sideDir * zigzag).normalized * moveSpeed;
                 break;
@@ -143,66 +117,105 @@ public class EnemyController : MonoBehaviour
         switch (attackType)
         {
             case EnemyAttackType.SingleShot:
-                FireBullet(transform.forward);
-                nextAttackTime = Time.time + attackInterval;
+                FireSingleShot();
                 break;
 
             case EnemyAttackType.Burst:
-                StartCoroutine(FireBurst());
-                nextAttackTime = Time.time + attackInterval;
+                StartCoroutine(FireBurstCoroutine());
                 break;
 
             case EnemyAttackType.Spread:
-                FireSpread();
-                nextAttackTime = Time.time + attackInterval;
+                FireSpread(spreadAngle, spreadCount, false);
                 break;
 
             case EnemyAttackType.Circle:
-                FireCircle();
-                nextAttackTime = Time.time + attackInterval;
+                FireCirclePattern();
+                break;
+
+            case EnemyAttackType.Spiral:
+                FireSpiral();
+                break;
+
+            case EnemyAttackType.Wave:
+                FireWave();
+                break;
+
+            case EnemyAttackType.Tracking:
+                FireTracking();
+                break;
+
+            case EnemyAttackType.RandomSpread:
+                FireSpread(spreadAngle, spreadCount, true);
                 break;
         }
+
+        nextAttackTime = Time.time + attackInterval;
     }
 
-    private void FireBullet(Vector3 direction)
+    private void FireSingleShot()
     {
-        if (enemyBulletPrefab != null)
-        {
-            GameObject bullet = Instantiate(enemyBulletPrefab, transform.position, Quaternion.LookRotation(direction));
-            bullet.GetComponent<Rigidbody>().linearVelocity = direction * bulletSpeed;
-
-            ProjectileDamage damage = bullet.GetComponent<ProjectileDamage>();
-            if (damage == null)
-            {
-                damage = bullet.AddComponent<ProjectileDamage>();
-            }
-            damage.damage = attackDamage;
-        }
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        FireBullet(directionToTarget);
     }
 
-    private System.Collections.IEnumerator FireBurst()
+    private void FireSpiral()
     {
-        for (int i = 0; i < burstCount; i++)
-        {
-            FireBullet(transform.forward);
-            yield return new WaitForSeconds(burstInterval);
-        }
+        currentRotation += spiralRotationSpeed * Time.deltaTime;
+        Vector3 direction = Quaternion.Euler(0, currentRotation, 0) * Vector3.forward;
+        FireBullet(direction);
     }
 
-    private void FireSpread()
+    private void FireWave()
     {
-        float spreadAngle = 45f;
-        int spreadCount = 5;
-
-        for (int i = 0; i < spreadCount; i++)
+        float angleStep = 360f / waveBulletCount;
+        for (int i = 0; i < waveBulletCount; i++)
         {
-            float angle = -spreadAngle / 2 + (spreadAngle / (spreadCount - 1)) * i;
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+            float angle = i * angleStep;
+            float waveOffset = Mathf.Sin(Time.time * waveFrequency + angle * Mathf.Deg2Rad) * waveAmplitude;
+            Vector3 direction = Quaternion.Euler(0, angle + waveOffset, 0) * Vector3.forward;
             FireBullet(direction);
         }
     }
 
-    private void FireCircle()
+    private void FireTracking()
+    {
+        Vector3 predictedPosition = target.position;
+        Rigidbody targetRb = target.GetComponent<Rigidbody>();
+        if (targetRb != null)
+        {
+            predictedPosition += targetRb.linearVelocity * (Vector3.Distance(transform.position, target.position) / bulletSpeed);
+        }
+        Vector3 directionToTarget = (predictedPosition - transform.position).normalized;
+        FireBullet(directionToTarget);
+    }
+
+    private void FireSpread(float totalSpreadAngle, int numberOfBullets, bool randomize)
+    {
+        float angleStep = totalSpreadAngle / (numberOfBullets - 1);
+        float startAngle = -totalSpreadAngle / 2;
+
+        for (int i = 0; i < numberOfBullets; i++)
+        {
+            float currentAngle = startAngle + (angleStep * i);
+            if (randomize)
+            {
+                currentAngle += Random.Range(-angleStep / 2, angleStep / 2);
+            }
+            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * transform.forward;
+            FireBullet(direction);
+        }
+    }
+
+    private IEnumerator FireBurstCoroutine()
+    {
+        for (int i = 0; i < burstCount; i++)
+        {
+            FireSingleShot();
+            yield return new WaitForSeconds(burstInterval);
+        }
+    }
+
+    private void FireCirclePattern()
     {
         int bulletCount = 8;
         float angleStep = 360f / bulletCount;
@@ -210,59 +223,30 @@ public class EnemyController : MonoBehaviour
         for (int i = 0; i < bulletCount; i++)
         {
             float angle = i * angleStep;
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
             FireBullet(direction);
         }
     }
 
-    public void TakeDamage(float damage)
+    private void FireBullet(Vector3 direction)
     {
-        if (isDead) return;
+        if (enemyBulletPrefab == null) return;
 
-        currentHealth -= damage;
-        UpdateHealthBar();
+        GameObject bullet = Instantiate(enemyBulletPrefab, transform.position, Quaternion.LookRotation(direction));
 
-        if (currentHealth <= 0)
+        if (bullet.TryGetComponent<Rigidbody>(out var rb))
         {
-            Die();
-        }
-    }
-
-    private void UpdateHealthBar()
-    {
-        if (healthBar != null)
-        {
-            healthBar.value = currentHealth;
-
-            // V�nd health bar mot kameran
-            if (healthBarCanvas != null && mainCamera != null)
-            {
-                healthBarCanvas.transform.rotation = mainCamera.transform.rotation;
-            }
-        }
-    }
-
-    private void Die()
-    {
-        isDead = true;
-
-        // Ta bort health bar
-        if (healthBar != null)
-        {
-            Destroy(healthBar.gameObject);
+            rb.useGravity = false;
+            rb.linearVelocity = direction * bulletSpeed;
         }
 
-        // F�rst�r fienden
-        Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        ProjectileDamage projectile = other.GetComponent<ProjectileDamage>();
-        if (projectile != null)
+        BulletHandler bulletHandler = bullet.GetComponent<BulletHandler>();
+        if (bulletHandler == null)
         {
-            TakeDamage(projectile.damage);
-            Destroy(other.gameObject);
+            bulletHandler = bullet.AddComponent<BulletHandler>();
         }
+        bulletHandler.SetAsEnemyProjectile(attackDamage);
+
+        Destroy(bullet, 5f);
     }
 }
