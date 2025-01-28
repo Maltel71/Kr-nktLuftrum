@@ -124,7 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemyProjectile: 0
   damage: 10
-  hitEffectPrefab: {fileID: 0}
 --- !u!54 &-6714990925128996971
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -134,12 +134,7 @@ MonoBehaviour:
   maxHealth: 100
   healthBarPrefab: {fileID: 4038366390463760817, guid: c6d42154e73097c40a027b778bde9032, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
-  explosionPrefab: {fileID: 0}
-  smokePrefab: {fileID: 0}
-  crashSpeed: 5
-  rotationSpeed: 90
-  destroyDelay: 3
-  explosionSound: {fileID: 0}
+  healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
 --- !u!114 &392360829616470151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,10 +148,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPlane: {fileID: -8679921383154817045, guid: e62676fa5db43584fb13cf3466bc6968, type: 3}
+  shootingRange: 1500
   bulletPrefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
-  shootingRange: 1500
   fireRate: 0.1
   bulletSpeed: 10
   bulletDamage: 10
