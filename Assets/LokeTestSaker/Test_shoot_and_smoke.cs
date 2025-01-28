@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    // In another script:
+
     private SmokeEffectScript smokeEffect;
 
     void Start()
@@ -12,10 +12,13 @@ public class Test : MonoBehaviour
 
     void Update()
     {
-        // Test with keyboard
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            smokeEffect.TakeDamage(10); // Damage by 10 each time space is pressed
+            smokeEffect.TakeDamage(10); // Damage by 10
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            smokeEffect.HealHealth(10); // Heal by 10
         }
     }
 }

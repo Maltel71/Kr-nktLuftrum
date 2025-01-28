@@ -15,10 +15,22 @@ public class SmokeEffectScript : MonoBehaviour
     private ParticleSystem currentActiveEffect;
     private bool isInitialized = false;
 
+    // Track current health state
+    private enum HealthState { Normal, Damaged, Critical }
+    private HealthState currentState;
+
     private void Start()
     {
         ValidateComponents();
         InitializeSmoke();
+        SetInitialState();
+    }
+
+    private void SetInitialState()
+    {
+        if (health > damagedThreshold) currentState = HealthState.Normal;
+        else if (health > criticalThreshold) currentState = HealthState.Damaged;
+        else currentState = HealthState.Critical;
     }
 
     private void ValidateComponents()
@@ -33,18 +45,12 @@ public class SmokeEffectScript : MonoBehaviour
 
     private void InitializeSmoke()
     {
-        // Make sure all effects are stopped initially
         normalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         damagedSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         criticalSmokeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
-        // Clear any existing particles
-        normalSmokeEffect?.Clear();
-        damagedSmokeEffect?.Clear();
-        criticalSmokeEffect?.Clear();
-
         isInitialized = true;
-        UpdateSmoke(); // Start the appropriate smoke effect
+        UpdateSmoke();
     }
 
     public void UpdateHealth(int newHealth)
@@ -52,8 +58,14 @@ public class SmokeEffectScript : MonoBehaviour
         int oldHealth = health;
         health = Mathf.Clamp(newHealth, 0, 100);
 
-        if (oldHealth != health)
+        HealthState newState;
+        if (health > damagedThreshold) newState = HealthState.Normal;
+        else if (health > criticalThreshold) newState = HealthState.Damaged;
+        else newState = HealthState.Critical;
+
+        if (currentState != newState)
         {
+            currentState = newState;
             UpdateSmoke();
         }
     }
@@ -62,36 +74,54 @@ public class SmokeEffectScript : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        // Stop current effect if it exists
-        if (currentActiveEffect != null)
-        {
-            currentActiveEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            currentActiveEffect.Clear();
-        }
-
-        // Get and play new effect
         ParticleSystem newEffect = DetermineEffectBasedOnHealth();
+
         if (newEffect != null && newEffect != currentActiveEffect)
         {
+            if (currentActiveEffect != null)
+            {
+                var main = currentActiveEffect.main;
+                main.stopAction = ParticleSystemStopAction.None;
+                currentActiveEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            }
+
             currentActiveEffect = newEffect;
-            currentActiveEffect.Clear();
-            currentActiveEffect.Play();
+            if (!currentActiveEffect.isPlaying)
+            {
+                var main = currentActiveEffect.main;
+                main.stopAction = ParticleSystemStopAction.None;
+                currentActiveEffect.Play();
+            }
         }
     }
 
     private ParticleSystem DetermineEffectBasedOnHealth()
     {
-        if (health > damagedThreshold)
-            return normalSmokeEffect;
-        else if (health > criticalThreshold)
-            return damagedSmokeEffect;
-        else
-            return criticalSmokeEffect;
+        switch (currentState)
+        {
+            case HealthState.Normal:
+                return normalSmokeEffect;
+            case HealthState.Damaged:
+                return damagedSmokeEffect;
+            case HealthState.Critical:
+                return criticalSmokeEffect;
+            default:
+                return normalSmokeEffect;
+        }
     }
 
-    // Test method to damage the object (you can call this from other scripts)
     public void TakeDamage(int amount)
     {
         UpdateHealth(health - amount);
+    }
+
+    public void HealHealth(int amount)
+    {
+        UpdateHealth(health + amount);
+    }
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 200, 20), $"Health: {health} (State: {currentState})");
     }
 }
