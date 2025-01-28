@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: -6714990925128996971}
   m_Layer: 0
   m_Name: Kula2
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &4340389024235436498
 Transform:
@@ -122,8 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498ab90b6f6ed1949b2f2ebedf5270e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleFlashPrefab: {fileID: 0}
-  smokeTrailPrefab: {fileID: 0}
+  isEnemyProjectile: 0
+  damage: 10
+  hitEffectPrefab: {fileID: 0}
 --- !u!54 &-6714990925128996971
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,7 +147,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0

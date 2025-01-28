@@ -8,50 +8,77 @@ public class EnemyHealth : MonoBehaviour
     private float currentHealth;
 
     [Header("UI")]
-    [SerializeField] private Slider healthSlider;
-    [SerializeField] private Vector3 sliderOffset = new Vector3(0, 2f, 0);
-    private Camera mainCamera;
+    [SerializeField] private GameObject healthBarPrefab;
+    [SerializeField] private Vector3 healthBarOffset = new Vector3(0, 2f, 0);
+    [SerializeField] private Vector3 healthBarScale = new Vector3(0.05f, 0.05f, 0.05f);
 
-    [Header("Destruction Effects")]
-    [SerializeField] private GameObject explosionPrefab;
-    [SerializeField] private float destroyDelay = 0.5f;
-    [SerializeField] private AudioClip explosionSound;
-
-    private AudioSource audioSource;
+    // Referens till själva Slider-komponenten
+    private Slider healthSlider;
+    private GameObject healthBarInstance;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        mainCamera = Camera.main;
+        CreateHealthBar();
+    }
+
+    private void CreateHealthBar()
+    {
+        // Skapa health bar instansen
+        healthBarInstance = Instantiate(healthBarPrefab, transform.position + healthBarOffset, Quaternion.identity, transform);
+
+        // Hitta Slider-komponenten i hierarkin
+        healthSlider = healthBarInstance.GetComponentInChildren<Slider>();
 
         if (healthSlider != null)
         {
+            // Konfigurera Slider
+            healthSlider.minValue = 0;
             healthSlider.maxValue = maxHealth;
             healthSlider.value = currentHealth;
+
+            Debug.Log($"Health bar created. Slider configured with max: {maxHealth}, current: {currentHealth}");
+        }
+        else
+        {
+            Debug.LogError("Kunde inte hitta Slider-komponenten i health bar prefaben!");
         }
 
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null && explosionSound != null)
+        // Konfigurera Canvas
+        Canvas canvas = healthBarInstance.GetComponentInChildren<Canvas>();
+        if (canvas != null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvas.sortingOrder = 10;
         }
+
+        // Sätt scale
+        healthBarInstance.transform.localScale = healthBarScale;
     }
 
     private void Update()
     {
-        if (healthSlider != null && mainCamera != null)
+        if (healthBarInstance != null)
         {
-            healthSlider.transform.position = mainCamera.WorldToScreenPoint(transform.position + sliderOffset);
+            // Vänd health bar mot kameran
+            healthBarInstance.transform.rotation = Camera.main.transform.rotation;
         }
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        Debug.Log($"Enemy taking damage: {damage}, Current health: {currentHealth}");
 
+        // Uppdatera UI
         if (healthSlider != null)
         {
             healthSlider.value = currentHealth;
+            Debug.Log($"Slider value updated to: {healthSlider.value}");
+        }
+        else
+        {
+            Debug.LogError("Health slider reference is missing!");
         }
 
         if (currentHealth <= 0)
@@ -62,33 +89,10 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
-        if (explosionPrefab != null)
+        if (healthBarInstance != null)
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(healthBarInstance);
         }
-
-        if (audioSource != null && explosionSound != null)
-        {
-            audioSource.PlayOneShot(explosionSound);
-        }
-
-        if (healthSlider != null)
-        {
-            Destroy(healthSlider.gameObject);
-        }
-
-        var renderers = GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
-        {
-            renderer.enabled = false;
-        }
-
-        var colliders = GetComponentsInChildren<Collider>();
-        foreach (var collider in colliders)
-        {
-            collider.enabled = false;
-        }
-
-        Destroy(gameObject, destroyDelay);
+        Destroy(gameObject);
     }
 }

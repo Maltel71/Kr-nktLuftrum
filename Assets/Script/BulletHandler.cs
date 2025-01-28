@@ -2,44 +2,38 @@ using UnityEngine;
 
 public class BulletHandler : MonoBehaviour
 {
-    [SerializeField] private GameObject muzzleFlashPrefab;
-    [SerializeField] private GameObject smokeTrailPrefab;
-    private GameObject currentSmokeTrail;
+    [SerializeField] private bool isEnemyProjectile;
+    [SerializeField] private float damage = 10f;
+    private bool hasCollided;
 
-    private void Start()
+    public void SetAsEnemyProjectile(float damageAmount)
     {
-        // Create muzzle flash at bullet spawn
-        if (muzzleFlashPrefab != null)
-        {
-            GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, transform.position, transform.rotation);
-            Destroy(muzzleFlash, 0.1f);
-        }
-
-        // Create smoke trail following bullet
-        if (smokeTrailPrefab != null)
-        {
-            currentSmokeTrail = Instantiate(smokeTrailPrefab, transform.position, transform.rotation);
-            currentSmokeTrail.transform.SetParent(transform);
-        }
+        isEnemyProjectile = true;
+        damage = damageAmount;
     }
 
-    private void OnDestroy()
-    {
-        // Keep smoke trail briefly after bullet is destroyed
-        if (currentSmokeTrail != null)
-        {
-            currentSmokeTrail.transform.SetParent(null);
-            Destroy(currentSmokeTrail, 1f);
-        }
-    }
+    private void OnTriggerEnter(Collider other)
+    {        if (hasCollided) return;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Om kulan träffar något som inte är en annan kula
-        if (!collision.gameObject.CompareTag("Bullet"))
+        // Handle player hitting enemy
+        if (!isEnemyProjectile && other.CompareTag("Enemy"))
         {
-            AudioManager.Instance?.PlayHitSound();
-            Destroy(gameObject);
+            if (other.TryGetComponent<EnemyHealth>(out var enemyHealth))
+            {
+                enemyHealth.TakeDamage(damage);
+                hasCollided = true;
+                Destroy(gameObject);
+            }
+        }
+        // Handle enemy hitting player
+        else if (isEnemyProjectile && other.CompareTag("Player"))
+        {
+            if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth))
+            {
+                playerHealth.TakeDamage(damage);
+                hasCollided = true;
+                Destroy(gameObject);
+            }
         }
     }
 }
