@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 8151402360514474810}
   - component: {fileID: -3985228070185450049}
   m_Layer: 0
-  m_Name: Mig_01
+  m_Name: Boss 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   splineContainer: {fileID: 0}
-  speed: 80
+  speed: 100
   loopPath: 0
 --- !u!114 &6927417615880013616
 MonoBehaviour:
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  healthBarPrefab: {fileID: 4038366390463760817, guid: c6d42154e73097c40a027b778bde9032, type: 3}
+  healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
 --- !u!114 &392360829616470151
@@ -148,16 +148,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPlane: {fileID: -8679921383154817045, guid: e62676fa5db43584fb13cf3466bc6968, type: 3}
-  shootingRange: 1000
-  minShootingRange: 100
+  shootingRange: 2000
+  minShootingRange: 0.1
   bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
-  fireRate: 0.2
-  bulletSpeed: 10
+  fireRate: 0.1
+  bulletSpeed: 2
   bulletDamage: 10
   bulletLifetime: 1
-  showDebugInfo: 0
+  showDebugInfo: 1
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -183,7 +183,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &8151402360514474810
 BoxCollider:
@@ -200,7 +200,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -221,7 +221,7 @@ MonoBehaviour:
   playerPlane: {fileID: 0}
   heightMatchSpeed: 5
   targetHeightOffset: 0
-  showDebugInfo: 1
+  showDebugInfo: 0
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0

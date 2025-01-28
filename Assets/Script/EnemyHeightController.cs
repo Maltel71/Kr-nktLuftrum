@@ -53,7 +53,7 @@ public class EnemyHeightController : MonoBehaviour
             if (showDebugInfo)
             {
                 float heightDifference = Mathf.Abs(currentPos.y - playerPlane.position.y);
-                Debug.Log($"Höjdskillnad till spelare: {heightDifference:F2} enheter");
+                //Debug.Log($"Höjdskillnad till spelare: {heightDifference:F2} enheter");
             }
         }
     }

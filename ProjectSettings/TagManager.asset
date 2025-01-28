@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Bullit
   - Bullet
   - Enemy
+  - Bullet Enemy
+  - Bullit
+  - Bullet Player
   layers:
   - Default
   - TransparentFX

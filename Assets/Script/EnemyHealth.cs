@@ -37,7 +37,7 @@ public class EnemyHealth : MonoBehaviour
             healthSlider.maxValue = maxHealth;
             healthSlider.value = currentHealth;
 
-            Debug.Log($"Health bar created. Slider configured with max: {maxHealth}, current: {currentHealth}");
+            //Debug.Log($"Health bar created. Slider configured with max: {maxHealth}, current: {currentHealth}");
         }
         else
         {

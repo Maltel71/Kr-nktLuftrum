@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 4246985105554003245}
   - component: {fileID: -6714990925128996971}
   m_Layer: 0
-  m_Name: Kula2
-  m_TagString: Bullet
+  m_Name: Bullet Player
+  m_TagString: Bullet Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 1
@@ -124,6 +124,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemyProjectile: 0
   damage: 10
+  bulletLifetime: 3
+  hitEffectPrefab: {fileID: 0}
+  effectDuration: 1
 --- !u!54 &-6714990925128996971
 Rigidbody:
   m_ObjectHideFlags: 0
