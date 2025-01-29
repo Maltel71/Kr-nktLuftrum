@@ -149,17 +149,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPlane: {fileID: -8679921383154817045, guid: e62676fa5db43584fb13cf3466bc6968, type: 3}
-  shootingRange: 2000
-  minShootingRange: 0.1
+  shootingRange: 200
   bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
-  fireRate: 0.1
-  bulletSpeed: 2
+  fireRate: 0.2
   bulletDamage: 10
-  bulletLifetime: 3
-  shootPattern: 0
-  showDebugInfo: 1
+  bulletSpawnOffset: 2
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -206,8 +202,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8, y: 0.36, z: 0.79}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.8, y: 0.06, z: 0.76}
+  m_Center: {x: 0, y: 0.02, z: 0}
 --- !u!114 &-3985228070185450049
 MonoBehaviour:
   m_ObjectHideFlags: 0
