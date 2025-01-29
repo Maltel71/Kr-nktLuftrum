@@ -131,7 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c71dea441661b4b9f311f04689eb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 300
+  isBoss: 1
   healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
@@ -156,7 +157,8 @@ MonoBehaviour:
   fireRate: 0.1
   bulletSpeed: 2
   bulletDamage: 10
-  bulletLifetime: 1
+  bulletLifetime: 3
+  shootPattern: 0
   showDebugInfo: 1
 --- !u!54 &1546925361892836530
 Rigidbody:

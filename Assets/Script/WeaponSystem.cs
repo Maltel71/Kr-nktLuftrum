@@ -178,6 +178,7 @@ public class WeaponSystem : MonoBehaviour
         ConfigureBomb(bomb);
         PlayBombEffects();
         UpdateBombCooldown();
+
     }
 
     private bool ValidateBombComponents()
