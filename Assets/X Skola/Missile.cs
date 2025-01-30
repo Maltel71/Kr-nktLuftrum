@@ -3,16 +3,16 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     [Header("References")]
-    public Transform missileTarget;                 // Referens till spelaren
-    public Transform missile;                      // Referens till spelaren
-    public GameObject MissileExplosionPrefab;    // Fält för explosioner
+    public Transform missileTarget;                  // Referens till spelaren
+    public Transform missile;                       // Referens till spelaren
+    public GameObject MissileExplosionPrefab;      // Fält för explosioner
     public Rigidbody rb;                          // Referens till Rigibody
 
     [Header("Missile Settings")]
     public float turnValue = 5f;                 // Missilens svängradie
     public float speed = 5f;                    // Misilens hastighet
     public float rotation = 4f;
-    public float selfDestroyTime = 8f;       // Tid för att skälvdestruktion
+    public float selfDestroyTime = 8f;         // Tid för att skälvdestruktion
 
     [Header("Combat")]
     public int DamagePoints = 20;             // Den skada spelaren tillfogas vid kollision 

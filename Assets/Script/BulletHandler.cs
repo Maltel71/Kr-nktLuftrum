@@ -4,7 +4,7 @@ public class BulletHandler : MonoBehaviour
 {
     [Header("Bullet Settings")]
     [SerializeField] private bool isEnemyProjectile;
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private float damage = 10f;  // Flyttad från ProjectileDamage
     [SerializeField] private float bulletLifetime = 3f;
 
     [Header("Effects")]
@@ -26,6 +26,12 @@ public class BulletHandler : MonoBehaviour
         damage = damageAmount;
     }
 
+    // Ny funktion för att sätta skada (kan vara användbar för power-ups etc)
+    public void SetDamage(float newDamage)
+    {
+        damage = newDamage;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (hasCollided) return;
@@ -38,7 +44,7 @@ public class BulletHandler : MonoBehaviour
             {
                 enemyHealth.TakeDamage(damage);
                 PlayHitEffect();
-                audioManager?.PlayHitSound();
+                AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
             }
         }
         // Handle enemy bullet hitting player
@@ -48,7 +54,7 @@ public class BulletHandler : MonoBehaviour
             {
                 playerHealth.TakeDamage(damage);
                 PlayHitEffect();
-                audioManager?.PlayHitSound();
+                AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
             }
         }
         // Handle hitting any other collider

@@ -1648,7 +1648,7 @@ Transform:
   m_GameObject: {fileID: 605897609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1000, y: 100, z: 2448}
+  m_LocalPosition: {x: 1000, y: 100, z: 2887}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2912,7 +2912,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -3296,19 +3296,19 @@ MonoBehaviour:
   engineSource: {fileID: 0}
   radioSource: {fileID: 0}
   musicVolume: 0.094
-  sfxVolume: 0.478
-  engineVolume: 0.478
-  radioVolume: 0.482
-  sirenVolume: 0.498
+  sfxVolume: 0.249
+  engineVolume: 0.086
+  radioVolume: 0.384
+  sirenVolume: 0.167
   backgroundMusic: {fileID: 8300000, guid: 3091166dcf4e734449271b1ceaffd1db, type: 3}
-  deathSound: {fileID: 0}
-  boostSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  shootSound: {fileID: 0}
-  bombSound: {fileID: 8300000, guid: 4260443261a227c4990f0e912be56de6, type: 3}
-  bombFallingSound: {fileID: 8300000, guid: 4459c8e3dd616b1469699c6d5a17c924, type: 3}
-  bombExplosionSound: {fileID: 0}
   engineSound: {fileID: 8300000, guid: 23ef7fa6779f1914aacddaf3366d97f3, type: 3}
+  shootSound: {fileID: 0}
+  hitSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  bombDropSound: {fileID: 0}
+  bombFallingSound: {fileID: 0}
+  bombExplosionSound: {fileID: 8300000, guid: 4260443261a227c4990f0e912be56de6, type: 3}
+  boostSound: {fileID: 0}
   airRaidSiren: {fileID: 8300000, guid: 12fa547e19eba474d93ecbd96f701d56, type: 3}
   radioStart: {fileID: 8300000, guid: 213414df5e30c9f4a8f4351528fdebe7, type: 3}
   radioEnd: {fileID: 0}

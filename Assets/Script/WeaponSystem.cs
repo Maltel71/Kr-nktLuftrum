@@ -162,7 +162,7 @@ public class WeaponSystem : MonoBehaviour
 
     private void PlayFireEffects()
     {
-        audioManager?.PlayShootSound();
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Shoot);
     }
 
     private void UpdateFireCooldown()
@@ -203,7 +203,7 @@ public class WeaponSystem : MonoBehaviour
 
     private void PlayBombEffects()
     {
-        audioManager?.PlayBombSound();
+        AudioManager.Instance?.PlayBombSound(BombSoundType.Drop);
     }
 
     private void UpdateBombCooldown()

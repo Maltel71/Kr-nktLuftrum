@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498ab90b6f6ed1949b2f2ebedf5270e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnemyProjectile: 0
+  isEnemyProjectile: 1
   damage: 10
   bulletLifetime: 0.5
   hitEffectPrefab: {fileID: 0}
