@@ -6,10 +6,35 @@ using System.Linq;
 public class ScoreManager : MonoBehaviour
 {
     [Header("Score Values")]
-    [SerializeField] private int enemyShipPoints = 100;
-    [SerializeField] private int bossPoints = 1000;
-    [SerializeField] private int bombTargetPoints = 50;
-    [SerializeField] private int pointsPerSecond = 10;
+    [SerializeField] private int _enemyShipPoints = 100;
+    [SerializeField] private int _bossPoints = 1000;
+    [SerializeField] private int _bombTargetPoints = 50;
+    [SerializeField] private int _pointsPerSecond = 10;
+
+    // Properties som låter oss ändra värdena i runtime
+    public int enemyShipPoints
+    {
+        get => _enemyShipPoints;
+        set => _enemyShipPoints = value;
+    }
+
+    public int bossPoints
+    {
+        get => _bossPoints;
+        set => _bossPoints = value;
+    }
+
+    public int bombTargetPoints
+    {
+        get => _bombTargetPoints;
+        set => _bombTargetPoints = value;
+    }
+
+    public int pointsPerSecond
+    {
+        get => _pointsPerSecond;
+        set => _pointsPerSecond = value;
+    }
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -23,26 +48,49 @@ public class ScoreManager : MonoBehaviour
     private bool isGameActive = true;
     private float timeSurvived = 0f;
 
-    public static ScoreManager Instance => instance;
+    public static ScoreManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<ScoreManager>();
+                if (instance == null)
+                {
+                    GameObject go = new GameObject("ScoreManager");
+                    instance = go.AddComponent<ScoreManager>();
+                }
+            }
+            return instance;
+        }
+    }
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null && instance != this)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            // Om en instans redan finns, kopiera dess värden innan vi förstör objektet
+            _enemyShipPoints = instance.enemyShipPoints;
+            _bossPoints = instance.bossPoints;
+            _bombTargetPoints = instance.bombTargetPoints;
+            _pointsPerSecond = instance.pointsPerSecond;
+            Destroy(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            LoadHighScores();
         }
-        LoadHighScores();
     }
 
     private void Start()
     {
         UpdateScoreDisplay();
-        highScorePanel.SetActive(false);
+        if (highScorePanel != null)
+        {
+            highScorePanel.SetActive(false);
+        }
     }
 
     private void Update()
@@ -52,24 +100,34 @@ public class ScoreManager : MonoBehaviour
             timeSurvived += Time.deltaTime;
             if (timeSurvived >= 1f)
             {
-                AddPoints((int)(timeSurvived * pointsPerSecond));
+                AddPoints((int)(timeSurvived * _pointsPerSecond));
                 timeSurvived = 0f;
             }
         }
     }
 
-    public void StopGame()
+    public void AddEnemyShipPoints()
     {
-        isGameActive = false;
+        Debug.Log($"Adding enemy ship points: {_enemyShipPoints}");
+        AddPoints(_enemyShipPoints);
     }
 
-    public void AddEnemyShipPoints() => AddPoints(enemyShipPoints);
-    public void AddBossPoints() => AddPoints(bossPoints);
-    public void AddBombTargetPoints() => AddPoints(bombTargetPoints);
+    public void AddBossPoints()
+    {
+        Debug.Log($"Adding boss points: {_bossPoints}");
+        AddPoints(_bossPoints);
+    }
+
+    public void AddBombTargetPoints()
+    {
+        Debug.Log($"Adding bomb target points: {_bombTargetPoints}");
+        AddPoints(_bombTargetPoints);
+    }
 
     private void AddPoints(int points)
     {
         currentScore += points;
+        Debug.Log($"Added {points} points. New total: {currentScore}");
         UpdateScoreDisplay();
     }
 
@@ -81,10 +139,18 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public void StopGame()
+    {
+        isGameActive = false;
+    }
+
     public void ShowHighScores()
     {
         CheckAndAddScore(currentScore);
-        highScorePanel.SetActive(true);
+        if (highScorePanel != null)
+        {
+            highScorePanel.SetActive(true);
+        }
     }
 
     private void CheckAndAddScore(int score)
@@ -116,15 +182,26 @@ public class ScoreManager : MonoBehaviour
 
     private void DisplayHighScores()
     {
+        if (highScoreTexts == null) return;
+
         for (int i = 0; i < highScoreTexts.Length; i++)
         {
-            highScoreTexts[i].text = i < highScores.Count
-                ? $"{i + 1}. {highScores[i]}"
-                : $"{i + 1}. ---";
+            if (highScoreTexts[i] != null)
+            {
+                highScoreTexts[i].text = i < highScores.Count
+                    ? $"{i + 1}. {highScores[i]}"
+                    : $"{i + 1}. ---";
+            }
         }
     }
 
-    public void HideHighScores() => highScorePanel.SetActive(false);
+    public void HideHighScores()
+    {
+        if (highScorePanel != null)
+        {
+            highScorePanel.SetActive(false);
+        }
+    }
 
     public void ResetScore()
     {

@@ -72,7 +72,7 @@ public class EnemyPlane : MonoBehaviour
         if (bulletMover != null)
         {
             bulletMover.direction = shootDirection;
-            Debug.Log($"Skjuter framåt - Position: {spawnPosition}, Riktning: {shootDirection}");
+            //Debug.Log($"Skjuter framåt - Position: {spawnPosition}, Riktning: {shootDirection}");
         }
 
         var bulletHandler = bullet.GetComponent<BulletHandler>() ?? bullet.AddComponent<BulletHandler>();

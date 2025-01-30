@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionEffectPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
-  explosionDuration: 2
-  explosionRadius: 5
-  explosionForce: 500
+  explosionDuration: 3
+  explosionRadius: 20
+  explosionForce: 20
   explosionDamage: 50

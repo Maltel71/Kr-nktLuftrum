@@ -13,17 +13,15 @@ public class BombHandler : MonoBehaviour
     [SerializeField] private float explosionDamage = 50f;
 
     private CameraShake cameraShake;
+    private ScoreManager scoreManager;
     private bool hasPlayedFallingSound = false;
+    private bool hasExploded = false;
 
     private void Start()
     {
         audioManager = AudioManager.Instance;
         cameraShake = CameraShake.Instance;
-
-        if (cameraShake == null)
-        {
-            Debug.LogWarning("Kunde inte hitta CameraShake!");
-        }
+        scoreManager = ScoreManager.Instance;
     }
 
     private void Update()
@@ -35,26 +33,63 @@ public class BombHandler : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hasExploded) return;
+
+        Debug.Log($"OnTriggerEnter: Collided with {other.gameObject.name}, tag: {other.gameObject.tag}");
+
+        if (other.CompareTag("BombTarget"))
+        {
+            Debug.Log("Hit BombTarget! Adding points...");
+            if (scoreManager != null)
+            {
+                scoreManager.AddBombTargetPoints();
+            }
+            // Använd bombens position för explosionen vid trigger
+            HandleExplosion(transform.position);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Bomb kolliderade med: {collision.gameObject.name}");
+        if (hasExploded) return;
+
+        Debug.Log($"OnCollisionEnter: Collided with {collision.gameObject.name}, tag: {collision.gameObject.tag}");
+
+        if (collision.gameObject.CompareTag("BombTarget"))
+        {
+            if (scoreManager != null)
+            {
+                scoreManager.AddBombTargetPoints();
+            }
+        }
+
+        // Använd kollisionspunkten för explosionen
+        HandleExplosion(collision.contacts[0].point);
+    }
+
+    private void HandleExplosion(Vector3 position)
+    {
+        if (hasExploded) return;
+        hasExploded = true;
 
         // Skapa explosionseffekt
         if (explosionEffectPrefab != null)
         {
-            GameObject explosionEffect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+            GameObject explosionEffect = Instantiate(explosionEffectPrefab, position, Quaternion.identity);
             Destroy(explosionEffect, explosionDuration);
         }
 
         // Hitta alla närliggande objekt och påverka dem med explosionen
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] colliders = Physics.OverlapSphere(position, explosionRadius);
         foreach (Collider hit in colliders)
         {
             // Påverka rigidbodies med explosionskraft
             Rigidbody rb = hit.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, 1.0f, ForceMode.Impulse);
+                rb.AddExplosionForce(explosionForce, position, explosionRadius, 1.0f, ForceMode.Impulse);
             }
 
             // Hantera skada på fiender
@@ -63,7 +98,7 @@ public class BombHandler : MonoBehaviour
                 EnemyHealth enemyHealth = hit.GetComponent<EnemyHealth>();
                 if (enemyHealth != null)
                 {
-                    float distance = Vector3.Distance(transform.position, hit.transform.position);
+                    float distance = Vector3.Distance(position, hit.transform.position);
                     float damageMultiplier = 1 - (distance / explosionRadius);
                     float damage = explosionDamage * damageMultiplier;
                     enemyHealth.TakeDamage(damage);
@@ -74,7 +109,6 @@ public class BombHandler : MonoBehaviour
         // Aktivera kameraskakning
         if (cameraShake != null)
         {
-            Debug.Log("Aktiverar kameraskakning för bomb");
             cameraShake.ShakaCameraVidBomb();
         }
 
@@ -83,12 +117,5 @@ public class BombHandler : MonoBehaviour
 
         // Förstör bomben
         Destroy(gameObject);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        // Rita explosionsradien i editorn
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

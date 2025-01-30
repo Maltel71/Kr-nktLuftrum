@@ -13,7 +13,7 @@ public class BulletMover : MonoBehaviour
     {
         fixedHeight = transform.position.y;
         lastPosition = transform.position;
-        Debug.Log($"Bullet startad. Position: {transform.position}, Direction: {direction}, Speed: {speed}");
+        //Debug.Log($"Bullet startad. Position: {transform.position}, Direction: {direction}, Speed: {speed}");
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class BulletMover : MonoBehaviour
 
         if (Time.frameCount % 10 == 0)
         {
-            Debug.Log($"Kula på position {transform.position}, total distans: {distanceTraveled:F2}");
+            //Debug.Log($"Kula på position {transform.position}, total distans: {distanceTraveled:F2}");
         }
 
         lastPosition = transform.position;
@@ -39,7 +39,7 @@ public class BulletMover : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Bullet träffade: {other.gameObject.name} på position {transform.position} efter att ha rest {distanceTraveled:F2} enheter");
+        //Debug.Log($"Bullet träffade: {other.gameObject.name} på position {transform.position} efter att ha rest {distanceTraveled:F2} enheter");
 
         if (other.CompareTag("Player"))
         {
