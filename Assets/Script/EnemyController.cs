@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class EnemyController : MonoBehaviour
@@ -19,24 +18,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float attackInterval = 2f;
     [SerializeField] private float bulletSpeed = 5f;
 
-    [Header("Advanced Attack Settings")]
-    [SerializeField] private int burstCount = 3;
-    [SerializeField] private float burstInterval = 0.2f;
-    [SerializeField] private float spreadAngle = 45f;
-    [SerializeField] private int spreadCount = 5;
-    [SerializeField] private float spiralRotationSpeed = 120f;
-    [SerializeField] private int waveBulletCount = 8;
-    [SerializeField] private float waveFrequency = 2f;
-    [SerializeField] private float waveAmplitude = 1f;
-
-    [Header("Collision Damage Settings")]
+    [Header("Collision Settings")]
     [SerializeField] private float collisionDamage = 25f;
     [SerializeField] private bool destroyOnCollision = true;
 
     private float nextAttackTime = 0f;
-    private float currentRotation = 0f;
-    private float timeSinceLastBurst = 0f;
-    private int currentBurstShot = 0;
+    private Vector3 initialForward;
 
     public enum EnemyMovementType
     {
@@ -52,11 +39,7 @@ public class EnemyController : MonoBehaviour
         SingleShot,
         Burst,
         Spread,
-        Circle,
-        Spiral,
-        Wave,
-        Tracking,
-        RandomSpread
+        Circle
     }
 
     private void Start()
@@ -70,22 +53,8 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        Collider col = GetComponent<Collider>();
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-            rb.interpolation = RigidbodyInterpolation.Interpolate;
-            Debug.Log($"CollisionDetection mode: {rb.collisionDetectionMode}");
-        }
-
-        Debug.Log($"Fiende {gameObject.name} startar:");
-        Debug.Log($"- Collider: {(col != null ? "JA" : "NEJ")}");
-        Debug.Log($"- Collider är Trigger: {(col?.isTrigger == true ? "JA" : "NEJ")}");
-        Debug.Log($"- Rigidbody: {(rb != null ? "JA" : "NEJ")}");
-        Debug.Log($"- Rigidbody är Kinematic: {(rb?.isKinematic == true ? "JA" : "NEJ")}");
-        Debug.Log($"Fiende {gameObject.name} Layer: {LayerMask.LayerToName(gameObject.layer)}");
-        Debug.Log($"Fiende {gameObject.name} Tag: {gameObject.tag}");
+        // Spara initial riktning
+        initialForward = transform.forward;
     }
 
     private void Update()
@@ -93,42 +62,38 @@ public class EnemyController : MonoBehaviour
         if (target == null) return;
         HandleMovement();
         HandleAttack();
-        Debug.DrawRay(transform.position, transform.forward * 5f, Color.red);
     }
 
     private void HandleMovement()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
         Vector3 movement = Vector3.zero;
 
         switch (movementType)
         {
             case EnemyMovementType.Direct:
-                movement = direction * moveSpeed;
+                movement = initialForward * moveSpeed;
                 break;
 
             case EnemyMovementType.SineWave:
                 float sin = Mathf.Sin(Time.time * sinWaveFrequency) * sinWaveAmplitude;
-                Vector3 sideVector = Vector3.Cross(direction, Vector3.up);
-                movement = (direction + sideVector * sin).normalized * moveSpeed;
+                Vector3 sideVector = Vector3.Cross(initialForward, Vector3.up);
+                movement = (initialForward + sideVector * sin).normalized * moveSpeed;
                 break;
 
             case EnemyMovementType.Circle:
                 float angle = Time.time * moveSpeed;
                 Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * circleRadius;
-                Vector3 targetPos = target.position + offset;
-                movement = (targetPos - transform.position).normalized * moveSpeed;
+                movement = (offset + initialForward).normalized * moveSpeed;
                 break;
 
             case EnemyMovementType.Zigzag:
                 float zigzag = Mathf.PingPong(Time.time * moveSpeed, 2) - 1;
-                Vector3 sideDir = Vector3.Cross(direction, Vector3.up);
-                movement = (direction + sideDir * zigzag).normalized * moveSpeed;
+                Vector3 sideDir = Vector3.Cross(initialForward, Vector3.up);
+                movement = (initialForward + sideDir * zigzag).normalized * moveSpeed;
                 break;
         }
 
         transform.position += movement * Time.deltaTime;
-        transform.LookAt(target);
     }
 
     private void HandleAttack()
@@ -140,26 +105,11 @@ public class EnemyController : MonoBehaviour
             case EnemyAttackType.SingleShot:
                 FireSingleShot();
                 break;
-            case EnemyAttackType.Burst:
-                StartCoroutine(FireBurstCoroutine());
-                break;
             case EnemyAttackType.Spread:
-                FireSpread(spreadAngle, spreadCount, false);
+                FireSpread();
                 break;
             case EnemyAttackType.Circle:
                 FireCirclePattern();
-                break;
-            case EnemyAttackType.Spiral:
-                FireSpiral();
-                break;
-            case EnemyAttackType.Wave:
-                FireWave();
-                break;
-            case EnemyAttackType.Tracking:
-                FireTracking();
-                break;
-            case EnemyAttackType.RandomSpread:
-                FireSpread(spreadAngle, spreadCount, true);
                 break;
         }
 
@@ -168,65 +118,21 @@ public class EnemyController : MonoBehaviour
 
     private void FireSingleShot()
     {
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
-        FireBullet(directionToTarget);
+        FireBullet(initialForward);
     }
 
-    private void FireSpiral()
+    private void FireSpread()
     {
-        currentRotation += spiralRotationSpeed * Time.deltaTime;
-        Vector3 direction = (target.position - transform.position).normalized;
-        FireBullet(direction);
-    }
+        float spreadAngle = 30f;
+        int bulletCount = 3;
+        float angleStep = spreadAngle / (bulletCount - 1);
+        float startAngle = -spreadAngle / 2;
 
-    private void FireWave()
-    {
-        float angleStep = 360f / waveBulletCount;
-        for (int i = 0; i < waveBulletCount; i++)
-        {
-            float angle = i * angleStep;
-            float waveOffset = Mathf.Sin(Time.time * waveFrequency + angle * Mathf.Deg2Rad) * waveAmplitude;
-            Vector3 baseDirection = (target.position - transform.position).normalized;
-            Vector3 direction = Quaternion.Euler(0, angle + waveOffset, 0) * baseDirection;
-            FireBullet(direction);
-        }
-    }
-
-    private void FireTracking()
-    {
-        Vector3 predictedPosition = target.position;
-        Rigidbody targetRb = target.GetComponent<Rigidbody>();
-        if (targetRb != null)
-        {
-            predictedPosition += targetRb.linearVelocity * (Vector3.Distance(transform.position, target.position) / bulletSpeed);
-        }
-        Vector3 directionToTarget = (predictedPosition - transform.position).normalized;
-        FireBullet(directionToTarget);
-    }
-
-    private void FireSpread(float totalSpreadAngle, int numberOfBullets, bool randomize)
-    {
-        float angleStep = totalSpreadAngle / (numberOfBullets - 1);
-        float startAngle = -totalSpreadAngle / 2;
-
-        for (int i = 0; i < numberOfBullets; i++)
+        for (int i = 0; i < bulletCount; i++)
         {
             float currentAngle = startAngle + (angleStep * i);
-            if (randomize)
-            {
-                currentAngle += Random.Range(-angleStep / 2, angleStep / 2);
-            }
-            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * transform.forward;
+            Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * initialForward;
             FireBullet(direction);
-        }
-    }
-
-    private IEnumerator FireBurstCoroutine()
-    {
-        for (int i = 0; i < burstCount; i++)
-        {
-            FireSingleShot();
-            yield return new WaitForSeconds(burstInterval);
         }
     }
 
@@ -238,8 +144,7 @@ public class EnemyController : MonoBehaviour
         for (int i = 0; i < bulletCount; i++)
         {
             float angle = i * angleStep;
-            Vector3 baseDirection = (target.position - transform.position).normalized;
-            Vector3 direction = Quaternion.Euler(0, angle, 0) * baseDirection;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * initialForward;
             FireBullet(direction);
         }
     }
@@ -268,28 +173,18 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Fiende {gameObject.name} kolliderade med: {collision.gameObject.name}");
-
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log($"Fiende {gameObject.name} träffade spelaren!");
-
             var playerHealth = collision.gameObject.GetComponent<PlaneHealthSystem>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(collisionDamage);
-                Debug.Log($"Gjorde {collisionDamage} skada på spelaren");
-
                 AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
 
                 if (destroyOnCollision)
                 {
                     Destroy(gameObject);
                 }
-            }
-            else
-            {
-                Debug.LogWarning("Hittade inte PlaneHealthSystem på spelaren!");
             }
         }
     }
