@@ -567,7 +567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 221080808}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shellpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1392,7 +1392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 605897611}
   - component: {fileID: 605897610}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spline Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2036,7 +2036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949377759}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weaponpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2204,7 +2204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1116841286}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bombpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2798,7 +2798,8 @@ GameObject:
   - component: {fileID: 1403642607}
   - component: {fileID: 1403642608}
   - component: {fileID: 1403642609}
-  m_Layer: 0
+  - component: {fileID: 1403642610}
+  m_Layer: 8
   m_Name: AirPlane
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2897,6 +2898,10 @@ MonoBehaviour:
   bombPrefab: {fileID: 2348708888770691324, guid: 75f325f7157d139469a9f989bfcee8b7, type: 3}
   bombCooldown: 2
   bombDropForce: 10
+  missilePoint: {fileID: 0}
+  missilePrefab: {fileID: 0}
+  missileCooldown: 1
+  missileforce: 10
 --- !u!65 &1403642609
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2912,12 +2917,39 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.21, y: 0.3, z: 0.19}
-  m_Center: {x: 0, y: 0.39, z: 0}
+  m_Size: {x: 0.42, y: 0.39, z: 0.13}
+  m_Center: {x: 0, y: 0.27, z: 0.09}
+--- !u!54 &1403642610
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403642604}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1440214401
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,13 +4390,65 @@ PrefabInstance:
       propertyPath: bulletLifetime
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1063675642352162553, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1587514026958295982, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1884269351238135773, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       propertyPath: m_Name
       value: Boss 1
       objectReference: {fileID: 0}
     - target: {fileID: 1884269351238135773, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884269351238135773, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958495011441875265, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095061168843242080, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2275041487287224090, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452983241703560325, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3177299912818235147, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3800260908555213299, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148968258963841704, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4523395576928515162, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5695305377307244331, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6004604219549752045, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6692508308530845215, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       propertyPath: speed
@@ -4378,9 +4462,17 @@ PrefabInstance:
       propertyPath: splineContainer
       value: 
       objectReference: {fileID: 605897610}
+    - target: {fileID: 6740950731825329625, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6927417615880013616, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       propertyPath: isBoss
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7667678491663330393, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8018006084420186897, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       propertyPath: m_LocalScale.x
@@ -4434,6 +4526,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8424213517589727158, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667132312083953813, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4451,7 +4551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2079238165}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Smoke and Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4482,7 +4582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4295735883795627090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4500,7 +4600,7 @@ GameObject:
   - component: {fileID: 4210271692648508577}
   - component: {fileID: 1266648336802983615}
   - component: {fileID: 551897174265208404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tail_Flap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5089,7 +5189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8020597908837787535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5124,7 +5224,7 @@ GameObject:
   - component: {fileID: 5791252338208850675}
   - component: {fileID: 3309131958036954360}
   - component: {fileID: 5243764414923027917}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Left_Flap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5140,7 +5240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7700525269150105266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.004_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5199,7 +5299,7 @@ GameObject:
   - component: {fileID: 7074690446863805691}
   - component: {fileID: 6759671763446269098}
   - component: {fileID: 3808693126417676728}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SAAB_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5215,7 +5315,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1789735999527820241}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.003_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5300,7 +5400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5467756633709492955}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5586,7 +5686,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3185242955978478896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5655,7 +5755,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4114322366943029221}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5718,7 +5818,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684434688012866506}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5797,7 +5897,7 @@ GameObject:
   - component: {fileID: 169377596516680420}
   - component: {fileID: 6085112030989670961}
   - component: {fileID: 9041473847975326121}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Right_Flap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6886,7 +6986,7 @@ GameObject:
   - component: {fileID: 8024736777625461071}
   - component: {fileID: 480656731074047762}
   - component: {fileID: 854024228475935521}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Prop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6903,7 +7003,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8328979896045426970}
   - component: {fileID: 8709306072836866977}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Saab_21_02
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6941,7 +7041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1160365843022000707}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

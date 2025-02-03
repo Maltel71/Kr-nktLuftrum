@@ -29,12 +29,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float waveFrequency = 2f;
     [SerializeField] private float waveAmplitude = 1f;
 
+    [Header("Collision Damage Settings")]
+    [SerializeField] private float collisionDamage = 25f;
+    [SerializeField] private bool destroyOnCollision = true;
+
     private float nextAttackTime = 0f;
     private float currentRotation = 0f;
     private float timeSinceLastBurst = 0f;
     private int currentBurstShot = 0;
 
-    // Existing enums
     public enum EnemyMovementType
     {
         Direct,
@@ -66,6 +69,23 @@ public class EnemyController : MonoBehaviour
                 target = player.transform;
             }
         }
+
+        Collider col = GetComponent<Collider>();
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            Debug.Log($"CollisionDetection mode: {rb.collisionDetectionMode}");
+        }
+
+        Debug.Log($"Fiende {gameObject.name} startar:");
+        Debug.Log($"- Collider: {(col != null ? "JA" : "NEJ")}");
+        Debug.Log($"- Collider är Trigger: {(col?.isTrigger == true ? "JA" : "NEJ")}");
+        Debug.Log($"- Rigidbody: {(rb != null ? "JA" : "NEJ")}");
+        Debug.Log($"- Rigidbody är Kinematic: {(rb?.isKinematic == true ? "JA" : "NEJ")}");
+        Debug.Log($"Fiende {gameObject.name} Layer: {LayerMask.LayerToName(gameObject.layer)}");
+        Debug.Log($"Fiende {gameObject.name} Tag: {gameObject.tag}");
     }
 
     private void Update()
@@ -73,6 +93,7 @@ public class EnemyController : MonoBehaviour
         if (target == null) return;
         HandleMovement();
         HandleAttack();
+        Debug.DrawRay(transform.position, transform.forward * 5f, Color.red);
     }
 
     private void HandleMovement()
@@ -119,31 +140,24 @@ public class EnemyController : MonoBehaviour
             case EnemyAttackType.SingleShot:
                 FireSingleShot();
                 break;
-
             case EnemyAttackType.Burst:
                 StartCoroutine(FireBurstCoroutine());
                 break;
-
             case EnemyAttackType.Spread:
                 FireSpread(spreadAngle, spreadCount, false);
                 break;
-
             case EnemyAttackType.Circle:
                 FireCirclePattern();
                 break;
-
             case EnemyAttackType.Spiral:
                 FireSpiral();
                 break;
-
             case EnemyAttackType.Wave:
                 FireWave();
                 break;
-
             case EnemyAttackType.Tracking:
                 FireTracking();
                 break;
-
             case EnemyAttackType.RandomSpread:
                 FireSpread(spreadAngle, spreadCount, true);
                 break;
@@ -250,5 +264,33 @@ public class EnemyController : MonoBehaviour
         bulletHandler.SetAsEnemyProjectile(attackDamage);
 
         Destroy(bullet, 5f);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"Fiende {gameObject.name} kolliderade med: {collision.gameObject.name}");
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log($"Fiende {gameObject.name} träffade spelaren!");
+
+            var playerHealth = collision.gameObject.GetComponent<PlaneHealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(collisionDamage);
+                Debug.Log($"Gjorde {collisionDamage} skada på spelaren");
+
+                AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
+
+                if (destroyOnCollision)
+                {
+                    Destroy(gameObject);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Hittade inte PlaneHealthSystem på spelaren!");
+            }
+        }
     }
 }

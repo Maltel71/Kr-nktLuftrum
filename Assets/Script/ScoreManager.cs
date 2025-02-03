@@ -127,7 +127,7 @@ public class ScoreManager : MonoBehaviour
     private void AddPoints(int points)
     {
         currentScore += points;
-        Debug.Log($"Added {points} points. New total: {currentScore}");
+        //Debug.Log($"Added {points} points. New total: {currentScore}");
         UpdateScoreDisplay();
     }
 

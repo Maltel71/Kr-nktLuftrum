@@ -23,7 +23,13 @@ public class AirplaneController : MonoBehaviour
     private void Start()
     {
         startPosition = transform.position;
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+
+        Collider col = GetComponent<Collider>();
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
+        Debug.Log($"Flygplan Rigidbody finns: {rb != null}, Är Kinematic: {rb?.isKinematic}");
     }
 
     private void Update()
@@ -143,5 +149,12 @@ public class AirplaneController : MonoBehaviour
         maxForwardDistance = forward;
         maxBackwardDistance = backward;
         horizontalBoundary = horizontal;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
+        Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
+        Debug.Log($"- Tag: {collision.gameObject.tag}");
     }
 }

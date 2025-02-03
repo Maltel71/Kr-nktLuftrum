@@ -23,6 +23,13 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private float bombCooldown = 1f;
     [SerializeField] private float bombDropForce = 10f;
 
+    [Header("Missile")]
+    [SerializeField] private Transform missilePoint;
+    [SerializeField] private GameObject missilePrefab;
+    [SerializeField] private float missileCooldown = 1f;
+    [SerializeField] private float missileforce = 10f;
+
+    [Header("Other")]
     private float nextFireTime;
     private float nextBombTime;
     private AudioManager audioManager;
@@ -51,6 +58,7 @@ public class WeaponSystem : MonoBehaviour
         if (shellPrefab == null) Debug.LogWarning("ShellPrefab saknas!");
         if (bombPoint == null) Debug.LogWarning("BombPoint saknas!");
         if (bombPrefab == null) Debug.LogWarning("BombPrefab saknas!");
+        if (missilePrefab == null) Debug.LogWarning("MissilePrefab saknas!");
     }
 
     private void Update()

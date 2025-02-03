@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7803299948828141707}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.003_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8315435246112722467}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,8 @@ GameObject:
   - component: {fileID: 1546925361892836530}
   - component: {fileID: 8151402360514474810}
   - component: {fileID: -3985228070185450049}
-  m_Layer: 0
+  - component: {fileID: 3147357353732365361}
+  m_Layer: 9
   m_Name: Mig_01
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -156,6 +157,8 @@ MonoBehaviour:
   fireRate: 0.6
   bulletDamage: 1
   bulletSpawnOffset: 2
+  collisionDamage: 25
+  destroyOnCollision: 1
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -179,10 +182,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &8151402360514474810
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -198,11 +201,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.98, y: 0.06, z: 0.67}
+  m_Size: {x: 0.98, y: 0.16, z: 0.67}
   m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!114 &-3985228070185450049
 MonoBehaviour:
@@ -220,6 +223,39 @@ MonoBehaviour:
   heightMatchSpeed: 5
   targetHeightOffset: 0
   showDebugInfo: 1
+--- !u!114 &3147357353732365361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884269351238135773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 286ac1ae39a8f1c40b95151d8fee03ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  target: {fileID: 0}
+  movementType: 0
+  sinWaveAmplitude: 2
+  sinWaveFrequency: 2
+  circleRadius: 3
+  attackType: 2
+  enemyBulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
+  attackDamage: 20
+  attackInterval: 10
+  bulletSpeed: 5
+  burstCount: 5
+  burstInterval: 0.2
+  spreadAngle: 45
+  spreadCount: 5
+  spiralRotationSpeed: 120
+  waveBulletCount: 8
+  waveFrequency: 2
+  waveAmplitude: 1
+  collisionDamage: 20
+  destroyOnCollision: 1
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +267,7 @@ GameObject:
   - component: {fileID: 8584852799981684536}
   - component: {fileID: 7202001664034553717}
   - component: {fileID: 7166549554762857800}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1536712750437670667}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.004_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5435627589002504993}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +417,7 @@ GameObject:
   - component: {fileID: 9215524553421580040}
   - component: {fileID: 1590400546082462885}
   - component: {fileID: 1195707386220747188}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +503,7 @@ GameObject:
   - component: {fileID: 8288612023999267747}
   - component: {fileID: 7475184615274885758}
   - component: {fileID: 3217238003820887495}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2736267747131703630}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.002_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4082604916610911773}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2300168716915896381}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +684,7 @@ GameObject:
   - component: {fileID: 4944721326901210246}
   - component: {fileID: 4208254018863934643}
   - component: {fileID: 7147955123348994348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,7 +770,7 @@ GameObject:
   - component: {fileID: 1334057294992126335}
   - component: {fileID: 6645350340528352245}
   - component: {fileID: 1804761265157806936}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -818,7 +854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7646961857588846981}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyLeftGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5609907979362940059}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,7 +918,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 166175435407655208}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyRightGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -913,7 +949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5870777316504039285}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
