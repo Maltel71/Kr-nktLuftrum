@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 3857252510654393886}
   - component: {fileID: 1670330946343362107}
   - component: {fileID: 5951807835928390882}
-  - component: {fileID: 4246985105554003245}
-  - component: {fileID: 976085295237356086}
+  - component: {fileID: 7983858330969913060}
   m_Layer: 10
   m_Name: Bullet Enemy
   m_TagString: Bullet Enemy
@@ -110,7 +109,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4246985105554003245
+--- !u!114 &7983858330969913060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,25 +118,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1451061741424768809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498ab90b6f6ed1949b2f2ebedf5270e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b0d723b68b51a44caa1e9f3a4977e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemyProjectile: 1
   damage: 10
-  bulletLifetime: 0.5
+  speed: 1000
+  bulletLifetime: 3
   hitEffectPrefab: {fileID: 0}
   effectDuration: 1
---- !u!114 &976085295237356086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1451061741424768809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc542fcdaeb20954d86a5f72d41aa2ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 500
-  direction: {x: 0, y: 0, z: 0}

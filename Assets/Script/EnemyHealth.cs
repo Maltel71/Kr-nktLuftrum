@@ -16,8 +16,8 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Vector3 healthBarScale = new Vector3(0.05f, 0.05f, 0.05f);
 
     [Header("Crash Settings")]
-    [SerializeField] private float crashSpeed = 500f;
-    [SerializeField] private float rotationSpeed = 360f;
+    [SerializeField] private float crashSpeed = 200f;
+    [SerializeField] private float rotationSpeed = 3200f;
     [SerializeField] private bool rotateClockwise = true;
 
     [Header("Effects")]
@@ -28,6 +28,7 @@ public class EnemyHealth : MonoBehaviour
     private CameraShake cameraShake;
     private ScoreManager scoreManager;
     private bool isDying = false;
+    public bool IsDying => isDying;  // Lägg till denna rad
 
     private void Start()
     {

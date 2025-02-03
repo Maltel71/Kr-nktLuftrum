@@ -223,6 +223,16 @@ public class WeaponSystem : MonoBehaviour
     {
         canFire = enable;
     }
+
+    public void ApplyWeaponBoost()
+    {
+        // Implementera weapon boost logik
+    }
+
+    public void ApplyBombBoost()
+    {
+        // Implementera bomb boost logik
+    }
 }
 
 //using UnityEngine;

@@ -12,7 +12,7 @@ public class BulletSystem : MonoBehaviour
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private float effectDuration = 1f;
 
-    private Vector3 direction;
+    public Vector3 direction;
     private float fixedHeight;
     private Vector3 lastPosition;
     private float distanceTraveled;

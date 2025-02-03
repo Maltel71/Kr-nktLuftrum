@@ -213,4 +213,9 @@ public class PlaneHealthSystem : MonoBehaviour
     public bool IsDead() => isDead;
     public float GetHealthPercentage() => currentHealth / maxHealth;
     public float GetShieldPercentage() => currentShield / maxShield;
+
+    public void ApplyShieldBoost()
+    {
+
+    }
 }

@@ -1745,6 +1745,10 @@ MonoBehaviour:
   waveBulletCount: 8
   waveFrequency: 2
   waveAmplitude: 1
+  nextAttackTime: 0
+  currentRotation: 0
+  timeSinceLastBurst: 0
+  currentBurstShot: 0
 --- !u!1 &661363617
 GameObject:
   m_ObjectHideFlags: 0
