@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class HighScoreManager : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class HighScoreManager : MonoBehaviour
     [SerializeField] private GameObject nameInputPanel;      // Panel för namn-input
     [SerializeField] private TMP_InputField nameInputField;  // Input-fältet
     [SerializeField] private TextMeshProUGUI[] scoreTexts;   // Array med text-elementen för topplistan
+
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button quitButton;
 
     private const int MAX_SCORES = 5;
     private List<HighScoreEntry> highScores = new List<HighScoreEntry>();
@@ -34,6 +39,11 @@ public class HighScoreManager : MonoBehaviour
         LoadHighScores();         // Ladda sparade highscores
         highScorePanel.SetActive(false);
         nameInputPanel.SetActive(false);
+
+        if (retryButton != null)
+            retryButton.onClick.AddListener(RetryGame);
+        if (quitButton != null)
+            quitButton.onClick.AddListener(QuitToTitleScreen);
     }
 
     // Anropas när spelaren dör
@@ -129,4 +139,17 @@ public class HighScoreManager : MonoBehaviour
     {
         highScorePanel.SetActive(false);
     }
+
+    private void RetryGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(1);
+    }
+
+    private void QuitToTitleScreen()
+    {
+        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Andreas Test scen"); // Se till att du har en scen med detta namn
+    }
+
 }
