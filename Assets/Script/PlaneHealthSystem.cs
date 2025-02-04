@@ -77,6 +77,21 @@ public class PlaneHealthSystem : MonoBehaviour
         UpdateSliders();
     }
 
+    public void AddHealth(float amount)
+    {
+        if (isDead) return;
+
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        targetHealthValue = currentHealth;
+        UpdateDamageEffects();
+        UpdateSlidersImmediate();
+
+        if (messageSystem != null)
+        {
+            messageSystem.ShowBoostMessage("Health");
+        }
+    }
+
     private void UpdateSliders()
     {
         if (healthSlider != null)

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class AirplaneController : MonoBehaviour
 {
@@ -18,16 +19,17 @@ public class AirplaneController : MonoBehaviour
     private bool isTouching = false;
     private Vector3 startPosition;
     private bool isFrozen = false;
-    private Rigidbody rb; // Reference till Rigidbody om det finns
+    private Rigidbody rb;
+    private float originalMoveSpeed;
 
     private void Start()
     {
         startPosition = transform.position;
-        //rb = GetComponent<Rigidbody>();
+        originalMoveSpeed = moveSpeed;
+        rb = GetComponent<Rigidbody>();
 
         Collider col = GetComponent<Collider>();
         Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
-        Rigidbody rb = GetComponent<Rigidbody>();
         Debug.Log($"Flygplan Rigidbody finns: {rb != null}, Är Kinematic: {rb?.isKinematic}");
     }
 
@@ -35,7 +37,6 @@ public class AirplaneController : MonoBehaviour
     {
         if (isFrozen)
         {
-            // Om planet är fryst, stoppa all rörelse omedelbart
             if (rb != null)
             {
                 rb.linearVelocity = Vector3.zero;
@@ -47,7 +48,6 @@ public class AirplaneController : MonoBehaviour
         HandleInput();
         UpdatePosition();
     }
-
 
     private void UpdatePosition()
     {
@@ -108,15 +108,13 @@ public class AirplaneController : MonoBehaviour
         velocity = Vector3.zero;
         movement = Vector2.zero;
 
-        // Om det finns en Rigidbody, hantera den också
         if (rb != null)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // Gör Rigidbody opåverkad av fysik
+            rb.isKinematic = true;
         }
 
-        // Se till att scriptet �r aktivt men stoppar r�relse
         this.enabled = true;
     }
 
@@ -149,6 +147,21 @@ public class AirplaneController : MonoBehaviour
         maxForwardDistance = forward;
         maxBackwardDistance = backward;
         horizontalBoundary = horizontal;
+    }
+
+    public IEnumerator ApplySpeedBoost(float multiplier, float duration)
+    {
+        moveSpeed *= multiplier;
+
+        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
+        if (messageSystem != null)
+        {
+            messageSystem.ShowBoostMessage("Speed Boost");
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = originalMoveSpeed;
     }
 
     private void OnCollisionEnter(Collision collision)

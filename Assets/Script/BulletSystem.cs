@@ -27,10 +27,10 @@ public class BulletSystem : MonoBehaviour
         Destroy(gameObject, bulletLifetime);
 
         Collider bulletCollider = GetComponent<Collider>();
-        Debug.Log($"Bullet Collider finns: {bulletCollider != null}, Är Trigger: {bulletCollider?.isTrigger}");
+        //Debug.Log($"Bullet Collider finns: {bulletCollider != null}, Är Trigger: {bulletCollider?.isTrigger}");
 
         Component[] components = GetComponents<Component>();
-        Debug.Log($"Components on Bullet Object ({gameObject.name}):");
+        //Debug.Log($"Components on Bullet Object ({gameObject.name}):");
         foreach (Component comp in components)
         {
             //Debug.Log(comp.GetType().Name);
@@ -52,7 +52,7 @@ public class BulletSystem : MonoBehaviour
         distanceTraveled += frameDistance;
 
         // Debug-visualisering
-        Debug.DrawLine(lastPosition, transform.position, Color.yellow, 0.1f);
+        //Debug.DrawLine(lastPosition, transform.position, Color.yellow, 0.1f);
         lastPosition = transform.position;
     }
 
@@ -61,7 +61,7 @@ public class BulletSystem : MonoBehaviour
         direction = shootDirection;
         isEnemyProjectile = isEnemy;
         damage = damageAmount;
-        Debug.Log($"Bullet {gameObject.name} initialized. Direction: {direction}, IsEnemy: {isEnemyProjectile}, Damage: {damage}");
+        //Debug.Log($"Bullet {gameObject.name} initialized. Direction: {direction}, IsEnemy: {isEnemyProjectile}, Damage: {damage}");
     }
 
     private void OnTriggerEnter(Collider otherCollider)
@@ -79,12 +79,12 @@ public class BulletSystem : MonoBehaviour
             Debug.Log($"Components on Player Object ({otherCollider.gameObject.name}):");
             foreach (Component comp in components)
             {
-                Debug.Log(comp.GetType().Name);
+                //Debug.Log(comp.GetType().Name);
             }
 
             if (playerHealth != null)
             {
-                Debug.Log($"Player Health Component Found on {otherCollider.gameObject.name}. Current Health: {playerHealth.GetHealthPercentage() * 100}%");
+                //Debug.Log($"Player Health Component Found on {otherCollider.gameObject.name}. Current Health: {playerHealth.GetHealthPercentage() * 100}%");
 
                 if (!playerHealth.IsDead())
                 {
@@ -95,13 +95,13 @@ public class BulletSystem : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"NO PlaneHealthSystem found on Player Object: {otherCollider.gameObject.name}!");
+                //Debug.LogError($"NO PlaneHealthSystem found on Player Object: {otherCollider.gameObject.name}!");
             }
         }
         // Hantera träff på fiende
         else if (!isEnemyProjectile && otherCollider.CompareTag("Enemy"))
         {
-            Debug.Log($"{gameObject.name} hit enemy: {otherCollider.gameObject.name}");
+            //Debug.Log($"{gameObject.name} hit enemy: {otherCollider.gameObject.name}");
             if (otherCollider.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
@@ -112,7 +112,7 @@ public class BulletSystem : MonoBehaviour
         // Hantera träff på andra objekt
         else if (!otherCollider.CompareTag("Bullet"))
         {
-            Debug.Log($"{gameObject.name} hit non-bullet object: {otherCollider.gameObject.name}");
+            //Debug.Log($"{gameObject.name} hit non-bullet object: {otherCollider.gameObject.name}");
             PlayHitEffect();
         }
 

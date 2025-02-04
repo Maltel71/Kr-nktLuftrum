@@ -136,10 +136,11 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4038366390463760817, guid: c6d42154e73097c40a027b778bde9032, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
-  crashSpeed: 200
-  rotationSpeed: 100
+  crashSpeed: 50
+  rotationSpeed: 50
   rotateClockwise: 1
   smokeEffect: {fileID: 7317409256195922096, guid: 56cd4766233d0bf49ad4bf8ea9156ef0, type: 3}
+  boostDropSystem: {fileID: 0}
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -23,6 +23,11 @@ public class EnemyHealth : MonoBehaviour
     [Header("Effects")]
     [SerializeField] private ParticleSystem smokeEffect;    // Rök när planet störtar
 
+    [Header("Boost Drops")]
+    [SerializeField] private BoostDropSystem boostDropSystem;
+
+    [Header("Other")]
+
     private Slider healthSlider;
     private GameObject healthBarInstance;
     private CameraShake cameraShake;
@@ -36,6 +41,12 @@ public class EnemyHealth : MonoBehaviour
         CreateHealthBar();
         cameraShake = CameraShake.Instance;
         scoreManager = ScoreManager.Instance;
+
+        // Hitta BoostDropSystem om den inte är tilldelad
+        if (boostDropSystem == null)
+        {
+            boostDropSystem = FindObjectOfType<BoostDropSystem>();
+        }
 
         // Stäng av rökeffekten vid start
         if (smokeEffect != null) smokeEffect.Stop();
@@ -78,10 +89,15 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-
     private void StartDying()
     {
         isDying = true;
+
+        // Försök droppa en boost
+        if (boostDropSystem != null)
+        {
+            boostDropSystem.TryDropBoost(transform.position);
+        }
 
         // Deaktivera alla scripts som kan påverka position
         MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
