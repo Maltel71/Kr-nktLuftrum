@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5951807835928390882}
   - component: {fileID: 7983858330969913060}
   - component: {fileID: -7766612759925288415}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Bullet Enemy
   m_TagString: Bullet Enemy
   m_Icon: {fileID: 0}
@@ -124,8 +124,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnemyProjectile: 1
   damage: 200
-  speed: 500
-  bulletLifetime: 3
+  speed: 300
+  bulletLifetime: 2.5
   hitEffectPrefab: {fileID: 0}
   effectDuration: 1
   direction: {x: 0, y: 0, z: 0}

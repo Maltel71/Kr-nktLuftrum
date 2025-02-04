@@ -8,10 +8,13 @@ TagManager:
   - Bullet Enemy
   - Bullet Player
   - BombTarget
-  - MissileTarget
   - Bullet
   - Ground
   - Enemy Missile
+  - Turret
+  - Bomb Player
+  - Enemy Boss
+  - Enemy Special
   layers:
   - Default
   - TransparentFX
@@ -19,23 +22,23 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Ground
+  - BombTarget
   - 
   - Player
+  - Bullet Player
+  - Bomb Player
+  - Missile Player
+  - 
   - Enemy
   - Bullet Enemy
-  - Bullet Player
-  - Bullet
-  - BombTarget
-  - Ground
-  - Enemy Missile
+  - Bomb Enemy
+  - Missile Enemy
   - 
+  - Turret
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy Boss
+  - Enemy Special
   - 
   - 
   - 

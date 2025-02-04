@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5731178390922119550}
   - component: {fileID: 1318690216030120898}
   m_Layer: 8
-  m_Name: MissileParent 1
+  m_Name: MissileParent 2
   m_TagString: Enemy Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2279591613096608426}
@@ -52,10 +52,10 @@ MonoBehaviour:
   missileExplosionPrefab: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   rb: {fileID: 5731178390922119550}
   turnValue: 4
-  speed: 150
+  speed: 10
   rotation: 4
   selfDestroyTime: 8
-  damagePoints: 100
+  damagePoints: 20
 --- !u!54 &5731178390922119550
 Rigidbody:
   m_ObjectHideFlags: 0

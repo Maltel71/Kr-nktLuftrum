@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+//using System.Diagnostics;
 
 public class Missile : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class Missile : MonoBehaviour
         playerHealthSystem = player.GetComponent<PlaneHealthSystem>();
         audioManager = AudioManager.Instance;
 
+        // Lägg till dessa debug-rader
+        Debug.Log($"Missile Collider: {GetComponent<Collider>()?.isTrigger}");
+        Debug.Log($"Player found: {player != null}");
+        Debug.Log($"PlayerHealth found: {playerHealthSystem != null}");
+
         StartCoroutine(SelfDestroyTimer());
     }
 
@@ -50,6 +56,7 @@ public class Missile : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
+            Debug.Log("Kollision med spelare detekterad"); // Lägg till denna rad
             // Skada spelaren
             if (playerHealthSystem != null)
             {

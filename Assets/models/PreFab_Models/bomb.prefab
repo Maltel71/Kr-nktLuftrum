@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1376769280871363232}
   - component: {fileID: 6907089782303468935}
   - component: {fileID: 700390117962517774}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: BombRedCircel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8381335914107902993, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -6442298374534657108, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: -4620282718447106903, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -4509823143501964880, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -214,11 +214,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: -3057273116819247851, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 431811428818572607, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Name
@@ -226,7 +226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
+      propertyPath: m_TagString
+      value: Bomb Player
       objectReference: {fileID: 0}
     - target: {fileID: 933521140641225050, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -234,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: 1334658658706714759, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2653984132991634491, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -246,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: 3564783574603935192, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3566390031902043909, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -254,7 +258,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: 3587788796799408565, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3590086638062959488, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -262,11 +266,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8b1b9c3530a7388409980eba5a56aa18, type: 2}
     - target: {fileID: 3779745573541866595, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6562889748348933850, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6589126927893049898, guid: df3dd97604a98b6409ec640bf3dbdbc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
