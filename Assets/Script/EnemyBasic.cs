@@ -92,7 +92,8 @@ public class EnemyBasic : MonoBehaviour
     private void HandleShooting()
     {
         float distance = Vector3.Distance(transform.position, target.position);
-        if (distance <= shootingRange && Time.time >= nextFireTime)
+        // Lägg till CanShoot() i villkoret
+        if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
@@ -100,8 +101,10 @@ public class EnemyBasic : MonoBehaviour
         }
     }
 
+
     private void Shoot()
     {
+        // Hämta aktuell kanon
         Transform currentGun = useLeftGun ? leftGun : rightGun;
         Vector3 shootDirection = (target.position - currentGun.position).normalized;
         Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
@@ -114,6 +117,9 @@ public class EnemyBasic : MonoBehaviour
         }
 
         audioManager?.PlayShootSound();
+
+        // Växla mellan vänster och höger kanon för nästa skott
+        useLeftGun = !useLeftGun;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -132,6 +138,20 @@ public class EnemyBasic : MonoBehaviour
             }
         }
     }
+
+    private bool CanShoot()
+    {
+        if (target == null) return false;
+
+        // Beräkna vinkeln mellan fienden och spelaren
+        Vector3 directionToTarget = target.position - transform.position;
+        float angle = Vector3.Angle(transform.forward, directionToTarget);
+
+        // Om spelaren är bakom fienden (mer än 90 grader), returnera false
+        return angle < 90f;
+    }
+
+    
 
     // Public methods för extern kontroll
     public void SetMoveSpeed(float speed) => moveSpeed = speed;

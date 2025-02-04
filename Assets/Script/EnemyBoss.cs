@@ -88,7 +88,6 @@ public class EnemyBoss : MonoBehaviour
     {
         if (Time.time < nextAttackTime) return;
 
-        // Växla mellan olika attackmönster
         currentPattern = (AttackPattern)(((int)currentPattern + 1) % 3);
 
         switch (currentPattern)
@@ -163,8 +162,18 @@ public class EnemyBoss : MonoBehaviour
         }
     }
 
-    // Public methods för extern kontroll
-    public void SetAttackDamage(float damage) => attackDamage = damage;
-    public void SetAttackInterval(float interval) => attackInterval = interval;
-    public void SetMoveSpeed(float speed) => moveSpeed = speed;
+    public void SetAttackDamage(float damage)
+    {
+        attackDamage = damage;
+    }
+
+    public void SetAttackInterval(float interval)
+    {
+        attackInterval = interval;
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
 }

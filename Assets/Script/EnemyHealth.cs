@@ -78,6 +78,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+
     private void StartDying()
     {
         isDying = true;
