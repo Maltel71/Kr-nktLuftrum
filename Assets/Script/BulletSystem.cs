@@ -25,6 +25,16 @@ public class BulletSystem : MonoBehaviour
         fixedHeight = transform.position.y;
         lastPosition = transform.position;
         Destroy(gameObject, bulletLifetime);
+
+        Collider bulletCollider = GetComponent<Collider>();
+        Debug.Log($"Bullet Collider finns: {bulletCollider != null}, Är Trigger: {bulletCollider?.isTrigger}");
+
+        Component[] components = GetComponents<Component>();
+        Debug.Log($"Components on Bullet Object ({gameObject.name}):");
+        foreach (Component comp in components)
+        {
+            //Debug.Log(comp.GetType().Name);
+        }
     }
 
     private void Update()
@@ -51,27 +61,48 @@ public class BulletSystem : MonoBehaviour
         direction = shootDirection;
         isEnemyProjectile = isEnemy;
         damage = damageAmount;
+        Debug.Log($"Bullet {gameObject.name} initialized. Direction: {direction}, IsEnemy: {isEnemyProjectile}, Damage: {damage}");
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider otherCollider)
     {
         if (hasCollided) return;
         hasCollided = true;
 
         // Hantera träff på spelare
-        if (isEnemyProjectile && other.CompareTag("Player"))
+        if (isEnemyProjectile && otherCollider.CompareTag("Player"))
         {
-            if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth))
+            PlaneHealthSystem playerHealth = otherCollider.gameObject.GetComponent<PlaneHealthSystem>();
+
+            // Debug-loggning av komponenter
+            Component[] components = otherCollider.GetComponents<Component>();
+            Debug.Log($"Components on Player Object ({otherCollider.gameObject.name}):");
+            foreach (Component comp in components)
             {
-                playerHealth.TakeDamage(damage);
-                PlayHitEffect();
-                audioManager?.PlayCombatSound(CombatSoundType.Hit);
+                Debug.Log(comp.GetType().Name);
+            }
+
+            if (playerHealth != null)
+            {
+                Debug.Log($"Player Health Component Found on {otherCollider.gameObject.name}. Current Health: {playerHealth.GetHealthPercentage() * 100}%");
+
+                if (!playerHealth.IsDead())
+                {
+                    playerHealth.TakeDamage(damage);
+                    PlayHitEffect();
+                    audioManager?.PlayCombatSound(CombatSoundType.Hit);
+                }
+            }
+            else
+            {
+                Debug.LogError($"NO PlaneHealthSystem found on Player Object: {otherCollider.gameObject.name}!");
             }
         }
         // Hantera träff på fiende
-        else if (!isEnemyProjectile && other.CompareTag("Enemy"))
+        else if (!isEnemyProjectile && otherCollider.CompareTag("Enemy"))
         {
-            if (other.TryGetComponent<EnemyHealth>(out var enemyHealth))
+            Debug.Log($"{gameObject.name} hit enemy: {otherCollider.gameObject.name}");
+            if (otherCollider.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
                 PlayHitEffect();
@@ -79,8 +110,9 @@ public class BulletSystem : MonoBehaviour
             }
         }
         // Hantera träff på andra objekt
-        else if (!other.CompareTag("Bullet"))
+        else if (!otherCollider.CompareTag("Bullet"))
         {
+            Debug.Log($"{gameObject.name} hit non-bullet object: {otherCollider.gameObject.name}");
             PlayHitEffect();
         }
 
@@ -93,6 +125,7 @@ public class BulletSystem : MonoBehaviour
         {
             GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
             Destroy(effect, effectDuration);
+            Debug.Log($"Hit effect played at {transform.position} for bullet {gameObject.name}");
         }
     }
 }

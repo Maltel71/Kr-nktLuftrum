@@ -26,9 +26,8 @@ public class AirplaneController : MonoBehaviour
         //rb = GetComponent<Rigidbody>();
 
         Collider col = GetComponent<Collider>();
-        Rigidbody rb = GetComponent<Rigidbody>();
-
         Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
+        Rigidbody rb = GetComponent<Rigidbody>();
         Debug.Log($"Flygplan Rigidbody finns: {rb != null}, Är Kinematic: {rb?.isKinematic}");
     }
 
@@ -48,6 +47,7 @@ public class AirplaneController : MonoBehaviour
         HandleInput();
         UpdatePosition();
     }
+
 
     private void UpdatePosition()
     {

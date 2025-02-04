@@ -131,22 +131,30 @@ public class PlaneHealthSystem : MonoBehaviour
     {
         if (isDead) return;
 
-        currentShield = Mathf.Max(0, currentShield - damage);
-        targetShieldValue = currentShield;
-
-        currentHealth = Mathf.Max(0, currentHealth - damage);
-        targetHealthValue = currentHealth;
-
-        UpdateDamageEffects();
-
-        Debug.Log($"Damage taken! Health: {currentHealth}, Shield: {currentShield}");
-
-        if (currentHealth <= 0)
+        // Om det finns sköld kvar
+        if (currentShield > 0)
         {
-            currentHealth = 0;
-            targetHealthValue = 0;
-            UpdateSlidersImmediate();
-            Die();
+            // Ta bort från skölden först
+            currentShield = Mathf.Max(0, currentShield - damage);
+            targetShieldValue = currentShield;
+            Debug.Log($"Shield hit! Shield remaining: {currentShield}");
+        }
+        // Om skölden är slut, ta skada på hälsan
+        else
+        {
+            currentHealth = Mathf.Max(0, currentHealth - damage);
+            targetHealthValue = currentHealth;
+            Debug.Log($"Health hit! Health remaining: {currentHealth}");
+
+            UpdateDamageEffects();
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                targetHealthValue = 0;
+                UpdateSlidersImmediate();
+                Die();
+            }
         }
     }
 
@@ -216,6 +224,13 @@ public class PlaneHealthSystem : MonoBehaviour
 
     public void ApplyShieldBoost()
     {
+        currentShield = maxShield;
+        targetShieldValue = currentShield;
+        UpdateSlidersImmediate();
 
+        if (messageSystem != null)
+        {
+            messageSystem.ShowBoostMessage("Shield");
+        }
     }
 }

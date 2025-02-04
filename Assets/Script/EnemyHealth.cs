@@ -54,6 +54,11 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+    public float GetHealthPercentage()
+    {
+        return currentHealth / maxHealth;
+    }
+
     private void HandleCrashing()
     {
         // Uppdatera position

@@ -226,12 +226,14 @@ public class WeaponSystem : MonoBehaviour
 
     public void ApplyWeaponBoost()
     {
-        // Implementera weapon boost logik
+        fireRate *= 0.75f; // Öka skjuthastigheten
+        bulletSpeed *= 1.2f; // Öka kulhastigheten
     }
 
     public void ApplyBombBoost()
     {
-        // Implementera bomb boost logik
+        bombCooldown *= 0.75f; // Minska nedkylningstiden
+        bombDropForce *= 1.2f; // Öka kraften
     }
 }
 

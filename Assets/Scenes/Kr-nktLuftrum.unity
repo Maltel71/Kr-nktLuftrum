@@ -1714,7 +1714,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8018006084420186897, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
   m_PrefabInstance: {fileID: 2079137655}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &631534548
+--- !u!114 &631534555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1723,32 +1723,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 631534533}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36fa4af213eeeb4b86d760d4db8496c, type: 3}
+  m_Script: {fileID: 11500000, guid: fc3300fb0c565764f96f083498bec759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  target: {fileID: 1403642605}
-  movementType: 2
-  sinWaveAmplitude: 2
-  sinWaveFrequency: 2
-  circleRadius: 3
-  attackType: 3
-  enemyBulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
+  moveSpeed: 3
+  hoverDistance: 20
+  bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
   attackDamage: 40
   attackInterval: 2
-  bulletSpeed: 10
-  burstCount: 20
-  burstInterval: 0.2
+  bulletSpeed: 5
   spreadAngle: 45
   spreadCount: 5
-  spiralRotationSpeed: 120
-  waveBulletCount: 8
-  waveFrequency: 2
-  waveAmplitude: 1
-  nextAttackTime: 0
-  currentRotation: 0
-  timeSinceLastBurst: 0
-  currentBurstShot: 0
+  burstCount: 3
+  burstInterval: 0.2
+  circleCount: 8
 --- !u!1 &661363617
 GameObject:
   m_ObjectHideFlags: 0
@@ -3169,8 +3157,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.42, y: 0.39, z: 0.13}
-  m_Center: {x: 0, y: 0.27, z: 0.09}
+  m_Size: {x: 80, y: 20, z: 80}
+  m_Center: {x: 0, y: -0.04, z: 0.06}
 --- !u!54 &1403642610
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3580,11 +3568,11 @@ MonoBehaviour:
   sfxSource: {fileID: 0}
   engineSource: {fileID: 0}
   radioSource: {fileID: 0}
-  musicVolume: 0.094
-  sfxVolume: 0.249
-  engineVolume: 0.086
-  radioVolume: 0.384
-  sirenVolume: 0.167
+  musicVolume: 0.02
+  sfxVolume: 0.029
+  engineVolume: 0.016
+  radioVolume: 0.013
+  sirenVolume: 0.01
   backgroundMusic: {fileID: 8300000, guid: 3091166dcf4e734449271b1ceaffd1db, type: 3}
   engineSound: {fileID: 8300000, guid: 23ef7fa6779f1914aacddaf3366d97f3, type: 3}
   shootSound: {fileID: 0}
@@ -4787,13 +4775,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 392360829616470151, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1884269351238135773, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 631534548}
+      addedObject: {fileID: 631534555}
   m_SourcePrefab: {fileID: 100100000, guid: eca1e8b34fa19134fa7bde2c681655da, type: 3}
 --- !u!1 &2079238164
 GameObject:
