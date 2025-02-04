@@ -213,6 +213,12 @@ public class PlaneHealthSystem : MonoBehaviour
                 spriteRenderer.enabled = false;
             }
         }
+        // Anropa highscore-systemet
+        HighScoreManager highScoreManager = FindObjectOfType<HighScoreManager>();
+        if (highScoreManager != null)
+        {
+            highScoreManager.OnPlayerDeath(ScoreManager.Instance.GetCurrentScore());
+        }
 
         ScoreManager.Instance.StopGame();
         ScoreManager.Instance.ShowHighScores();
