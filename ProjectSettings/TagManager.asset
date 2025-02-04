@@ -10,6 +10,7 @@ TagManager:
   - BombTarget
   - MissileTarget
   - Bullet
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - Bullet Enemy
   - Bullet Player
   - Bullet
-  - 
-  - 
+  - BombTarget
+  - Ground
   - 
   - 
   - 

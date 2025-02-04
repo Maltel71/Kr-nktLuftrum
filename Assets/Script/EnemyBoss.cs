@@ -21,6 +21,9 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private float burstInterval = 0.2f;
     [SerializeField] private int circleCount = 8;
 
+    [Header("Target & Range")]
+    [SerializeField] private float shootingRange = 30f;  // Större än basic enemy eftersom det är en boss
+
     // Attack pattern states
     private enum AttackPattern { Spread, Burst, Circle }
     private AttackPattern currentPattern;
@@ -88,6 +91,11 @@ public class EnemyBoss : MonoBehaviour
     {
         if (Time.time < nextAttackTime) return;
 
+        // Lägg till distans-check
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        if (distanceToTarget > shootingRange) return;
+
+        // Resten av koden som tidigare
         currentPattern = (AttackPattern)(((int)currentPattern + 1) % 3);
 
         switch (currentPattern)

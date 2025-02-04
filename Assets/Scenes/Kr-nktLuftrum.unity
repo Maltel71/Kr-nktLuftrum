@@ -996,9 +996,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 206810838}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BombTargets
-  m_TagString: Untagged
+  m_TagString: BombTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3276,9 +3276,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 108921239}
     m_Modifications:
+    - target: {fileID: 198480417847916102, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 942169183429202438, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074857543831611474, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1562553218077913432, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640291996575741533, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772613325874435266, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2657488390893594401, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2806756613547939338, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
       propertyPath: m_Name
       value: ===Ground===
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806756613547939338, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806756613547939338, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 2915000695166240705, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018755803560308505, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4011601899028737606, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356110367768981274, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657174265536233825, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302456218455463511, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5586915114607010325, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
       propertyPath: m_LocalScale.x
@@ -3335,6 +3395,34 @@ PrefabInstance:
     - target: {fileID: 5586915114607010325, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701448212008546375, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7050992765213921038, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7377707846897042643, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827393502554650438, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8095336927767586069, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8464783228840471430, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939171849597913847, guid: baff7d2d6bc23ca4787d804b242d6edc, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3807,7 +3895,7 @@ Transform:
   m_GameObject: {fileID: 605897609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1000, y: 100, z: 3419}
+  m_LocalPosition: {x: 1000, y: 100, z: 3167}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4141,6 +4229,7 @@ MonoBehaviour:
   burstCount: 3
   burstInterval: 0.2
   circleCount: 8
+  shootingRange: 30
 --- !u!4 &658113320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
@@ -6195,7 +6284,7 @@ MonoBehaviour:
   bombPoint: {fileID: 1116841286}
   bombPrefab: {fileID: 2348708888770691324, guid: 75f325f7157d139469a9f989bfcee8b7, type: 3}
   bombCooldown: 2
-  bombDropForce: 10
+  bombDropForce: 100
   missilePoint: {fileID: 0}
   missilePrefab: {fileID: 0}
   missileCooldown: 1
@@ -7049,9 +7138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1589751803}
   - component: {fileID: 1589751802}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Spline BombTargetDummy
-  m_TagString: Untagged
+  m_TagString: BombTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7939,7 +8028,7 @@ GameObject:
   - component: {fileID: 1708994165}
   - component: {fileID: 1708994164}
   - component: {fileID: 1708994168}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BombTargetDummy
   m_TagString: BombTarget
   m_Icon: {fileID: 0}

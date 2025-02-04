@@ -21,7 +21,7 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private Transform bombPoint;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private float bombCooldown = 1f;
-    [SerializeField] private float bombDropForce = 10f;
+    [SerializeField] private float bombDropForce = 200f;
 
     [Header("Missile")]
     [SerializeField] private Transform missilePoint;

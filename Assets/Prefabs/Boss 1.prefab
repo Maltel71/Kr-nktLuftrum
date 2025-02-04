@@ -131,15 +131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c71dea441661b4b9f311f04689eb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 300
+  maxHealth: 2000
   isBoss: 1
   healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
-  crashSpeed: 100
-  rotationSpeed: 100
+  crashSpeed: 400
+  rotationSpeed: 50
   rotateClockwise: 1
-  smokeEffect: {fileID: 0}
+  smokeEffect: {fileID: 7317409256195922096, guid: 56cd4766233d0bf49ad4bf8ea9156ef0, type: 3}
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -217,16 +217,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  hoverDistance: 20
+  hoverDistance: 15
   bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
-  attackDamage: 100
-  attackInterval: 1
+  attackDamage: 30
+  attackInterval: 0.8
   bulletSpeed: 5
   spreadAngle: 45
   spreadCount: 5
   burstCount: 3
-  burstInterval: 0.2
+  burstInterval: 1
   circleCount: 8
+  shootingRange: 500
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0

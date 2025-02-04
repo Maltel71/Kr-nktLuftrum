@@ -55,18 +55,21 @@ public class BombHandler : MonoBehaviour
     {
         if (hasExploded) return;
 
-        Debug.Log($"OnCollisionEnter: Collided with {collision.gameObject.name}, tag: {collision.gameObject.tag}");
-
-        if (collision.gameObject.CompareTag("BombTarget"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.name == "Ground")
         {
-            if (scoreManager != null)
-            {
-                scoreManager.AddBombTargetPoints();
-            }
+            HandleExplosion(collision.contacts[0].point);
         }
 
-        // Använd kollisionspunkten för explosionen
+        Debug.Log($"Bomb collided with: {collision.gameObject.name}, Layer: {collision.gameObject.layer}, Tag: {collision.gameObject.tag}");
+
+        // Explodera vid alla kollisioner, inte bara BombTarget
         HandleExplosion(collision.contacts[0].point);
+
+        // Lägg till poäng om det är ett bombmål
+        if (collision.gameObject.CompareTag("BombTarget"))
+        {
+            scoreManager?.AddBombTargetPoints();
+        }
     }
 
     private void HandleExplosion(Vector3 position)
