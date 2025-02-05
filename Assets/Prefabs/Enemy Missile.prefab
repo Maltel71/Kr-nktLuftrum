@@ -51,11 +51,12 @@ MonoBehaviour:
   missile: {fileID: 2279591613096608426}
   missileExplosionPrefab: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   rb: {fileID: 5731178390922119550}
-  turnValue: 10
-  speed: 300
+  turnValue: 4
+  speed: 200
   rotation: 10
   selfDestroyTime: 8
   damagePoints: 100
+  flareAttractionStrength: 2
 --- !u!54 &5731178390922119550
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

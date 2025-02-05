@@ -11,6 +11,9 @@ TagManager:
   - Bomb
   - Enemy Missile
   - BombTarget
+  - Bomb Player
+  - MissileTarget
+  - Flare
   layers:
   - Default
   - TransparentFX

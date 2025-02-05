@@ -13,6 +13,16 @@ public class AirplaneController : MonoBehaviour
     [SerializeField] private float maxBackwardDistance = -2f;
     [SerializeField] private float horizontalBoundary = 8f;
 
+    [Header("Flare System")]
+    [SerializeField] private GameObject flarePrefab;
+    [SerializeField] private Transform flareSpawnPoint;
+    [SerializeField] private float flareOffset = 2f;    // Hur långt från planet flaren spawnar
+    [SerializeField] private int maxFlares = 10;        // Antal flares man kan ha
+    [SerializeField] private float flareCooldown = 1f;  // Tid mellan flares
+
+    private int currentFlares;
+    private float nextFlareTime;
+
     private Vector2 touchStart;
     private Vector2 movement;
     private Vector3 velocity = Vector3.zero;
@@ -22,11 +32,15 @@ public class AirplaneController : MonoBehaviour
     private Rigidbody rb;
     private float originalMoveSpeed;
 
+
+
     private void Start()
     {
         startPosition = transform.position;
         originalMoveSpeed = moveSpeed;
         rb = GetComponent<Rigidbody>();
+
+        currentFlares = maxFlares;
 
         Collider col = GetComponent<Collider>();
         Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
@@ -47,6 +61,44 @@ public class AirplaneController : MonoBehaviour
 
         HandleInput();
         UpdatePosition();
+        HandleFlareInput();
+    }
+
+    private void HandleFlareInput()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("F tryckt");
+            if (CanShootFlare())
+            {
+                Debug.Log("Kan skjuta flare");
+                ShootFlare();
+            }
+            else
+            {
+                Debug.Log($"Kan inte skjuta flare: Flares kvar: {currentFlares}, Time check: {Time.time >= nextFlareTime}, Frozen: {!isFrozen}");
+            }
+        }
+    }
+
+    private bool CanShootFlare()
+    {
+        return currentFlares > 0 && Time.time >= nextFlareTime;
+    }
+
+    private void ShootFlare()
+    {
+        GameObject flare = Instantiate(flarePrefab,
+        flareSpawnPoint.position,
+        flareSpawnPoint.rotation);
+
+        // Uppdatera flare count och cooldown
+        currentFlares--;
+        nextFlareTime = Time.time + flareCooldown;
+
+        // Spela ljudeffekt om du har en
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit); // Eller annan lämplig ljudeffekt
+        Debug.Log($"Flare skjuten! Återstående flares: {currentFlares}");
     }
 
     private void UpdatePosition()
