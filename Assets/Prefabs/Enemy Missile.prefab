@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6471003420460693447}
   - component: {fileID: 5731178390922119550}
   - component: {fileID: 1318690216030120898}
-  m_Layer: 8
-  m_Name: MissileParent 1
+  m_Layer: 9
+  m_Name: Enemy Missile
   m_TagString: Enemy Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,9 +51,9 @@ MonoBehaviour:
   missile: {fileID: 2279591613096608426}
   missileExplosionPrefab: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   rb: {fileID: 5731178390922119550}
-  turnValue: 4
-  speed: 150
-  rotation: 4
+  turnValue: 10
+  speed: 300
+  rotation: 10
   selfDestroyTime: 8
   damagePoints: 100
 --- !u!54 &5731178390922119550
@@ -78,7 +78,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -116,7 +116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 58302892069832699, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740095483947, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -128,7 +128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740097687275, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740097778379, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_LocalScale.x

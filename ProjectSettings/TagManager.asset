@@ -4,17 +4,13 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Enemy
-  - Bullet Enemy
-  - Bullet Player
-  - BombTarget
-  - Bullet
   - Ground
+  - Enemy
+  - Player Bullet
+  - Enemy Bullet
+  - Bomb
   - Enemy Missile
-  - Turret
-  - Bomb Player
-  - Enemy Boss
-  - Enemy Special
+  - BombTarget
   layers:
   - Default
   - TransparentFX
@@ -22,23 +18,23 @@ TagManager:
   - 
   - Water
   - UI
+  - 
+  - 
   - Ground
-  - BombTarget
-  - 
   - Player
-  - Bullet Player
-  - Bomb Player
-  - Missile Player
+  - Enemies
+  - Projectiles
   - 
-  - Enemy
-  - Bullet Enemy
-  - Bomb Enemy
-  - Missile Enemy
   - 
-  - Turret
   - 
-  - Enemy Boss
-  - Enemy Special
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

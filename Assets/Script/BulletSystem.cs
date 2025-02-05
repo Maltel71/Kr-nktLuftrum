@@ -110,7 +110,8 @@ public class BulletSystem : MonoBehaviour
             }
         }
         // Hantera träff på andra objekt
-        else if (!otherCollider.CompareTag("Bullet"))
+        if (otherCollider.CompareTag("Enemy Bullet") || otherCollider.CompareTag("Player Bullet"))
+        //else if (!otherCollider.CompareTag("Bullet"))
         {
             //Debug.Log($"{gameObject.name} hit non-bullet object: {otherCollider.gameObject.name}");
             PlayHitEffect();

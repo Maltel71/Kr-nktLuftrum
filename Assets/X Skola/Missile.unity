@@ -525,6 +525,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret
       objectReference: {fileID: 0}
+    - target: {fileID: 5992856115969091840, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: m_Size.x
+      value: 3.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992856115969091840, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: m_Size.y
+      value: 4.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992856115969091840, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: m_Size.z
+      value: 2.87
+      objectReference: {fileID: 0}
     - target: {fileID: 7964523316881164745, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -569,6 +581,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1445881594}
+    - target: {fileID: 8733542168235339512, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: missilePrefab
+      value: 
+      objectReference: {fileID: 7898668078766822023, guid: 53cfac8d79d8ffa46adc44d46780f927, type: 3}
+    - target: {fileID: 8747255650713865710, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: m_Size.x
+      value: 47.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8747255650713865710, guid: edb908e97c845bc48abb5d3154394baa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
