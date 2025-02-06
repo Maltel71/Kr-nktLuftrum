@@ -578,11 +578,11 @@ MonoBehaviour:
   boostUIPrefab: {fileID: 1265313601933982454, guid: 4d7531e4024633144a8307627999f89f, type: 3}
   boostContainer: {fileID: 64413819}
   spacing: 60
-  healthBoostIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  speedBoostIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  shieldBoostIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  fireRateBoostIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  dualWeaponsIcon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  healthBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
+  speedBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
+  shieldBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
+  fireRateBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
+  dualWeaponsIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
 --- !u!224 &76886556
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5437,7 +5437,7 @@ MonoBehaviour:
   - boostPrefab: {fileID: 1075953903332928773, guid: 746d35d6970cfed448c2a13749ea799f, type: 3}
     dropChance: 0.5
   - boostPrefab: {fileID: 6166050984467094364, guid: 371231a4c425ca442995e7ddac0b1a33, type: 3}
-    dropChance: 0.5
+    dropChance: 0.782
   - boostPrefab: {fileID: 2410515476098949784, guid: d5db0a727a579ab41abf07a6e5b06acf, type: 3}
     dropChance: 0.5
   - boostPrefab: {fileID: 4249868004629837957, guid: d9ceee0374545c846ad9107424f77d30, type: 3}
@@ -8003,7 +8003,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
   bulletSpeed: 150
   fireRate: 0.15
-  bulletLifetime: 0.8
+  bulletLifetime: 0.6
   shellEjectionPoint: {fileID: 221080808}
   shellPrefab: {fileID: 7594624446680057220, guid: 4b5818320cb1b254a880f95268c7deb0, type: 3}
   shellEjectionForce: 10
@@ -14328,8 +14328,8 @@ SceneRoots:
   - {fileID: 1781716113}
   - {fileID: 388719841}
   - {fileID: 392654201}
-  - {fileID: 413220880}
   - {fileID: 2199632701502170326}
+  - {fileID: 413220880}
   - {fileID: 880928587}
   - {fileID: 473029734}
   - {fileID: 605897611}

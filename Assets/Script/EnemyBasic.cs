@@ -92,21 +92,29 @@ public class EnemyBasic : MonoBehaviour
     private void HandleShooting()
     {
         float distance = Vector3.Distance(transform.position, target.position);
-        // Lägg till CanShoot() i villkoret
-        if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
+
+        // Beräkna vinkeln mellan fienden och spelaren
+        Vector3 directionToTarget = target.position - transform.position;
+        float angle = Vector3.Angle(transform.forward, directionToTarget);
+
+        // Skjut bara om:
+        // 1. Spelaren är inom räckhåll
+        // 2. Spelaren är framför fienden (inom en 45-graders kon)
+        // 3. Det är dags att skjuta igen (cooldown är klar)
+        if (distance <= shootingRange && angle < 45f && Time.time >= nextFireTime)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
-            useLeftGun = !useLeftGun;
         }
     }
 
-
     private void Shoot()
     {
-        // Hämta aktuell kanon
-        Transform currentGun = useLeftGun ? leftGun : rightGun;
-        Vector3 shootDirection = (target.position - currentGun.position).normalized;
+        // Använd bara en skjutpunkt, till exempel rightGun
+        Transform currentGun = rightGun;
+
+        // Skjut alltid rakt fram i fiendensriktning
+        Vector3 shootDirection = transform.forward;
         Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(shootDirection));
@@ -117,10 +125,40 @@ public class EnemyBasic : MonoBehaviour
         }
 
         audioManager?.PlayShootSound();
-
-        // Växla mellan vänster och höger kanon för nästa skott
-        useLeftGun = !useLeftGun;
     }
+
+    //private void HandleShooting()
+    //{
+    //    float distance = Vector3.Distance(transform.position, target.position);
+    //    // Lägg till CanShoot() i villkoret
+    //    if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
+    //    {
+    //        Shoot();
+    //        nextFireTime = Time.time + fireRate;
+    //        useLeftGun = !useLeftGun;
+    //    }
+    //}
+
+
+    //private void Shoot()
+    //{
+    //    // Hämta aktuell kanon
+    //    Transform currentGun = useLeftGun ? leftGun : rightGun;
+    //    Vector3 shootDirection = (target.position - currentGun.position).normalized;
+    //    Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
+
+    //    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(shootDirection));
+
+    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
+    //    {
+    //        bulletSystem.Initialize(shootDirection, true, bulletDamage);
+    //    }
+
+    //    audioManager?.PlayShootSound();
+
+    //    // Växla mellan vänster och höger kanon för nästa skott
+    //    useLeftGun = !useLeftGun;
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
