@@ -9,7 +9,7 @@ public class EnemyBoss : MonoBehaviour
     private Transform target;
 
     [Header("Attack Settings")]
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject enemyBulletPrefab;
     [SerializeField] private float attackDamage = 40f;
     [SerializeField] private float attackInterval = 2f;
     [SerializeField] private float bulletSpeed = 5f;
@@ -21,53 +21,36 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private float burstInterval = 0.2f;
     [SerializeField] private int circleCount = 8;
 
-    [Header("Target & Range")]
-    [SerializeField] private float shootingRange = 30f;  // Större än basic enemy eftersom det är en boss
-
-    // Attack pattern states
     private enum AttackPattern { Spread, Burst, Circle }
     private AttackPattern currentPattern;
     private float nextAttackTime;
-
-    // Components
     private AudioManager audioManager;
     private EnemyHealth healthSystem;
+    private bool isInitialized;
 
     private void Start()
     {
+        //Debug.Log("EnemyBoss Start");
         InitializeComponents();
-        SetupTarget();
+        nextAttackTime = Time.time + attackInterval;
     }
 
     private void InitializeComponents()
     {
         audioManager = AudioManager.Instance;
         healthSystem = GetComponent<EnemyHealth>();
+        target = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        if (healthSystem == null)
-        {
-            Debug.LogWarning("EnemyHealth saknas på " + gameObject.name);
-        }
-    }
-
-    private void SetupTarget()
-    {
-        if (target == null)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                target = player.transform;
-            }
-        }
+        //Debug.Log($"Boss komponenter: Health={healthSystem != null}, Target={target != null}, Bullet={enemyBulletPrefab != null}");
+        isInitialized = healthSystem != null && target != null && enemyBulletPrefab != null;
     }
 
     private void Update()
     {
-        if (target == null || healthSystem.IsDying) return;
+        if (!isInitialized || healthSystem.IsDying) return;
 
         HandleMovement();
-        HandleAttackPattern();
+        HandleAttacks();
     }
 
     private void HandleMovement()
@@ -87,35 +70,33 @@ public class EnemyBoss : MonoBehaviour
         transform.LookAt(target);
     }
 
-    private void HandleAttackPattern()
+    private void HandleAttacks()
     {
-        if (Time.time < nextAttackTime) return;
-
-        // Lägg till distans-check
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-        if (distanceToTarget > shootingRange) return;
-
-        // Resten av koden som tidigare
-        currentPattern = (AttackPattern)(((int)currentPattern + 1) % 3);
-
-        switch (currentPattern)
+        if (Time.time >= nextAttackTime)
         {
-            case AttackPattern.Spread:
-                FireSpreadAttack();
-                break;
-            case AttackPattern.Burst:
-                StartCoroutine(FireBurstAttack());
-                break;
-            case AttackPattern.Circle:
-                FireCircleAttack();
-                break;
-        }
+            currentPattern = (AttackPattern)(((int)currentPattern + 1) % 3);
+            //Debug.Log($"Boss byter pattern till: {currentPattern}");
 
-        nextAttackTime = Time.time + attackInterval;
+            switch (currentPattern)
+            {
+                case AttackPattern.Spread:
+                    FireSpreadAttack();
+                    break;
+                case AttackPattern.Burst:
+                    StartCoroutine(FireBurstAttack());
+                    break;
+                case AttackPattern.Circle:
+                    FireCircleAttack();
+                    break;
+            }
+
+            nextAttackTime = Time.time + attackInterval;
+        }
     }
 
     private void FireSpreadAttack()
     {
+        Debug.Log("Startar spread attack");
         float angleStep = spreadAngle / (spreadCount - 1);
         float startAngle = -spreadAngle / 2;
 
@@ -131,6 +112,7 @@ public class EnemyBoss : MonoBehaviour
 
     private IEnumerator FireBurstAttack()
     {
+        Debug.Log("Startar burst attack");
         for (int i = 0; i < burstCount; i++)
         {
             Vector3 direction = (target.position - transform.position).normalized;
@@ -142,6 +124,7 @@ public class EnemyBoss : MonoBehaviour
 
     private void FireCircleAttack()
     {
+        //Debug.Log("Startar circle attack");
         float angleStep = 360f / circleCount;
 
         for (int i = 0; i < circleCount; i++)
@@ -156,32 +139,40 @@ public class EnemyBoss : MonoBehaviour
 
     private void FireBullet(Vector3 direction)
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.LookRotation(direction));
+        if (enemyBulletPrefab == null)
+        {
+            //Debug.LogError("EnemyBulletPrefab är null!");
+            return;
+        }
+
+        GameObject bullet = Instantiate(enemyBulletPrefab, transform.position, Quaternion.LookRotation(direction));
+        //Debug.Log($"Skapar bullet: Position={transform.position}, Direction={direction}");
 
         if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
         {
+            //Debug.Log("BulletSystem hittad på bullet");
             bulletSystem.Initialize(direction, true, attackDamage);
+            //Debug.Log($"Bullet initialized: Damage={attackDamage}");
+        }
+        else
+        {
+            //Debug.LogError("BulletSystem saknas på bullet!");
         }
 
         if (bullet.TryGetComponent<Rigidbody>(out var rb))
         {
+            //Debug.Log("Rigidbody hittad på bullet");
             rb.useGravity = false;
             rb.linearVelocity = direction * bulletSpeed;
+            //Debug.Log($"Bullet velocity satt: {direction * bulletSpeed}");
+        }
+        else
+        {
+            //Debug.LogError("Rigidbody saknas på bullet!");
         }
     }
 
-    public void SetAttackDamage(float damage)
-    {
-        attackDamage = damage;
-    }
-
-    public void SetAttackInterval(float interval)
-    {
-        attackInterval = interval;
-    }
-
-    public void SetMoveSpeed(float speed)
-    {
-        moveSpeed = speed;
-    }
+    void SetAttackDamage(float damage) => attackDamage = damage;
+    void SetAttackInterval(float interval) => attackInterval = interval;
+    void SetMoveSpeed(float speed) => moveSpeed = speed;
 }

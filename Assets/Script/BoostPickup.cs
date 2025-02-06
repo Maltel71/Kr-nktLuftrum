@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class BoostPickup : MonoBehaviour
 {
     public enum BoostType
@@ -49,6 +50,8 @@ public class BoostPickup : MonoBehaviour
         timeSinceSpawn += Time.deltaTime;
         float newY = startPosition.y + Mathf.Sin(timeSinceSpawn * bobSpeed) * bobHeight;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+        ActiveBoostUI.Instance?.AddBoost(boostType.ToString(), ActiveBoostUI.Instance.GetBoostIcon(boostType.ToString()), boostDuration);
     }
 
     private void OnTriggerEnter(Collider other)

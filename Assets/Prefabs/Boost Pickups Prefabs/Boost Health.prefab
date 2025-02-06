@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3427367342394047251}
   - component: {fileID: 5607305584046227314}
   - component: {fileID: 6796362335134503066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boost Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}

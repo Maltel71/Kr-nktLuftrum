@@ -78,9 +78,9 @@ GameObject:
   - component: {fileID: 1546925361892836530}
   - component: {fileID: 8151402360514474810}
   - component: {fileID: -3985228070185450049}
-  - component: {fileID: 3709853739034620558}
+  - component: {fileID: 8500370060819798468}
   m_Layer: 10
-  m_Name: Boss 1
+  m_Name: Mig_A!
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +94,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884269351238135773}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000002060551, y: 0.7120928, z: 0.000000016763805, w: 0.7020855}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 1
@@ -103,7 +103,7 @@ Transform:
   - {fileID: 7646961857588846981}
   - {fileID: 166175435407655208}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90.811, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &6692508308530845215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   splineContainer: {fileID: 0}
-  speed: 100
+  speed: 60
   loopPath: 0
 --- !u!114 &6927417615880013616
 MonoBehaviour:
@@ -131,12 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c71dea441661b4b9f311f04689eb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
-  isBoss: 1
-  healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
+  maxHealth: 100
+  isBoss: 0
+  healthBarPrefab: {fileID: 4038366390463760817, guid: c6d42154e73097c40a027b778bde9032, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
-  crashSpeed: 400
+  crashSpeed: 50
   rotationSpeed: 50
   rotateClockwise: 1
   smokeEffect: {fileID: 7317409256195922096, guid: 56cd4766233d0bf49ad4bf8ea9156ef0, type: 3}
@@ -164,10 +164,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!65 &8151402360514474810
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -183,12 +183,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8, y: 0.06, z: 0.76}
-  m_Center: {x: 0, y: 0.02, z: 0}
+  m_Size: {x: 0.98, y: 0.16, z: 0.67}
+  m_Center: {x: 0, y: 0.07, z: 0}
 --- !u!114 &-3985228070185450049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   heightMatchSpeed: 5
   targetHeightOffset: 0
   showDebugInfo: 1
---- !u!114 &3709853739034620558
+--- !u!114 &8500370060819798468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,20 +214,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1884269351238135773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc3300fb0c565764f96f083498bec759, type: 3}
+  m_Script: {fileID: 11500000, guid: dd99eb29017b39542bea4993da1a6c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  hoverDistance: 15
-  enemyBulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
-  attackDamage: 30
-  attackInterval: 1
-  bulletSpeed: 4
-  spreadAngle: 45
-  spreadCount: 4
-  burstCount: 8
-  burstInterval: 16
-  circleCount: 32
+  moveSpeed: 3
+  useWaveMovement: 0
+  waveAmplitude: 4
+  waveFrequency: 4
+  shootingRange: 350
+  bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
+  leftGun: {fileID: 7646961857588846981}
+  rightGun: {fileID: 166175435407655208}
+  fireRate: 2
+  bulletDamage: 10
+  bulletSpawnOffset: 5
+  collisionDamage: 20
+  destroyOnCollision: 1
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0

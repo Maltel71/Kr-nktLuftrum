@@ -12,10 +12,8 @@ public class BulletSystem : MonoBehaviour
     [SerializeField] private GameObject hitEffectPrefab;
     [SerializeField] private float effectDuration = 1f;
 
-    public Vector3 direction;
+    private Vector3 direction;
     private float fixedHeight;
-    private Vector3 lastPosition;
-    private float distanceTraveled;
     private bool hasCollided;
     private AudioManager audioManager;
 
@@ -23,37 +21,20 @@ public class BulletSystem : MonoBehaviour
     {
         audioManager = AudioManager.Instance;
         fixedHeight = transform.position.y;
-        lastPosition = transform.position;
         Destroy(gameObject, bulletLifetime);
 
+        //Debug.Log($"Bullet initialized: Enemy={isEnemyProjectile}, Tag={gameObject.tag}, Layer={gameObject.layer}");
         Collider bulletCollider = GetComponent<Collider>();
-        //Debug.Log($"Bullet Collider finns: {bulletCollider != null}, Är Trigger: {bulletCollider?.isTrigger}");
-
-        Component[] components = GetComponents<Component>();
-        //Debug.Log($"Components on Bullet Object ({gameObject.name}):");
-        foreach (Component comp in components)
-        {
-            //Debug.Log(comp.GetType().Name);
-        }
+        //Debug.Log($"Bullet Collider: IsTrigger={bulletCollider?.isTrigger}");
     }
 
     private void Update()
     {
         if (hasCollided) return;
-
-        // Uppdatera position
         Vector3 movement = direction * speed * Time.deltaTime;
         Vector3 newPosition = transform.position + movement;
         newPosition.y = fixedHeight;
         transform.position = newPosition;
-
-        // Beräkna tillryggalagd sträcka
-        float frameDistance = Vector3.Distance(lastPosition, transform.position);
-        distanceTraveled += frameDistance;
-
-        // Debug-visualisering
-        //Debug.DrawLine(lastPosition, transform.position, Color.yellow, 0.1f);
-        lastPosition = transform.position;
     }
 
     public void Initialize(Vector3 shootDirection, bool isEnemy = false, float damageAmount = 10f)
@@ -61,62 +42,49 @@ public class BulletSystem : MonoBehaviour
         direction = shootDirection;
         isEnemyProjectile = isEnemy;
         damage = damageAmount;
-        //Debug.Log($"Bullet {gameObject.name} initialized. Direction: {direction}, IsEnemy: {isEnemyProjectile}, Damage: {damage}");
+        gameObject.tag = isEnemy ? "Enemy Bullet" : "Player Bullet";
+        //Debug.Log($"Bullet {gameObject.name} initialized. Direction={direction}, IsEnemy={isEnemyProjectile}");
     }
 
-    private void OnTriggerEnter(Collider otherCollider)
+    private void OnTriggerEnter(Collider other)
     {
         if (hasCollided) return;
-        hasCollided = true;
 
-        // Hantera träff på spelare
-        if (isEnemyProjectile && otherCollider.CompareTag("Player"))
+        // Skip bullet-bullet collisions
+        if (isEnemyProjectile && other.CompareTag("Enemy") ||
+            other.CompareTag("Enemy Bullet"))
+            return;
+
+        // Skip player bullet-player collisions    
+        if (!isEnemyProjectile && other.CompareTag("Player") ||
+            other.CompareTag("Player Bullet"))
+            return;
+
+        //Debug.Log($"Bullet collision: Me={gameObject.tag}, Other={other.tag}");
+
+        // Enemy bullet hits player
+        if (isEnemyProjectile && other.CompareTag("Player"))
         {
-            PlaneHealthSystem playerHealth = otherCollider.gameObject.GetComponent<PlaneHealthSystem>();
-
-            // Debug-loggning av komponenter
-            Component[] components = otherCollider.GetComponents<Component>();
-            Debug.Log($"Components on Player Object ({otherCollider.gameObject.name}):");
-            foreach (Component comp in components)
+            if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth) && !playerHealth.IsDead())
             {
-                //Debug.Log(comp.GetType().Name);
-            }
-
-            if (playerHealth != null)
-            {
-                //Debug.Log($"Player Health Component Found on {otherCollider.gameObject.name}. Current Health: {playerHealth.GetHealthPercentage() * 100}%");
-
-                if (!playerHealth.IsDead())
-                {
-                    playerHealth.TakeDamage(damage);
-                    PlayHitEffect();
-                    audioManager?.PlayCombatSound(CombatSoundType.Hit);
-                }
-            }
-            else
-            {
-                //Debug.LogError($"NO PlaneHealthSystem found on Player Object: {otherCollider.gameObject.name}!");
-            }
-        }
-        // Hantera träff på fiende
-        else if (!isEnemyProjectile && otherCollider.CompareTag("Enemy"))
-        {
-            //Debug.Log($"{gameObject.name} hit enemy: {otherCollider.gameObject.name}");
-            if (otherCollider.TryGetComponent<EnemyHealth>(out var enemyHealth))
-            {
-                enemyHealth.TakeDamage(damage);
+                playerHealth.TakeDamage(damage);
                 PlayHitEffect();
                 audioManager?.PlayCombatSound(CombatSoundType.Hit);
             }
         }
-        // Hantera träff på andra objekt
-        if (otherCollider.CompareTag("Enemy Bullet") || otherCollider.CompareTag("Player Bullet"))
-        //else if (!otherCollider.CompareTag("Bullet"))
+        // Player bullet hits enemy
+        else if (!isEnemyProjectile && other.CompareTag("Enemy"))
         {
-            //Debug.Log($"{gameObject.name} hit non-bullet object: {otherCollider.gameObject.name}");
-            PlayHitEffect();
+            if (other.TryGetComponent<EnemyHealth>(out var enemyHealth))
+            {
+                enemyHealth.TakeDamage(damage);
+                PlayHitEffect();
+                audioManager?.PlayCombatSound(CombatSoundType.Hit);
+                //Debug.Log($"Enemy hit with {damage} damage!");
+            }
         }
 
+        hasCollided = true;
         Destroy(gameObject);
     }
 
@@ -124,9 +92,8 @@ public class BulletSystem : MonoBehaviour
     {
         if (hitEffectPrefab != null)
         {
-            GameObject effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            var effect = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
             Destroy(effect, effectDuration);
-            Debug.Log($"Hit effect played at {transform.position} for bullet {gameObject.name}");
         }
     }
 }

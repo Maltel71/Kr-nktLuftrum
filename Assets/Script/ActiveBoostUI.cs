@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using System.Collections;
 
 public class ActiveBoostUI : MonoBehaviour
 {
@@ -12,12 +11,22 @@ public class ActiveBoostUI : MonoBehaviour
         public GameObject uiPanel;
         public Image boostIcon;
         public TextMeshProUGUI timerText;
+        public TextMeshProUGUI boostNameText;
     }
 
-    [Header("UI References")]
+    [Header("UI Referenser")]
     [SerializeField] private GameObject boostUIPrefab;
-    [SerializeField] private Transform boostContainer;
-    [SerializeField] private float spacing = 60f;
+    [SerializeField] private RectTransform boostContainer;  // Ändrad till RectTransform
+    [SerializeField] private float spacing = 100f;          // Ökad spacing för bättre läsbarhet
+    [SerializeField] private float bottomOffset = 20f;      // Avstånd från skärmens nederkant
+
+    [Header("Boost Ikoner")]
+    [SerializeField] private Sprite healthIcon;
+    [SerializeField] private Sprite shieldIcon;
+    [SerializeField] private Sprite speedIcon;
+    [SerializeField] private Sprite dualWeaponIcon;
+    [SerializeField] private Sprite flareIcon;
+    [SerializeField] private Sprite bombIcon;
 
     private Dictionary<string, BoostUIElement> activeBoosts = new Dictionary<string, BoostUIElement>();
 
@@ -35,89 +44,91 @@ public class ActiveBoostUI : MonoBehaviour
             Debug.LogWarning("Multiple ActiveBoostUI instances found!");
             Destroy(gameObject);
         }
-
-        // Validera referenser
-        if (boostUIPrefab == null)
-            Debug.LogError("BoostUIPrefab är inte satt!");
-        if (boostContainer == null)
-            Debug.LogError("BoostContainer är inte satt!");
     }
 
     public void AddBoost(string boostName, Sprite icon, float duration)
     {
-        Debug.Log($"Försöker lägga till boost: {boostName}, Duration: {duration}");
-
-        if (boostUIPrefab == null)
-        {
-            Debug.LogError("Kan inte lägga till boost - boostUIPrefab saknas!");
-            return;
-        }
-
-        if (boostContainer == null)
-        {
-            Debug.LogError("Kan inte lägga till boost - boostContainer saknas!");
-            return;
-        }
-
-        if (icon == null)
-        {
-            Debug.LogWarning($"Boost ikon saknas för {boostName}!");
-        }
-
         // Om boost redan finns, uppdatera bara tiden
         if (activeBoosts.ContainsKey(boostName))
         {
-            Debug.Log($"Uppdaterar existerande boost: {boostName}");
             StopCoroutine(activeBoosts[boostName].uiPanel.name);
             StartCoroutine(UpdateBoostTimer(boostName, duration));
             return;
         }
 
-        // Skapa nytt UI element
         GameObject newBoostUI = Instantiate(boostUIPrefab, boostContainer);
-        Debug.Log($"Skapade ny boost UI för: {boostName}");
 
         BoostUIElement uiElement = new BoostUIElement
         {
             uiPanel = newBoostUI,
             boostIcon = newBoostUI.GetComponentInChildren<Image>(),
-            timerText = newBoostUI.GetComponentInChildren<TextMeshProUGUI>()
+            timerText = newBoostUI.GetComponentInChildren<TextMeshProUGUI>(),
+            boostNameText = newBoostUI.GetComponentInChildren<TextMeshProUGUI>()
         };
 
-        // Validera komponenter
-        if (uiElement.boostIcon == null)
-            Debug.LogError($"Image komponent saknas på boost UI för {boostName}");
-        if (uiElement.timerText == null)
-            Debug.LogError($"TextMeshProUGUI komponent saknas på boost UI för {boostName}");
-
-        // Konfigurera UI element
+        // Sätt boost-namn och ikon
         uiElement.boostIcon.sprite = icon;
+        uiElement.boostNameText.text = boostName;
+
         activeBoosts.Add(boostName, uiElement);
 
-        // Organisera om alla boost UI element
+        // Organisera om boost UI element
         UpdateUILayout();
 
         // Starta timer
         StartCoroutine(UpdateBoostTimer(boostName, duration));
+
+        // Visa meddelande via GameMessageSystem
+        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
+        if (messageSystem != null)
+        {
+            messageSystem.ShowBoostMessage($"{boostName} Aktiverad!");
+        }
+    }
+
+    public Sprite GetBoostIcon(string boostType)
+    {
+        return boostType switch
+        {
+            "Health" => healthIcon,
+            "Shield" => shieldIcon,
+            "Speed" => speedIcon,
+            "DualWeapons" => dualWeaponIcon,
+            "Flare" => flareIcon,
+            "Bomb" => bombIcon,
+            _ => null
+        };
     }
 
     private void UpdateUILayout()
     {
         int index = 0;
+        float totalWidth = activeBoosts.Count * spacing;
+        float startX = -totalWidth / 2f;  // Centrera alla boosts
+
         foreach (var boost in activeBoosts.Values)
         {
-            boost.uiPanel.GetComponent<RectTransform>().anchoredPosition =
-                new Vector2(index * spacing, 0);
+            RectTransform rect = boost.uiPanel.GetComponent<RectTransform>();
+
+            // Sätt ankarpunkter för nederkanten av skärmen
+            rect.anchorMin = new Vector2(0.5f, 0);
+            rect.anchorMax = new Vector2(0.5f, 0);
+            rect.pivot = new Vector2(0.5f, 0);
+
+            // Positionera relativt till container
+            rect.anchoredPosition = new Vector2(startX + (index * spacing), bottomOffset);
+
+            // Sätt storlek för boost-elementet
+            rect.sizeDelta = new Vector2(80, 80);  // Justera storleken efter behov
+
             index++;
         }
-        Debug.Log($"UI layout uppdaterad. Antal aktiva boosts: {activeBoosts.Count}");
     }
 
-    private IEnumerator UpdateBoostTimer(string boostName, float duration)
+    private System.Collections.IEnumerator UpdateBoostTimer(string boostName, float duration)
     {
         if (!activeBoosts.TryGetValue(boostName, out BoostUIElement uiElement))
         {
-            Debug.LogError($"Kunde inte hitta boost: {boostName} för timer uppdatering");
             yield break;
         }
 
@@ -134,7 +145,6 @@ public class ActiveBoostUI : MonoBehaviour
 
     private void RemoveBoost(string boostName)
     {
-        Debug.Log($"Tar bort boost: {boostName}");
         if (activeBoosts.TryGetValue(boostName, out BoostUIElement uiElement))
         {
             Destroy(uiElement.uiPanel);
