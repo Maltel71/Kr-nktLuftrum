@@ -125,10 +125,9 @@ MonoBehaviour:
   isEnemyProjectile: 1
   damage: 200
   speed: 300
-  bulletLifetime: 2.5
+  bulletLifetime: 2
   hitEffectPrefab: {fileID: 0}
   effectDuration: 1
-  direction: {x: 0, y: 0, z: 0}
 --- !u!54 &-7766612759925288415
 Rigidbody:
   m_ObjectHideFlags: 0

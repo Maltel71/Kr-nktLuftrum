@@ -136,7 +136,7 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
-  crashSpeed: 400
+  crashSpeed: 100
   rotationSpeed: 50
   rotateClockwise: 1
   smokeEffect: {fileID: 7317409256195922096, guid: 56cd4766233d0bf49ad4bf8ea9156ef0, type: 3}
@@ -218,16 +218,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  hoverDistance: 15
+  hoverDistance: 10
   enemyBulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
   attackDamage: 30
-  attackInterval: 1
-  bulletSpeed: 4
+  attackInterval: 0.8
+  bulletSpeed: 3
   spreadAngle: 45
-  spreadCount: 4
-  burstCount: 8
-  burstInterval: 16
-  circleCount: 32
+  spreadCount: 2
+  burstCount: 4
+  burstInterval: 8
+  circleCount: 16
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0

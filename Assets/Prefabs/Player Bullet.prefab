@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemyProjectile: 0
-  damage: 10
-  speed: 1000
-  bulletLifetime: 3
+  damage: 30
+  speed: 600
+  bulletLifetime: 1
   hitEffectPrefab: {fileID: 0}
   effectDuration: 1
