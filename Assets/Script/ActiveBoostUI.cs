@@ -11,22 +11,20 @@ public class ActiveBoostUI : MonoBehaviour
         public GameObject uiPanel;
         public Image boostIcon;
         public TextMeshProUGUI timerText;
-        public TextMeshProUGUI boostNameText;
+        public float remainingTime;
     }
 
-    [Header("UI Referenser")]
+    [Header("UI References")]
     [SerializeField] private GameObject boostUIPrefab;
-    [SerializeField] private RectTransform boostContainer;  // Ändrad till RectTransform
-    [SerializeField] private float spacing = 100f;          // Ökad spacing för bättre läsbarhet
-    [SerializeField] private float bottomOffset = 20f;      // Avstånd från skärmens nederkant
+    [SerializeField] private Transform boostContainer;
+    [SerializeField] private float spacing = 60f;
 
-    [Header("Boost Ikoner")]
-    [SerializeField] private Sprite healthIcon;
-    [SerializeField] private Sprite shieldIcon;
-    [SerializeField] private Sprite speedIcon;
-    [SerializeField] private Sprite dualWeaponIcon;
-    [SerializeField] private Sprite flareIcon;
-    [SerializeField] private Sprite bombIcon;
+    [Header("Boost Icons")]
+    [SerializeField] private Sprite healthBoostIcon;
+    [SerializeField] private Sprite speedBoostIcon;
+    [SerializeField] private Sprite shieldBoostIcon;
+    [SerializeField] private Sprite fireRateBoostIcon;
+    [SerializeField] private Sprite dualWeaponsIcon;
 
     private Dictionary<string, BoostUIElement> activeBoosts = new Dictionary<string, BoostUIElement>();
 
@@ -46,16 +44,40 @@ public class ActiveBoostUI : MonoBehaviour
         }
     }
 
-    public void AddBoost(string boostName, Sprite icon, float duration)
+    private void Update()
     {
-        // Om boost redan finns, uppdatera bara tiden
+        List<string> boostsToRemove = new List<string>();
+
+        foreach (var boost in activeBoosts)
+        {
+            boost.Value.remainingTime -= Time.deltaTime;
+
+            if (boost.Value.remainingTime <= 0)
+            {
+                boostsToRemove.Add(boost.Key);
+            }
+            else
+            {
+                boost.Value.timerText.text = boost.Value.remainingTime.ToString("F1");
+            }
+        }
+
+        foreach (var boostName in boostsToRemove)
+        {
+            RemoveBoost(boostName);
+        }
+    }
+
+    public void AddBoost(string boostName, Sprite boostIcon, float duration)
+    {
         if (activeBoosts.ContainsKey(boostName))
         {
-            StopCoroutine(activeBoosts[boostName].uiPanel.name);
-            StartCoroutine(UpdateBoostTimer(boostName, duration));
+            // Om boost redan finns, återställ bara tiden
+            activeBoosts[boostName].remainingTime = duration;
             return;
         }
 
+        // Skapa nytt UI element
         GameObject newBoostUI = Instantiate(boostUIPrefab, boostContainer);
 
         BoostUIElement uiElement = new BoostUIElement
@@ -63,84 +85,17 @@ public class ActiveBoostUI : MonoBehaviour
             uiPanel = newBoostUI,
             boostIcon = newBoostUI.GetComponentInChildren<Image>(),
             timerText = newBoostUI.GetComponentInChildren<TextMeshProUGUI>(),
-            boostNameText = newBoostUI.GetComponentInChildren<TextMeshProUGUI>()
+            remainingTime = duration
         };
 
-        // Sätt boost-namn och ikon
-        uiElement.boostIcon.sprite = icon;
-        uiElement.boostNameText.text = boostName;
+        // Sätt ikon
+        if (uiElement.boostIcon != null && boostIcon != null)
+        {
+            uiElement.boostIcon.sprite = boostIcon;
+        }
 
         activeBoosts.Add(boostName, uiElement);
-
-        // Organisera om boost UI element
         UpdateUILayout();
-
-        // Starta timer
-        StartCoroutine(UpdateBoostTimer(boostName, duration));
-
-        // Visa meddelande via GameMessageSystem
-        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage($"{boostName} Aktiverad!");
-        }
-    }
-
-    public Sprite GetBoostIcon(string boostType)
-    {
-        return boostType switch
-        {
-            "Health" => healthIcon,
-            "Shield" => shieldIcon,
-            "Speed" => speedIcon,
-            "DualWeapons" => dualWeaponIcon,
-            "Flare" => flareIcon,
-            "Bomb" => bombIcon,
-            _ => null
-        };
-    }
-
-    private void UpdateUILayout()
-    {
-        int index = 0;
-        float totalWidth = activeBoosts.Count * spacing;
-        float startX = -totalWidth / 2f;  // Centrera alla boosts
-
-        foreach (var boost in activeBoosts.Values)
-        {
-            RectTransform rect = boost.uiPanel.GetComponent<RectTransform>();
-
-            // Sätt ankarpunkter för nederkanten av skärmen
-            rect.anchorMin = new Vector2(0.5f, 0);
-            rect.anchorMax = new Vector2(0.5f, 0);
-            rect.pivot = new Vector2(0.5f, 0);
-
-            // Positionera relativt till container
-            rect.anchoredPosition = new Vector2(startX + (index * spacing), bottomOffset);
-
-            // Sätt storlek för boost-elementet
-            rect.sizeDelta = new Vector2(80, 80);  // Justera storleken efter behov
-
-            index++;
-        }
-    }
-
-    private System.Collections.IEnumerator UpdateBoostTimer(string boostName, float duration)
-    {
-        if (!activeBoosts.TryGetValue(boostName, out BoostUIElement uiElement))
-        {
-            yield break;
-        }
-
-        float timeLeft = duration;
-        while (timeLeft > 0)
-        {
-            timeLeft -= Time.deltaTime;
-            uiElement.timerText.text = timeLeft.ToString("F1");
-            yield return null;
-        }
-
-        RemoveBoost(boostName);
     }
 
     private void RemoveBoost(string boostName)
@@ -151,5 +106,31 @@ public class ActiveBoostUI : MonoBehaviour
             activeBoosts.Remove(boostName);
             UpdateUILayout();
         }
+    }
+
+    private void UpdateUILayout()
+    {
+        int index = 0;
+        foreach (var boost in activeBoosts.Values)
+        {
+            if (boost.uiPanel != null)
+            {
+                boost.uiPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(index * spacing, 0);
+                index++;
+            }
+        }
+    }
+
+    public Sprite GetBoostIcon(string boostType)
+    {
+        return boostType switch
+        {
+            "HealthBoost" => healthBoostIcon,
+            "SpeedBoost" => speedBoostIcon,
+            "ShieldBoost" => shieldBoostIcon,
+            "FireRateBoost" => fireRateBoostIcon,
+            "DualWeapons" => dualWeaponsIcon,
+            _ => null
+        };
     }
 }

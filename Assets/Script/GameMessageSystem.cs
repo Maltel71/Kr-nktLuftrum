@@ -40,9 +40,10 @@ public class GameMessageSystem : MonoBehaviour
         DisplayMessage("BOSS FIGHT!", warningColor, bossDisplayTime);
     }
 
-    public void ShowBoostMessage(string boostType)
+    public void ShowBoostMessage(string message)
     {
-        DisplayMessage($"{boostType} Aktiverad!", boostColor, boostDisplayTime);
+        // Visa meddelandet som det kommer, utan att lägga till "Aktiverad!"
+        DisplayMessage(message, boostColor, boostDisplayTime);
     }
 
     private void DisplayMessage(string message, Color color, float displayTime)

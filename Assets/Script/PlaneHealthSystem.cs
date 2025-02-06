@@ -85,11 +85,13 @@ public class PlaneHealthSystem : MonoBehaviour
         targetHealthValue = currentHealth;
         UpdateDamageEffects();
         UpdateSlidersImmediate();
+    }
 
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("Health");
-        }
+    public void ApplyShieldBoost()
+    {
+        currentShield = maxShield;
+        targetShieldValue = currentShield;
+        UpdateSlidersImmediate();
     }
 
     private void UpdateSliders()
@@ -243,15 +245,4 @@ public class PlaneHealthSystem : MonoBehaviour
     public float GetHealthPercentage() => currentHealth / maxHealth;
     public float GetShieldPercentage() => currentShield / maxShield;
 
-    public void ApplyShieldBoost()
-    {
-        currentShield = maxShield;
-        targetShieldValue = currentShield;
-        UpdateSlidersImmediate();
-
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("Shield");
-        }
-    }
 }

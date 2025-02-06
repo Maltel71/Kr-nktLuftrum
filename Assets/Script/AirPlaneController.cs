@@ -204,15 +204,7 @@ public class AirplaneController : MonoBehaviour
     public IEnumerator ApplySpeedBoost(float multiplier, float duration)
     {
         moveSpeed *= multiplier;
-
-        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("Speed Boost");
-        }
-
         yield return new WaitForSeconds(duration);
-
         moveSpeed = originalMoveSpeed;
     }
 

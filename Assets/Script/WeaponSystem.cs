@@ -229,13 +229,6 @@ public class WeaponSystem : MonoBehaviour
     {
         float boostedFireRate = fireRate * 0.5f; // Dubbelt så snabb fire rate
         fireRate = boostedFireRate;
-
-        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("Fire Rate Boost");
-        }
-
         yield return new WaitForSeconds(duration);
         fireRate = originalFireRate;
     }
@@ -243,13 +236,6 @@ public class WeaponSystem : MonoBehaviour
     public IEnumerator EnableDualWeapons(float duration)
     {
         dualWeaponsEnabled = true;
-
-        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("Dual Weapons");
-        }
-
         yield return new WaitForSeconds(duration);
         dualWeaponsEnabled = false;
     }
