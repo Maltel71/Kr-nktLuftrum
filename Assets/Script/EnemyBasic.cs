@@ -24,6 +24,9 @@ public class EnemyBasic : MonoBehaviour
     [SerializeField] private float collisionDamage = 25f;
     [SerializeField] private bool destroyOnCollision = true;
 
+    [Header("Shooting Settings")]
+    [SerializeField] private bool continuousShooting = false; // Ny inställning
+
     // Private variables
     private float nextFireTime;
     private bool useLeftGun = true;
@@ -92,24 +95,27 @@ public class EnemyBasic : MonoBehaviour
     private void HandleShooting()
     {
         float distance = Vector3.Distance(transform.position, target.position);
-        // Lдgg till CanShoot() i villkoret
-        if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
+
+        // Om continuousShooting är true, eller om spelaren är synlig
+        bool shouldShoot = continuousShooting || CanShoot();
+
+        if (distance <= shootingRange && Time.time >= nextFireTime && shouldShoot)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
-            useLeftGun = !useLeftGun;
         }
     }
 
 
     private void Shoot()
     {
-        // Hдmta aktuell kanon
+        // Välj aktuell kanon baserat på `useLeftGun`
         Transform currentGun = useLeftGun ? leftGun : rightGun;
-        Vector3 shootDirection = (target.position - currentGun.position).normalized;
-        Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
 
-        GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(shootDirection));
+        // Skapa bullet i fiendens framåtriktning
+        Vector3 shootDirection = transform.forward;
+
+        GameObject bullet = Instantiate(bulletPrefab, currentGun.position, Quaternion.LookRotation(shootDirection));
 
         if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
         {
@@ -118,7 +124,7 @@ public class EnemyBasic : MonoBehaviour
 
         audioManager?.PlayShootSound();
 
-        // Vдxla mellan vдnster och hцger kanon fцr nдsta skott
+        // Växla mellan vänster och höger kanon
         useLeftGun = !useLeftGun;
     }
 
@@ -143,12 +149,14 @@ public class EnemyBasic : MonoBehaviour
     {
         if (target == null) return false;
 
-        // Berдkna vinkeln mellan fienden och spelaren
+        // Beräkna riktningen till spelaren
         Vector3 directionToTarget = target.position - transform.position;
+
+        // Beräkna vinkeln mellan fiendens framåtriktning och riktningen till spelaren
         float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-        // Om spelaren дr bakom fienden (mer дn 90 grader), returnera false
-        return angle < 90f;
+        // Begränsa skjutning till mycket liten vinkel, t.ex. 15 grader
+        return angle < 15f;
     }
 
 

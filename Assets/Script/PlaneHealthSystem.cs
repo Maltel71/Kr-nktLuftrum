@@ -18,6 +18,7 @@ public class PlaneHealthSystem : MonoBehaviour
     [SerializeField] private ParticleSystem smokeEffect2;
     [SerializeField] private ParticleSystem smokeEffect3;
     [SerializeField] private ParticleSystem fireEffect;
+    [SerializeField] private Transform smokeSpawnPoint;
     [SerializeField] private float smoke1HPTrigger = 75f;
     [SerializeField] private float smoke2HPTrigger = 50f;
     [SerializeField] private float smoke3HPTrigger = 25f;
@@ -124,6 +125,7 @@ public class PlaneHealthSystem : MonoBehaviour
 
     private void UpdateDamageEffects()
     {
+        Debug.Log($"UpdateDamageEffects called with currentHealth: {currentHealth}");
         UpdateEffect(smokeEffect1, currentHealth <= smoke1HPTrigger);
         UpdateEffect(smokeEffect2, currentHealth <= smoke2HPTrigger);
         UpdateEffect(smokeEffect3, currentHealth <= smoke3HPTrigger);
@@ -132,10 +134,17 @@ public class PlaneHealthSystem : MonoBehaviour
 
     private void UpdateEffect(ParticleSystem effect, bool shouldPlay)
     {
-        if (effect == null) return;
+        if (effect == null)
+        {
+            Debug.LogWarning($"{effect.name} is null!");
+            return;
+        }
+
+        Debug.Log($"UpdateEffect called for {effect.name} with shouldPlay: {shouldPlay}");
 
         if (shouldPlay && !effect.isPlaying)
         {
+            effect.transform.position = smokeSpawnPoint.position;
             effect.Play();
         }
         else if (!shouldPlay && effect.isPlaying)
@@ -143,9 +152,9 @@ public class PlaneHealthSystem : MonoBehaviour
             effect.Stop();
         }
     }
-
     public void TakeDamage(float damage)
     {
+        Debug.Log($"TakeDamage called with damage: {damage}"); ;
         if (isDead) return;
 
         // Om det finns sköld kvar
@@ -240,6 +249,8 @@ public class PlaneHealthSystem : MonoBehaviour
         ScoreManager.Instance.StopGame();
         ScoreManager.Instance.ShowHighScores();
     }
+
+
 
     public bool IsDead() => isDead;
     public float GetHealthPercentage() => currentHealth / maxHealth;

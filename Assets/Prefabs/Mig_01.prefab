@@ -5076,6 +5076,7 @@ MonoBehaviour:
   bulletSpawnOffset: 5
   collisionDamage: 20
   destroyOnCollision: 1
+  continuousShooting: 0
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0

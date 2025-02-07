@@ -3,10 +3,10 @@ using System.Collections;
 
 public class WeaponSystem : MonoBehaviour
 {
-    [Header("Vapen Inställningar")]
+    [Header("Vapen InstÃ¤llningar")]
     [SerializeField] private Transform weaponPoint;
-    [SerializeField] private Transform leftGunPoint;  // För dubbla vapen
-    [SerializeField] private Transform rightGunPoint; // För dubbla vapen
+    [SerializeField] private Transform leftGunPoint;  // FÃ¶r dubbla vapen
+    [SerializeField] private Transform rightGunPoint; // FÃ¶r dubbla vapen
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float fireRate = 0.2f;
@@ -110,13 +110,13 @@ public class WeaponSystem : MonoBehaviour
 
         if (dualWeaponsEnabled)
         {
-            // Skjut från båda vapenpunkterna
+            // Skjut frÃ¥n bÃ¥da vapenpunkterna
             SpawnBullet(leftGunPoint.position);
             SpawnBullet(rightGunPoint.position);
         }
         else
         {
-            // Skjut från huvudvapnet
+            // Skjut frÃ¥n huvudvapnet
             SpawnBullet(weaponPoint.position);
         }
 
@@ -227,7 +227,7 @@ public class WeaponSystem : MonoBehaviour
     // Boost metoder
     public IEnumerator ApplyFireRateBoost(float duration)
     {
-        float boostedFireRate = fireRate * 0.5f; // Dubbelt så snabb fire rate
+        float boostedFireRate = fireRate * 0.5f; // Dubbelt sÃ¥ snabb fire rate
         fireRate = boostedFireRate;
         yield return new WaitForSeconds(duration);
         fireRate = originalFireRate;
