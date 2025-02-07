@@ -4981,9 +4981,9 @@ MonoBehaviour:
   explosionPrefab: {fileID: 2240293931315069056}
   explosionScale: 1
   randomExplosionDelayMin: 1
-  randomExplosionDelayMax: 2
+  randomExplosionDelayMax: 3
   engineExhaustSmoke: {fileID: 1625095279604766710}
-  smokeHealthThreshold: 0.2
+  smokeHealthThreshold: 0.1
   damageSmokeEffect: {fileID: 8202876443604673614}
   damageSmokefadeDuration: 4
   boostDropSystem: {fileID: 0}
