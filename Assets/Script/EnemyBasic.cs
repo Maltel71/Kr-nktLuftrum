@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EnemyBasic : MonoBehaviour
 {
@@ -45,7 +45,7 @@ public class EnemyBasic : MonoBehaviour
 
         if (healthSystem == null)
         {
-            Debug.LogWarning("EnemyHealth saknas på " + gameObject.name);
+            Debug.LogWarning("EnemyHealth saknas pÐµ " + gameObject.name);
         }
     }
 
@@ -75,12 +75,12 @@ public class EnemyBasic : MonoBehaviour
 
     private void HandleMovement()
     {
-        // Basrörelse framåt
+        // BasrÑ†relse framÐµt
         Vector3 movement = -transform.forward * moveSpeed;
 
         if (useWaveMovement)
         {
-            // Lägg till sidledsrörelse i en vågform
+            // LÐ´gg till sidledsrÑ†relse i en vÐµgform
             float sin = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude;
             Vector3 sideVector = transform.right;
             movement += sideVector * sin;
@@ -92,29 +92,21 @@ public class EnemyBasic : MonoBehaviour
     private void HandleShooting()
     {
         float distance = Vector3.Distance(transform.position, target.position);
-
-        // Beräkna vinkeln mellan fienden och spelaren
-        Vector3 directionToTarget = target.position - transform.position;
-        float angle = Vector3.Angle(transform.forward, directionToTarget);
-
-        // Skjut bara om:
-        // 1. Spelaren är inom räckhåll
-        // 2. Spelaren är framför fienden (inom en 45-graders kon)
-        // 3. Det är dags att skjuta igen (cooldown är klar)
-        if (distance <= shootingRange && angle < 45f && Time.time >= nextFireTime)
+        // LÐ´gg till CanShoot() i villkoret
+        if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
+            useLeftGun = !useLeftGun;
         }
     }
 
+
     private void Shoot()
     {
-        // Använd bara en skjutpunkt, till exempel rightGun
-        Transform currentGun = rightGun;
-
-        // Skjut alltid rakt fram i fiendensriktning
-        Vector3 shootDirection = transform.forward;
+        // HÐ´mta aktuell kanon
+        Transform currentGun = useLeftGun ? leftGun : rightGun;
+        Vector3 shootDirection = (target.position - currentGun.position).normalized;
         Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(shootDirection));
@@ -125,40 +117,10 @@ public class EnemyBasic : MonoBehaviour
         }
 
         audioManager?.PlayShootSound();
+
+        // VÐ´xla mellan vÐ´nster och hÑ†ger kanon fÑ†r nÐ´sta skott
+        useLeftGun = !useLeftGun;
     }
-
-    //private void HandleShooting()
-    //{
-    //    float distance = Vector3.Distance(transform.position, target.position);
-    //    // Lägg till CanShoot() i villkoret
-    //    if (distance <= shootingRange && Time.time >= nextFireTime && CanShoot())
-    //    {
-    //        Shoot();
-    //        nextFireTime = Time.time + fireRate;
-    //        useLeftGun = !useLeftGun;
-    //    }
-    //}
-
-
-    //private void Shoot()
-    //{
-    //    // Hämta aktuell kanon
-    //    Transform currentGun = useLeftGun ? leftGun : rightGun;
-    //    Vector3 shootDirection = (target.position - currentGun.position).normalized;
-    //    Vector3 spawnPosition = currentGun.position + shootDirection * bulletSpawnOffset;
-
-    //    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.LookRotation(shootDirection));
-
-    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
-    //    {
-    //        bulletSystem.Initialize(shootDirection, true, bulletDamage);
-    //    }
-
-    //    audioManager?.PlayShootSound();
-
-    //    // Växla mellan vänster och höger kanon för nästa skott
-    //    useLeftGun = !useLeftGun;
-    //}
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -181,17 +143,17 @@ public class EnemyBasic : MonoBehaviour
     {
         if (target == null) return false;
 
-        // Beräkna vinkeln mellan fienden och spelaren
+        // BerÐ´kna vinkeln mellan fienden och spelaren
         Vector3 directionToTarget = target.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-        // Om spelaren är bakom fienden (mer än 90 grader), returnera false
+        // Om spelaren Ð´r bakom fienden (mer Ð´n 90 grader), returnera false
         return angle < 90f;
     }
 
-    
 
-    // Public methods för extern kontroll
+
+    // Public methods fÑ†r extern kontroll
     public void SetMoveSpeed(float speed) => moveSpeed = speed;
     public void SetFireRate(float rate) => fireRate = rate;
     public void SetBulletDamage(float damage) => bulletDamage = damage;

@@ -7973,9 +7973,9 @@ MonoBehaviour:
   maxHealth: 500
   shieldSlider: {fileID: 510788533}
   maxShield: 500
-  smokeEffect1: {fileID: 0}
-  smokeEffect2: {fileID: 0}
-  smokeEffect3: {fileID: 0}
+  smokeEffect1: {fileID: 3635112798565014671, guid: cc4bdfc3b2246a548b44fef20d066a50, type: 3}
+  smokeEffect2: {fileID: 5095628693067180827, guid: 44ee49a2393652743989abed830ac7bc, type: 3}
+  smokeEffect3: {fileID: 2477205024082004622, guid: cc20702ae9f5ca34f80c6b871b9c35af, type: 3}
   fireEffect: {fileID: 0}
   smoke1HPTrigger: 75
   smoke2HPTrigger: 50

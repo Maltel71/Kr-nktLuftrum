@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -17,23 +18,35 @@ public class EnemyHealth : MonoBehaviour
 
     [Header("Crash Settings")]
     [SerializeField] private float crashSpeed = 200f;
+    [SerializeField] private float crashDuration = 5f;
     [SerializeField] private float rotationSpeed = 3200f;
     [SerializeField] private bool rotateClockwise = true;
 
-    [Header("Effects")]
-    [SerializeField] private ParticleSystem smokeEffect;    // Rök när planet störtar
+    [Header("Explosion Settings")]
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private float explosionScale = 1f;
+    [SerializeField] private float randomExplosionDelayMin = 1f;
+    [SerializeField] private float randomExplosionDelayMax = 3f;
+
+    [Header("Smoke Effects")]
+    [SerializeField] private ParticleSystem engineExhaustSmoke;
+    [SerializeField] private float smokeHealthThreshold = 0.2f;
+    [SerializeField] private ParticleSystem damageSmokeEffect;
+    [SerializeField] private float damageSmokefadeDuration = 2f;
 
     [Header("Boost Drops")]
     [SerializeField] private BoostDropSystem boostDropSystem;
-
-    [Header("Other")]
 
     private Slider healthSlider;
     private GameObject healthBarInstance;
     private CameraShake cameraShake;
     private ScoreManager scoreManager;
     private bool isDying = false;
-    public bool IsDying => isDying;  // Lägg till denna rad
+    private bool smokeStarted = false;
+    private float crashStartTime;
+    private bool hasExploded = false;
+
+    public bool IsDying => isDying;
 
     private void Start()
     {
@@ -42,14 +55,17 @@ public class EnemyHealth : MonoBehaviour
         cameraShake = CameraShake.Instance;
         scoreManager = ScoreManager.Instance;
 
-        // Hitta BoostDropSystem om den inte är tilldelad
         if (boostDropSystem == null)
         {
             boostDropSystem = FindObjectOfType<BoostDropSystem>();
         }
 
-        // Stäng av rökeffekten vid start
-        if (smokeEffect != null) smokeEffect.Stop();
+        if (engineExhaustSmoke != null)
+        {
+            engineExhaustSmoke.Play();
+        }
+
+        if (damageSmokeEffect != null) damageSmokeEffect.Stop();
     }
 
     private void Update()
@@ -59,9 +75,23 @@ public class EnemyHealth : MonoBehaviour
             healthBarInstance.transform.rotation = Camera.main.transform.rotation;
         }
 
+        if (!isDying && !smokeStarted && GetHealthPercentage() <= smokeHealthThreshold)
+        {
+            StartDamageSmokeEffect();
+        }
+
         if (isDying)
         {
             HandleCrashing();
+        }
+    }
+
+    private void StartDamageSmokeEffect()
+    {
+        if (damageSmokeEffect != null)
+        {
+            damageSmokeEffect.Play();
+            smokeStarted = true;
         }
     }
 
@@ -72,83 +102,65 @@ public class EnemyHealth : MonoBehaviour
 
     private void HandleCrashing()
     {
-        // Uppdatera position
         Vector3 pos = transform.position;
         pos.y -= crashSpeed * Time.deltaTime;
         transform.position = pos;
 
-        // Rotera planet baserat på inställning
         float rotationAmount = rotateClockwise ? rotationSpeed : -rotationSpeed;
         transform.Rotate(0, 0, rotationAmount * Time.deltaTime);
 
-        // Förstör när det når marken
-        if (pos.y <= 0)
+        if (Time.time >= crashStartTime + crashDuration)
         {
-            AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
-            Destroy(gameObject);
+            if (!hasExploded)
+            {
+                AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
+                StartCoroutine(ExplodeWithRandomDelay());
+            }
         }
     }
 
-    private void StartDying()
+    private IEnumerator ExplodeWithRandomDelay()
     {
-        isDying = true;
+        hasExploded = true;
+        float randomDelay = Random.Range(randomExplosionDelayMin, randomExplosionDelayMax);
 
-        // Försök droppa en boost
-        if (boostDropSystem != null)
+        yield return new WaitForSeconds(randomDelay);
+
+        if (explosionPrefab != null)
         {
-            boostDropSystem.TryDropBoost(transform.position);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            explosion.transform.localScale = Vector3.one * explosionScale;
+            Destroy(explosion, 3f);
         }
 
-        // Deaktivera alla scripts som kan påverka position
-        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
-        foreach (MonoBehaviour script in scripts)
+        Destroy(gameObject);
+
+        if (damageSmokeEffect != null)
         {
-            if (script != this)
+            StartCoroutine(FadeDamageSmoke());
+        }
+    }
+
+    private IEnumerator FadeDamageSmoke()
+    {
+        if (damageSmokeEffect != null)
+        {
+            var main = damageSmokeEffect.main;
+            float originalStartLifetime = main.startLifetime.constant;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < damageSmokefadeDuration)
             {
-                script.enabled = false;
+                float t = elapsedTime / damageSmokefadeDuration;
+                float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
+                main.startLifetime = Mathf.Lerp(originalStartLifetime, 0f, smoothT);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
             }
-        }
 
-        // Inaktivera alla colliders
-        Collider[] colliders = GetComponents<Collider>();
-        foreach (Collider col in colliders)
-        {
-            col.enabled = false;
+            damageSmokeEffect.Stop();
         }
-
-        // Starta rökeffekten
-        if (smokeEffect != null)
-        {
-            smokeEffect.Play();
-            var main = smokeEffect.main;
-            main.simulationSpeed = 2f; // Snabbare rökeffekt
-        }
-
-        // Lägg till poäng
-        if (scoreManager != null)
-        {
-            if (isBoss)
-            {
-                scoreManager.AddBossPoints();
-                if (cameraShake != null)
-                {
-                    cameraShake.ShakaCameraVidBossDöd();
-                }
-            }
-            else
-            {
-                scoreManager.AddEnemyShipPoints();
-            }
-        }
-
-        // Ta bort health bar
-        if (healthBarInstance != null)
-        {
-            Destroy(healthBarInstance);
-        }
-
-        // Spela dödsljud
-        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Death);
     }
 
     public void TakeDamage(float damage)
@@ -166,6 +178,55 @@ public class EnemyHealth : MonoBehaviour
         {
             StartDying();
         }
+    }
+
+    private void StartDying()
+    {
+        isDying = true;
+        crashStartTime = Time.time;
+
+        if (boostDropSystem != null)
+        {
+            boostDropSystem.TryDropBoost(transform.position);
+        }
+
+        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
+        foreach (MonoBehaviour script in scripts)
+        {
+            if (script != this)
+            {
+                script.enabled = false;
+            }
+        }
+
+        Collider[] colliders = GetComponents<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
+
+        if (scoreManager != null)
+        {
+            if (isBoss)
+            {
+                scoreManager.AddBossPoints();
+                if (cameraShake != null)
+                {
+                    cameraShake.ShakaCameraVidBossDöd();
+                }
+            }
+            else
+            {
+                scoreManager.AddEnemyShipPoints();
+            }
+        }
+
+        if (healthBarInstance != null)
+        {
+            Destroy(healthBarInstance);
+        }
+
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Death);
     }
 
     private void CreateHealthBar()
