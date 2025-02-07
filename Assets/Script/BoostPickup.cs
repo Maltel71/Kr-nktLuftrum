@@ -4,11 +4,11 @@ public class BoostPickup : MonoBehaviour
 {
     public enum BoostType
     {
-        HealthBoost,   // Instant effect
-        SpeedBoost,    // Timed effect
-        ShieldBoost,   // Instant effect
-        FireRateBoost, // Timed effect
-        DualWeapons   // Timed effect
+        HealthBoost,     // Instant effect
+        SpeedBoost,      // Timed effect
+        ShieldBoost,     // Instant effect
+        FireRateBoost,   // Timed effect
+        DualWeapons      // Timed effect
     }
 
     [Header("Boost Settings")]
@@ -67,6 +67,9 @@ public class BoostPickup : MonoBehaviour
 
         isPickedUp = true;
         HandleBoostPickup(other.gameObject);
+
+        // Säkerställ att objektet förstörs direkt efter upptagning
+        Destroy(gameObject);
     }
 
     private void HandleBoostPickup(GameObject player)
@@ -136,15 +139,15 @@ public class BoostPickup : MonoBehaviour
                 planeHealth?.AddHealth(healthAmount);
                 break;
 
+            case BoostType.ShieldBoost:
+                planeHealth?.ApplyShieldBoost();
+                break;
+
             case BoostType.SpeedBoost:
                 if (airplaneController != null)
                 {
                     StartCoroutine(airplaneController.ApplySpeedBoost(speedBoostAmount, boostDuration));
                 }
-                break;
-
-            case BoostType.ShieldBoost:
-                planeHealth?.ApplyShieldBoost();
                 break;
 
             case BoostType.FireRateBoost:

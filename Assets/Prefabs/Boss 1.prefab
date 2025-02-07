@@ -140,9 +140,9 @@ MonoBehaviour:
   healthBarOffset: {x: 0, y: 2, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
   crashSpeed: 2000
-  crashDuration: 5
+  crashDuration: 8
   rotationSpeed: 200
-  rotateClockwise: 1
+  rotateClockwise: 0
   explosionPrefab: {fileID: 4166570598371296602}
   explosionScale: 1
   randomExplosionDelayMin: 1
@@ -150,7 +150,7 @@ MonoBehaviour:
   engineExhaustSmoke: {fileID: 6584249352716896629}
   smokeHealthThreshold: 0.2
   damageSmokeEffect: {fileID: 5106751513395425559}
-  damageSmokefadeDuration: 2
+  damageSmokefadeDuration: 4
   boostDropSystem: {fileID: 0}
 --- !u!54 &1546925361892836530
 Rigidbody:

@@ -562,7 +562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &76886555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4899,7 +4899,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 657862391}
-  - component: {fileID: 657862390}
   m_Layer: 0
   m_Name: '"ObjectPool Manager'
   m_TagString: Untagged
@@ -4907,22 +4906,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &657862390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657862389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d8104a0414a5f04392c89b5a51be5a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pools:
-  - tag: Player Bullet
-    prefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
-    size: 50
 --- !u!4 &657862391
 Transform:
   m_ObjectHideFlags: 0
@@ -8051,7 +8034,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
   bulletSpeed: 150
   fireRate: 0.15
-  bulletLifetime: 2
+  bulletLifetime: 0.5
   shellEjectionPoint: {fileID: 221080808}
   shellPrefab: {fileID: 7594624446680057220, guid: 4b5818320cb1b254a880f95268c7deb0, type: 3}
   shellEjectionForce: 4
