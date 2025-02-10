@@ -149,7 +149,18 @@ public class BoostPickup : MonoBehaviour
             case BoostType.SpeedBoost:
                 if (airplaneController != null)
                 {
-                    StartCoroutine(airplaneController.ApplySpeedBoost(speedBoostAmount, boostDuration));
+                    if (ActiveBoostUI.Instance.IsBoostActive(ActiveBoostUI.BoostType.SpeedBoost))
+                    {
+                        // Om en speedboost redan är aktiv, förläng bara varaktigheten
+                        float remainingTime = ActiveBoostUI.Instance.GetRemainingTime(ActiveBoostUI.BoostType.SpeedBoost);
+                        ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.SpeedBoost, remainingTime + boostDuration);
+                    }
+                    else
+                    {
+                        // Om ingen speedboost är aktiv, starta en ny
+                        airplaneController.StartCoroutine(airplaneController.ApplySpeedBoost(speedBoostAmount, boostDuration));
+                        ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.SpeedBoost, boostDuration);
+                    }
                 }
                 break;
 

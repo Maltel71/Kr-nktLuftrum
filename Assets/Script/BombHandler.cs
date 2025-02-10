@@ -69,6 +69,7 @@ public class BombHandler : MonoBehaviour
         if (collision.gameObject.CompareTag("BombTarget"))
         {
             scoreManager?.AddBombTargetPoints();
+            
         }
     }
 

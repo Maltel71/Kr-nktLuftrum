@@ -159,8 +159,8 @@ MonoBehaviour:
   healthAmount: 0
   speedBoostAmount: 0
   shieldAmount: 0
-  fireRateMultiplier: 2
-  boostDuration: 10
+  fireRateMultiplier: 1.5
+  boostDuration: 5
 --- !u!114 &2911484429332721063
 MonoBehaviour:
   m_ObjectHideFlags: 0

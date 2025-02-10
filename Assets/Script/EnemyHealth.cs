@@ -54,14 +54,14 @@ public class EnemyHealth : MonoBehaviour
         isDying = false;
         hasExploded = false;
         initialized = false;
-        Debug.Log($"Enemy {gameObject.name} Awake completed");
+       // Debug.Log($"Enemy {gameObject.name} Awake completed");
     }
 
     private void Start()
     {
-        Debug.Log($"Enemy {gameObject.name} starting. MaxHealth: {maxHealth}");
+        //Debug.Log($"Enemy {gameObject.name} starting. MaxHealth: {maxHealth}");
         currentHealth = maxHealth;
-        Debug.Log($"Set currentHealth to {currentHealth}");
+        //Debug.Log($"Set currentHealth to {currentHealth}");
 
         CreateHealthBar();
         cameraShake = CameraShake.Instance;
@@ -83,7 +83,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
         initialized = true;
-        Debug.Log($"Enemy {gameObject.name} initialization complete");
+        //Debug.Log($"Enemy {gameObject.name} initialization complete");
     }
 
     private void Update()

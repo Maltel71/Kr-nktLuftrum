@@ -188,6 +188,18 @@ public class ActiveBoostUI : MonoBehaviour
         return 0f;
     }
 
+    public void OnBoostExpired(BoostType boostType)
+    {
+        if (boostType == BoostType.SpeedBoost)
+        {
+            AirplaneController airplaneController = FindObjectOfType<AirplaneController>();
+            if (airplaneController != null)
+            {
+                airplaneController.ResetMoveSpeed();
+            }
+        }
+    }
+
 
 }
 

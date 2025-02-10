@@ -203,8 +203,13 @@ public class AirplaneController : MonoBehaviour
 
     public IEnumerator ApplySpeedBoost(float multiplier, float duration)
     {
+        float originalMoveSpeed = moveSpeed;
         moveSpeed *= multiplier;
+
+        // Vänta tills boost-tiden löper ut
         yield return new WaitForSeconds(duration);
+
+        // Återställ till originalhastigheten
         moveSpeed = originalMoveSpeed;
     }
 
@@ -213,5 +218,15 @@ public class AirplaneController : MonoBehaviour
         Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
         Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
         Debug.Log($"- Tag: {collision.gameObject.tag}");
+    }
+
+    public void ResetMoveSpeed()
+    {
+        moveSpeed = originalMoveSpeed;
+    }
+
+    public float GetOriginalMoveSpeed()
+    {
+        return originalMoveSpeed;
     }
 }
