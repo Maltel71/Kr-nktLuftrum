@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d65b72cc1070a9343952595b1d1ac5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostType: 0
+  boostType: 3
   boostColor: {r: 0.9622642, g: 0.49002185, b: 0.040850822, a: 0}
   boostIcon: {fileID: 0}
   rotationSpeed: 50
@@ -159,8 +159,8 @@ MonoBehaviour:
   healthAmount: 0
   speedBoostAmount: 0
   shieldAmount: 0
-  fireRateMultiplier: 4
-  boostDuration: 20
+  fireRateMultiplier: 2
+  boostDuration: 10
 --- !u!114 &2911484429332721063
 MonoBehaviour:
   m_ObjectHideFlags: 0

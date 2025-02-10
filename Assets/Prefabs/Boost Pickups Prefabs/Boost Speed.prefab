@@ -157,7 +157,7 @@ MonoBehaviour:
   bobSpeed: 2
   bobHeight: 0.5
   healthAmount: 0
-  speedBoostAmount: 1
+  speedBoostAmount: 2
   shieldAmount: 0
   fireRateMultiplier: 0
   boostDuration: 10
