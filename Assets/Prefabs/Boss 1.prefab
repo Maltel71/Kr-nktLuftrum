@@ -144,8 +144,8 @@ MonoBehaviour:
   rotationSpeed: 200
   rotateClockwise: 0
   explosionPrefab: {fileID: 4166570598371296602}
-  explosionScale: 1
-  randomExplosionDelayMin: 1
+  explosionScale: 2
+  randomExplosionDelayMin: 2
   randomExplosionDelayMax: 3
   engineExhaustSmoke: {fileID: 6584249352716896629}
   smokeHealthThreshold: 0.2

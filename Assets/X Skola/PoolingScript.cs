@@ -7,6 +7,8 @@ public class PoolingScript : MonoBehaviour
     public GameObject pooledObject;                    // Den prefab som ska lagras i denna poll
     public List<GameObject> pooledObjectList;          // lista som innehåller alla instanser
     public int pooledObjectAmount;                     // Hur många instanser vi ska skapa av prefaben
+                                                       //
+    public PoolItem[] poolItems;                       // Array innehållande de olika poolerna
 
     private void Awake()
     {
@@ -34,4 +36,13 @@ public class PoolingScript : MonoBehaviour
         }                                                              //
         return null;                                                   // Se till att alltid returnerea något
     }
+
+}
+
+[System.Serializable]                                  // Vis klassen i inspectorn
+public class PoolItem                                  // Costumklass som innehållr poolens variablar, kan ha som  eget script
+{                                                      //
+    public GameObject pooledObject;                    // Den prefab som ska lagras i denna poll
+    public List<GameObject> pooledObjectList;          // lista som innehåller alla instanser
+    public int pooledObjectAmount;                     // Hur många instanser vi ska skapa av prefaben
 }

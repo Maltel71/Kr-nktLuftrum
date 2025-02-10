@@ -29,6 +29,7 @@ public class BoostPickup : MonoBehaviour
     private Vector3 startPosition;
     private float timeSinceSpawn;
     private bool isPickedUp = false;
+    private bool isDestroyed = false;
     private Renderer objectRenderer;
 
     private void Start()
@@ -63,13 +64,13 @@ public class BoostPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player") || isPickedUp) return;
+        if (!other.CompareTag("Player") || isPickedUp || isDestroyed) return;
 
+        Debug.Log($"Boost kollision med: {other.gameObject.name}");
         isPickedUp = true;
-        HandleBoostPickup(other.gameObject);
+        isDestroyed = true;
 
-        // Säkerställ att objektet förstörs direkt efter upptagning
-        Destroy(gameObject);
+        HandleBoostPickup(other.gameObject);
     }
 
     private void HandleBoostPickup(GameObject player)
@@ -95,7 +96,7 @@ public class BoostPickup : MonoBehaviour
         // Applicera boost effekt
         ApplyBoostEffect(player);
 
-        // Förstör pickup
+        // Förstör objektet efter att alla effekter har applicerats
         Destroy(gameObject);
     }
 
@@ -164,6 +165,12 @@ public class BoostPickup : MonoBehaviour
                 }
                 break;
         }
+    }
+    private void OnDestroy()
+    {
+        // Extra säkerhet för att förhindra eventuella race conditions
+        isDestroyed = true;
+        isPickedUp = true;
     }
 }
 

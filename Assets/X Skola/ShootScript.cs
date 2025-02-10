@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootScript : MonoBehaviour
 {
     public GameObject shotPrefab;               // Referensfält för prefaben
-    public Transform shootSpawn;               // Referens till spawnpointen
+    public Transform shootSpawn;                // Referens till spawnpointen
     public float shootRate;                     // Skjuthastighet    
     public float bulletAmount = 4;              // Antal skott
     public float spread = 4f;                   // Skottens spridningsvinkel
