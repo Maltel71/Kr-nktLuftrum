@@ -41,16 +41,28 @@ public class EnemyHealth : MonoBehaviour
     private GameObject healthBarInstance;
     private CameraShake cameraShake;
     private ScoreManager scoreManager;
+    private bool initialized = false;
     private bool isDying = false;
     private bool smokeStarted = false;
-    private float crashStartTime;
     private bool hasExploded = false;
+    private float crashStartTime;
 
     public bool IsDying => isDying;
 
+    private void Awake()
+    {
+        isDying = false;
+        hasExploded = false;
+        initialized = false;
+        Debug.Log($"Enemy {gameObject.name} Awake completed");
+    }
+
     private void Start()
     {
+        Debug.Log($"Enemy {gameObject.name} starting. MaxHealth: {maxHealth}");
         currentHealth = maxHealth;
+        Debug.Log($"Set currentHealth to {currentHealth}");
+
         CreateHealthBar();
         cameraShake = CameraShake.Instance;
         scoreManager = ScoreManager.Instance;
@@ -65,11 +77,19 @@ public class EnemyHealth : MonoBehaviour
             engineExhaustSmoke.Play();
         }
 
-        if (damageSmokeEffect != null) damageSmokeEffect.Stop();
+        if (damageSmokeEffect != null)
+        {
+            damageSmokeEffect.Stop();
+        }
+
+        initialized = true;
+        Debug.Log($"Enemy {gameObject.name} initialization complete");
     }
 
     private void Update()
     {
+        if (!initialized) return;
+
         if (healthBarInstance != null)
         {
             healthBarInstance.transform.rotation = Camera.main.transform.rotation;
@@ -80,7 +100,7 @@ public class EnemyHealth : MonoBehaviour
             StartDamageSmokeEffect();
         }
 
-        if (isDying)
+        if (isDying && !hasExploded)
         {
             HandleCrashing();
         }
@@ -102,6 +122,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void HandleCrashing()
     {
+        if (!isDying || hasExploded) return;
+
         Vector3 pos = transform.position;
         pos.y -= crashSpeed * Time.deltaTime;
         transform.position = pos;
@@ -109,36 +131,42 @@ public class EnemyHealth : MonoBehaviour
         float rotationAmount = rotateClockwise ? rotationSpeed : -rotationSpeed;
         transform.Rotate(0, 0, rotationAmount * Time.deltaTime);
 
-        if (Time.time >= crashStartTime + crashDuration)
+        if (Time.time >= crashStartTime + crashDuration && !hasExploded)
         {
-            if (!hasExploded)
-            {
-                AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
-                StartCoroutine(ExplodeWithRandomDelay());
-            }
+            Debug.Log($"Enemy {gameObject.name} starting explosion sequence");
+            AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
+            StartCoroutine(ExplodeWithRandomDelay());
         }
     }
 
     private IEnumerator ExplodeWithRandomDelay()
     {
-        hasExploded = true;
-        float randomDelay = Random.Range(randomExplosionDelayMin, randomExplosionDelayMax);
+        if (hasExploded)
+        {
+            Debug.Log($"Enemy {gameObject.name} already exploded, skipping");
+            yield break;
+        }
 
+        hasExploded = true;
+        Debug.Log($"Enemy {gameObject.name} starting explosion delay");
+
+        float randomDelay = Random.Range(randomExplosionDelayMin, randomExplosionDelayMax);
         yield return new WaitForSeconds(randomDelay);
 
         if (explosionPrefab != null)
         {
+            Debug.Log($"Enemy {gameObject.name} creating explosion effect");
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             explosion.transform.localScale = Vector3.one * explosionScale;
             Destroy(explosion, 3f);
         }
 
-        Destroy(gameObject);
-
         if (damageSmokeEffect != null)
         {
             StartCoroutine(FadeDamageSmoke());
         }
+
+        Destroy(gameObject);
     }
 
     private IEnumerator FadeDamageSmoke()
@@ -165,9 +193,15 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (isDying) return;
+        if (!initialized || isDying)
+        {
+            Debug.Log($"Enemy {gameObject.name} ignoring damage. Initialized: {initialized}, IsDying: {isDying}");
+            return;
+        }
 
+        Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
         currentHealth = Mathf.Max(0, currentHealth - damage);
+        Debug.Log($"Health after damage: {currentHealth}");
 
         if (healthSlider != null)
         {
@@ -176,12 +210,20 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Debug.Log($"Enemy {gameObject.name} health reached 0, starting death sequence");
             StartDying();
         }
     }
 
     private void StartDying()
     {
+        if (isDying)
+        {
+            Debug.Log($"Enemy {gameObject.name} already dying, ignoring duplicate death");
+            return;
+        }
+
+        Debug.Log($"Enemy {gameObject.name} starting death sequence");
         isDying = true;
         crashStartTime = Time.time;
 
