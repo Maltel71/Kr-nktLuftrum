@@ -239,6 +239,13 @@ public class WeaponSystem : MonoBehaviour
         yield return new WaitForSeconds(duration);
         dualWeaponsEnabled = false;
     }
+    public IEnumerator ApplyFireRateBoost(float multiplier, float duration)
+    {
+        float originalFireRate = fireRate;
+        fireRate /= multiplier;  // Dividera för att öka fire rate
+        yield return new WaitForSeconds(duration);
+        fireRate = originalFireRate;
+    }
 
     public void EnableWeapons(bool enable)
     {

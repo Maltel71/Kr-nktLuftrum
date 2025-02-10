@@ -158,7 +158,9 @@ MonoBehaviour:
   bobHeight: 0.5
   healthAmount: 0
   speedBoostAmount: 0
-  boostDuration: 10
+  shieldAmount: 200
+  fireRateMultiplier: 0
+  boostDuration: 0
 --- !u!114 &3254144146675153444
 MonoBehaviour:
   m_ObjectHideFlags: 0

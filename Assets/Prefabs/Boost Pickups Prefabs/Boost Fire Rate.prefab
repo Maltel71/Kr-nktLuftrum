@@ -156,9 +156,11 @@ MonoBehaviour:
   rotationSpeed: 50
   bobSpeed: 2
   bobHeight: 0.5
-  healthAmount: 50
-  speedBoostAmount: 1.5
-  boostDuration: 10
+  healthAmount: 0
+  speedBoostAmount: 0
+  shieldAmount: 0
+  fireRateMultiplier: 4
+  boostDuration: 20
 --- !u!114 &2911484429332721063
 MonoBehaviour:
   m_ObjectHideFlags: 0

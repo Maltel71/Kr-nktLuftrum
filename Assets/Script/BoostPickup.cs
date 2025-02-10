@@ -22,9 +22,11 @@ public class BoostPickup : MonoBehaviour
     [SerializeField] private float bobHeight = 0.5f;
 
     [Header("Boost Values")]
-    [SerializeField] private float healthAmount = 50f;
-    [SerializeField] private float speedBoostAmount = 1.5f;
-    [SerializeField] private float boostDuration = 10f;
+    [SerializeField] private float healthAmount = 50f;        // Hur mycket hälsa som återställs
+    [SerializeField] private float speedBoostAmount = 1.5f;   // Multiplicerar hastigheten med detta värde
+    [SerializeField] private float shieldAmount = 100f;       // Hur mycket sköld som återställs
+    [SerializeField] private float fireRateMultiplier = 2f;   // Multiplicerar fire rate med detta värde
+    [SerializeField] private float boostDuration = 10f;       // Hur länge boost effekten varar
 
     private Vector3 startPosition;
     private float timeSinceSpawn;
@@ -141,7 +143,7 @@ public class BoostPickup : MonoBehaviour
                 break;
 
             case BoostType.ShieldBoost:
-                planeHealth?.ApplyShieldBoost();
+                planeHealth?.ApplyShieldBoost(shieldAmount); // Uppdatera denna metod i PlaneHealthSystem
                 break;
 
             case BoostType.SpeedBoost:
@@ -154,7 +156,7 @@ public class BoostPickup : MonoBehaviour
             case BoostType.FireRateBoost:
                 if (weaponSystem != null)
                 {
-                    StartCoroutine(weaponSystem.ApplyFireRateBoost(boostDuration));
+                    StartCoroutine(weaponSystem.ApplyFireRateBoost(fireRateMultiplier, boostDuration));
                 }
                 break;
 
@@ -166,6 +168,7 @@ public class BoostPickup : MonoBehaviour
                 break;
         }
     }
+
     private void OnDestroy()
     {
         // Extra säkerhet för att förhindra eventuella race conditions

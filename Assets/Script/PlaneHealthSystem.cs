@@ -88,9 +88,9 @@ public class PlaneHealthSystem : MonoBehaviour
         UpdateSlidersImmediate();
     }
 
-    public void ApplyShieldBoost()
+    public void ApplyShieldBoost(float amount)
     {
-        currentShield = maxShield;
+        currentShield = Mathf.Min(maxShield, currentShield + amount);
         targetShieldValue = currentShield;
         UpdateSlidersImmediate();
     }
