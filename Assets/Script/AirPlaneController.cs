@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class AirplaneController : MonoBehaviour
 {
@@ -16,12 +17,26 @@ public class AirplaneController : MonoBehaviour
     [Header("Flare System")]
     [SerializeField] private GameObject flarePrefab;
     [SerializeField] private Transform flareSpawnPoint;
-    [SerializeField] private float flareOffset = 2f;    // Hur långt från planet flaren spawnar
-    [SerializeField] private int maxFlares = 10;        // Antal flares man kan ha
-    [SerializeField] private float flareCooldown = 1f;  // Tid mellan flares
-
+    [SerializeField] private float flareOffset = 2f;
+    [SerializeField] private int startFlares = 0;    // Antal flares att starta med
+    [SerializeField] private int maxFlares = 10;     // Max antal flares som kan bäras
+    [SerializeField] private float flareCooldown = 1f;
     private int currentFlares;
     private float nextFlareTime;
+
+    [Header("Missile System")]
+    [SerializeField] private GameObject MissilePrefab;
+    [SerializeField] private Transform missileSpawnPoint;
+    [SerializeField] private float missileOffset = 2f;
+    [SerializeField] private int startMissiles = 0;    // Antal missiles att starta med
+    [SerializeField] private int maxMissiles = 5;      // Max antal missiles som kan bäras
+    [SerializeField] private float missileCooldown = 1f;
+    private int currentMissiles;
+    private float nextmissileTime;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI flaresText;
+    [SerializeField] private TextMeshProUGUI missilesText;
 
     private Vector2 touchStart;
     private Vector2 movement;
@@ -32,52 +47,65 @@ public class AirplaneController : MonoBehaviour
     private Rigidbody rb;
     private float originalMoveSpeed;
 
-
-
     private void Start()
     {
-        startPosition = transform.position;
-        originalMoveSpeed = moveSpeed;
+        InitializeComponents();
+        SetupInitialState();
+       
+    }
+
+    private void InitializeComponents()
+    {
         rb = GetComponent<Rigidbody>();
-
-        currentFlares = maxFlares;
-
         Collider col = GetComponent<Collider>();
         Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
         Debug.Log($"Flygplan Rigidbody finns: {rb != null}, Är Kinematic: {rb?.isKinematic}");
     }
 
+    private void SetupInitialState()
+    {
+        startPosition = transform.position;
+        originalMoveSpeed = moveSpeed;
+        currentFlares = startFlares;    // Använd värdet från inspektorn
+        currentMissiles = startMissiles; // Använd värdet från inspektorn
+        UpdateUI(); // Uppdatera UI direkt
+    }
+
+
+
     private void Update()
     {
         if (isFrozen)
         {
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-            }
+            HandleFrozenState();
             return;
         }
 
         HandleInput();
         UpdatePosition();
-        HandleFlareInput();
+        HandleWeaponInput();
+        UpdateUI();
     }
 
-    private void HandleFlareInput()
+    private void HandleFrozenState()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (rb != null)
         {
-            Debug.Log("F tryckt");
-            if (CanShootFlare())
-            {
-                Debug.Log("Kan skjuta flare");
-                ShootFlare();
-            }
-            else
-            {
-                Debug.Log($"Kan inte skjuta flare: Flares kvar: {currentFlares}, Time check: {Time.time >= nextFlareTime}, Frozen: {!isFrozen}");
-            }
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+    private void HandleWeaponInput()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && CanShootFlare())
+        {
+            ShootFlare();
+        }
+
+        if (Input.GetKeyDown(KeyCode.G) && CanShootMissile())
+        {
+            ShootMissile();
         }
     }
 
@@ -89,16 +117,54 @@ public class AirplaneController : MonoBehaviour
     private void ShootFlare()
     {
         GameObject flare = Instantiate(flarePrefab,
-        flareSpawnPoint.position,
-        flareSpawnPoint.rotation);
+            flareSpawnPoint.position,
+            flareSpawnPoint.rotation);
 
         // Uppdatera flare count och cooldown
         currentFlares--;
         nextFlareTime = Time.time + flareCooldown;
 
-        // Spela ljudeffekt om du har en
-        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit); // Eller annan lämplig ljudeffekt
+        // Spela ljudeffekt
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
+        UpdateUI(); // Uppdatera UI efter användning
         Debug.Log($"Flare skjuten! Återstående flares: {currentFlares}");
+    }
+
+    private bool CanShootMissile()
+    {
+        return currentMissiles > 0 && Time.time >= nextmissileTime;
+    }
+
+    private void ShootMissile()
+    {
+        GameObject missile = Instantiate(MissilePrefab,
+            missileSpawnPoint.position,
+            missileSpawnPoint.rotation);
+
+        if (missile.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.linearVelocity = transform.forward * 50f;
+            rb.freezeRotation = true;
+        }
+
+        currentMissiles--;
+        nextmissileTime = Time.time + missileCooldown;
+
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Shoot);
+        UpdateUI(); // Uppdatera UI efter användning
+        Debug.Log("Missile fired!");
+    }
+
+    private void UpdateUI()
+    {
+        if (flaresText != null)
+        {
+            flaresText.text = $"Flares: {currentFlares}";
+        }
+        if (missilesText != null)
+        {
+            missilesText.text = $"Missiles: {currentMissiles}";
+        }
     }
 
     private void UpdatePosition()
@@ -119,41 +185,64 @@ public class AirplaneController : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
-
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    touchStart = touch.position;
-                    isTouching = true;
-                    break;
-
-                case TouchPhase.Moved:
-                case TouchPhase.Stationary:
-                    if (isTouching)
-                    {
-                        Vector2 touchDelta = touch.position - touchStart;
-                        movement = touchDelta.normalized;
-                    }
-                    break;
-
-                case TouchPhase.Ended:
-                case TouchPhase.Canceled:
-                    isTouching = false;
-                    break;
-            }
+            HandleTouchInput();
         }
 
 #if UNITY_EDITOR
+        HandleKeyboardInput();
+#endif
+    }
+
+    private void HandleTouchInput()
+    {
+        Touch touch = Input.GetTouch(0);
+
+        switch (touch.phase)
+        {
+            case TouchPhase.Began:
+                touchStart = touch.position;
+                isTouching = true;
+                break;
+
+            case TouchPhase.Moved:
+            case TouchPhase.Stationary:
+                if (isTouching)
+                {
+                    Vector2 touchDelta = touch.position - touchStart;
+                    movement = touchDelta.normalized;
+                }
+                break;
+
+            case TouchPhase.Ended:
+            case TouchPhase.Canceled:
+                isTouching = false;
+                break;
+        }
+    }
+
+    private void HandleKeyboardInput()
+    {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
         if (horizontalInput != 0 || verticalInput != 0)
         {
             movement = new Vector2(horizontalInput, verticalInput).normalized;
         }
-#endif
     }
 
+    public void AddFlares(int amount)
+    {
+        currentFlares = Mathf.Min(currentFlares + amount, maxFlares);
+        UpdateUI(); // Uppdatera UI efter tillägg
+        Debug.Log($"Added {amount} flares. Total: {currentFlares}");
+    }
+
+    public void AddMissiles(int amount)
+    {
+        currentMissiles = Mathf.Min(currentMissiles + amount, maxMissiles);
+        UpdateUI(); // Uppdatera UI efter tillägg
+        Debug.Log($"Added {amount} missiles. Total: {currentMissiles}");
+    }
     public void FreezePosition()
     {
         isFrozen = true;
@@ -166,8 +255,6 @@ public class AirplaneController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
-
-        this.enabled = true;
     }
 
     public void UnfreezePosition()
@@ -205,19 +292,8 @@ public class AirplaneController : MonoBehaviour
     {
         float originalMoveSpeed = moveSpeed;
         moveSpeed *= multiplier;
-
-        // Vänta tills boost-tiden löper ut
         yield return new WaitForSeconds(duration);
-
-        // Återställ till originalhastigheten
         moveSpeed = originalMoveSpeed;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
-        Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
-        Debug.Log($"- Tag: {collision.gameObject.tag}");
     }
 
     public void ResetMoveSpeed()
@@ -228,5 +304,12 @@ public class AirplaneController : MonoBehaviour
     public float GetOriginalMoveSpeed()
     {
         return originalMoveSpeed;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
+        Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
+        Debug.Log($"- Tag: {collision.gameObject.tag}");
     }
 }

@@ -47,15 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c551c3d6f78fbb941912e7965dad45bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missileTarget: {fileID: 0}
+  player: {fileID: 0}
   missile: {fileID: 2279591613096608426}
-  MissileExplosionPrefab: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
+  missileExplosionPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
   rb: {fileID: 5731178390922119550}
   turnValue: 4
   speed: 10
   rotation: 4
   selfDestroyTime: 8
-  DamagePoints: 20
+  damagePoints: 20
+  flareAttractionStrength: 2
 --- !u!54 &5731178390922119550
 Rigidbody:
   m_ObjectHideFlags: 0

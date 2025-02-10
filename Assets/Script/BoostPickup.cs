@@ -8,7 +8,9 @@ public class BoostPickup : MonoBehaviour
         SpeedBoost,      // Timed effect
         ShieldBoost,     // Instant effect
         FireRateBoost,   // Timed effect
-        DualWeapons      // Timed effect
+        DualWeapons,     // Timed effect
+        Flare,           // Numbers of flares
+        Missile,         // Numbers of missiles
     }
 
     [Header("Boost Settings")]
@@ -27,6 +29,7 @@ public class BoostPickup : MonoBehaviour
     [SerializeField] private float shieldAmount = 100f;       // Hur mycket sköld som återställs
     [SerializeField] private float fireRateMultiplier = 2f;   // Multiplicerar fire rate med detta värde
     [SerializeField] private float boostDuration = 10f;       // Hur länge boost effekten varar
+
 
     private Vector3 startPosition;
     private float timeSinceSpawn;
@@ -127,6 +130,8 @@ public class BoostPickup : MonoBehaviour
         BoostType.ShieldBoost => "Shield Restored",
         BoostType.FireRateBoost => "Fire Rate Boost",
         BoostType.DualWeapons => "Dual Weapons",
+        BoostType.Flare => "Flares Added",
+        BoostType.Missile => "Missiles Added",
         _ => "Boost"
     };
 
@@ -177,9 +182,22 @@ public class BoostPickup : MonoBehaviour
                     StartCoroutine(weaponSystem.EnableDualWeapons(boostDuration));
                 }
                 break;
+
+            case BoostType.Flare:
+                if (airplaneController != null)
+                {
+                    airplaneController.AddFlares(1); // Lägg till 1 flare
+                }
+                break;
+
+            case BoostType.Missile:
+                if (airplaneController != null)
+                {
+                    airplaneController.AddMissiles(1); // Lägg till 1 missile
+                }
+                break;
         }
     }
-
     private void OnDestroy()
     {
         // Extra säkerhet för att förhindra eventuella race conditions
