@@ -31,12 +31,14 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region Volume Settings
-    [Header("Volume Settings")]
+    [Header("Main Volume Settings")]
     [SerializeField, Range(0f, 1f)] private float musicVolume = 0.5f;
-    [SerializeField, Range(0f, 1f)] private float sfxVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float engineVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float radioVolume = 0.7f;
-    [SerializeField, Range(0f, 1f)] private float sirenVolume = 0.7f;
+
+    [Header("Effect Volumes")]
+    [SerializeField, Range(0f, 1f)] private float deathVolume = 0.7f;
+    
     #endregion
 
     #region Audio Clips
@@ -44,21 +46,42 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip engineSound;
 
-    [Header("Combat Audio")]
-    [SerializeField] private AudioClip shootSound;
+    [Header("Gun Audio")]
+    [SerializeField] private AudioClip playerShootSound;
+    [SerializeField] private AudioClip enemyShootSound;
     [SerializeField] private AudioClip hitSound;
     [SerializeField] private AudioClip deathSound;
+    [SerializeField, Range(0f, 1f)] private float playerShootVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float enemyShootVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float hitVolume = 0.7f;
 
     [Header("Bomb Audio")]
     [SerializeField] private AudioClip bombDropSound;
     [SerializeField] private AudioClip bombFallingSound;
     [SerializeField] private AudioClip bombExplosionSound;
+    [SerializeField, Range(0f, 1f)] private float bombDropVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float bombFallingVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float bombExplosionVolume = 0.7f;
+
+    [Header("Missile Sounds")]
+    [SerializeField] private AudioClip missileHitSound;
+    [SerializeField] private AudioClip missileLaunchSound;
+    [SerializeField, Range(0f, 1f)] private float missileHitVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float missileLaunchVolume = 0.7f;
+
+    [Header("Flare Sound")]
+    [SerializeField] private AudioClip flareSound;
+    [SerializeField, Range(0f, 1f)] private float flareVolume = 0.7f;
 
     [Header("Power-up Audio")]
     [SerializeField] private AudioClip boostSound;
+    [SerializeField, Range(0f, 1f)] private float boostVolume = 0.7f;
 
     [Header("Alert Audio")]
     [SerializeField] private AudioClip airRaidSiren;
+    [SerializeField, Range(0f, 1f)] private float sirenVolume = 0.7f;
+    [SerializeField] private AudioClip bossAlertSound;
+    [SerializeField, Range(0f, 1f)] private float bossAlertVolume = 0.7f;
 
     [Header("Radio Audio")]
     [SerializeField] private AudioClip radioStart;
@@ -111,25 +134,81 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Bakåtkompatibla metoder
-    public void PlayShootSound() => PlayCombatSound(CombatSoundType.Shoot);
-    public void PlayHitSound() => PlayCombatSound(CombatSoundType.Hit);
-    public void PlayDeathSound() => PlayCombatSound(CombatSoundType.Death);
+    public void PlayMissileLaunchSound()
+    {
+        if (missileLaunchSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(missileLaunchSound, missileLaunchVolume);
+        }
+    }
 
-    public void PlayBombSound() => PlayBombSound(BombSoundType.Drop);
-    public void PlayBombFallingSound() => PlayBombSound(BombSoundType.Falling);
-    public void PlayBombExplosionSound() => PlayBombSound(BombSoundType.Explosion);
+    public void PlayMissileHitSound()
+    {
+        if (missileHitSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(missileHitSound, missileHitVolume);
+            PlayBombSound(BombSoundType.Explosion);
+        }
+    }
+
+    // Nya direkta metoder för skott
+    public void PlayPlayerShootSound()
+    {
+        if (playerShootSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(playerShootSound, playerShootVolume);
+        }
+    }
+
+    public void PlayFlareSound()
+    {
+        if (flareSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(flareSound, flareVolume);
+        }
+    }
+
+    public void PlayEnemyShootSound()
+    {
+        if (enemyShootSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(enemyShootSound, enemyShootVolume);
+        }
+    }
+
+    public void PlayHitSound()
+    {
+        if (hitSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(hitSound, hitVolume);
+        }
+    }
+
+    public void PlayDeathSound()
+    {
+        if (deathSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(deathSound, deathVolume);
+        }
+    }
 
     public void PlayCombatSound(CombatSoundType type)
     {
-        AudioClip clip = type switch
+        switch (type)
         {
-            CombatSoundType.Shoot => shootSound,
-            CombatSoundType.Hit => hitSound,
-            CombatSoundType.Death => deathSound,
-            _ => null
-        };
-        PlaySound(clip);
+            case CombatSoundType.PlayerShoot:
+                PlayPlayerShootSound();
+                break;
+            case CombatSoundType.EnemyShoot:
+                PlayEnemyShootSound();
+                break;
+            case CombatSoundType.Hit:
+                PlayHitSound();
+                break;
+            case CombatSoundType.Death:
+                PlayDeathSound();
+                break;
+        }
     }
 
     public void PlayBombSound(BombSoundType type)
@@ -141,14 +220,18 @@ public class AudioManager : MonoBehaviour
             BombSoundType.Explosion => bombExplosionSound,
             _ => null
         };
-        PlaySound(clip);
-    }
 
-    private void PlaySound(AudioClip clip)
-    {
+        float volume = type switch
+        {
+            BombSoundType.Drop => bombDropVolume,
+            BombSoundType.Falling => bombFallingVolume,
+            BombSoundType.Explosion => bombExplosionVolume,
+            _ => 0f
+        };
+
         if (clip != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip, sfxVolume);
+            sfxSource.PlayOneShot(clip, volume);
         }
     }
     #endregion
@@ -203,19 +286,28 @@ public class AudioManager : MonoBehaviour
     #region Alert Sounds
     public void PlayAirRaidSiren()
     {
-        if (airRaidSiren != null)
+        if (airRaidSiren != null && sfxSource != null)
         {
             sfxSource.PlayOneShot(airRaidSiren, sirenVolume);
         }
     }
 
-    public void PlayBoostSound()
+    public void PlayBossAlert()
     {
-        if (boostSound != null)
+        if (bossAlertSound != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(boostSound, sfxVolume);
+            sfxSource.PlayOneShot(bossAlertSound, bossAlertVolume);
         }
     }
+
+    public void PlayBoostSound()
+    {
+        if (boostSound != null && sfxSource != null)
+        {
+            sfxSource.PlayOneShot(boostSound, boostVolume);
+        }
+    }
+
     #endregion
 
     #region Volume Control
@@ -224,11 +316,6 @@ public class AudioManager : MonoBehaviour
         musicVolume = Mathf.Clamp01(volume);
         if (musicSource != null)
             musicSource.volume = musicVolume;
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        sfxVolume = Mathf.Clamp01(volume);
     }
 
     public void SetEngineVolume(float volume)
@@ -245,11 +332,6 @@ public class AudioManager : MonoBehaviour
             radioSource.volume = radioVolume;
     }
 
-    public void SetSirenVolume(float volume)
-    {
-        sirenVolume = Mathf.Clamp01(volume);
-    }
-
     public void ToggleMusic(bool enabled)
     {
         if (musicSource != null)
@@ -259,11 +341,6 @@ public class AudioManager : MonoBehaviour
             else
                 musicSource.Pause();
         }
-    }
-
-    public void ToggleSFX(bool enabled)
-    {
-        sfxVolume = enabled ? 0.7f : 0f;
     }
 
     public void StopAllSounds()
@@ -280,7 +357,8 @@ public class AudioManager : MonoBehaviour
 #region Enums
 public enum CombatSoundType
 {
-    Shoot,
+    PlayerShoot,
+    EnemyShoot,
     Hit,
     Death
 }
@@ -292,187 +370,3 @@ public enum BombSoundType
     Explosion
 }
 #endregion
-
-
-//using UnityEngine;
-//using System.Collections;
-
-//public class AudioManager : MonoBehaviour
-//{
-//    [Header("Audio Sources")]
-//    [SerializeField] private AudioSource musicSource;
-//    [SerializeField] private AudioSource sfxSource;
-//    [SerializeField] private AudioSource engineSource;
-//    [SerializeField] private AudioSource radioSource;
-
-//    [Header("Volume Settings")]
-//    [SerializeField][Range(0f, 1f)] private float musicVolume = 0.5f;
-//    [SerializeField][Range(0f, 1f)] private float sfxVolume = 0.7f;
-//    [SerializeField][Range(0f, 1f)] private float engineVolume = 0.7f;
-//    [SerializeField][Range(0f, 1f)] private float radioVolume = 0.7f;
-//    [SerializeField][Range(0f, 1f)] private float sirenVolume = 0.7f;
-
-//    [Header("Audio Clips")]
-//    [SerializeField] private AudioClip backgroundMusic;
-//    [SerializeField] private AudioClip deathSound;
-//    [SerializeField] private AudioClip boostSound;
-//    [SerializeField] private AudioClip hitSound;
-//    [SerializeField] private AudioClip shootSound;
-//    [SerializeField] private AudioClip bombSound;
-//    [SerializeField] private AudioClip bombFallingSound;
-//    [SerializeField] private AudioClip bombExplosionSound;
-//    [SerializeField] private AudioClip engineSound;
-//    [SerializeField] private AudioClip airRaidSiren;
-
-//    [Header("Radio Settings")]
-//    [SerializeField] private AudioClip radioStart;
-//    [SerializeField] private AudioClip radioEnd;
-//    [SerializeField] private AudioClip[] radioMessages;
-//    [SerializeField] private float radioDelay = 30f;
-
-//    private static AudioManager instance;
-//    private bool isEnginePlaying = false;
-
-//    private void Awake()
-//    {
-//        if (instance == null)
-//        {
-//            instance = this;
-//            DontDestroyOnLoad(gameObject);
-//            SetupAudioSources();
-//        }
-//        else
-//        {
-//            Destroy(gameObject);
-//        }
-//    }
-
-//    private void SetupAudioSources()
-//    {
-//        if (musicSource == null)
-//        {
-//            musicSource = gameObject.AddComponent<AudioSource>();
-//            musicSource.loop = true;
-//        }
-//        if (sfxSource == null)
-//        {
-//            sfxSource = gameObject.AddComponent<AudioSource>();
-//            sfxSource.loop = false;
-//        }
-//        if (engineSource == null)
-//        {
-//            engineSource = gameObject.AddComponent<AudioSource>();
-//            engineSource.loop = true;
-//        }
-//        if (radioSource == null)
-//        {
-//            radioSource = gameObject.AddComponent<AudioSource>();
-//            radioSource.loop = false;
-//        }
-//    }
-
-//    private void Start()
-//    {
-//        PlayBackgroundMusic();
-//        StartEngine();
-//        StartCoroutine(PlayDelayedRadio());
-//    }
-
-//    private void StartEngine()
-//    {
-//        if (engineSound != null && engineSource != null && !isEnginePlaying)
-//        {
-//            engineSource.clip = engineSound;
-//            engineSource.volume = engineVolume;
-//            engineSource.Play();
-//            isEnginePlaying = true;
-//        }
-//    }
-
-//    public void PlayAirRaidSiren()
-//    {
-//        if (airRaidSiren != null)
-//        {
-//            sfxSource.PlayOneShot(airRaidSiren, sirenVolume);
-//        }
-//    }
-
-//    private IEnumerator PlayDelayedRadio()
-//    {
-//        yield return new WaitForSeconds(radioDelay);
-//        StartRadioSequence();
-//    }
-
-//    public void StartRadioSequence()
-//    {
-//        StartCoroutine(RadioSequence());
-//    }
-
-//    private IEnumerator RadioSequence()
-//    {
-//        if (radioStart != null)
-//        {
-//            radioSource.PlayOneShot(radioStart, radioVolume);
-//            yield return new WaitForSeconds(radioStart.length);
-//        }
-
-//        foreach (AudioClip message in radioMessages)
-//        {
-//            radioSource.PlayOneShot(message, radioVolume);
-//            yield return new WaitForSeconds(message.length);
-//        }
-
-//        if (radioEnd != null)
-//        {
-//            radioSource.PlayOneShot(radioEnd, radioVolume);
-//        }
-//    }
-
-//    public void PlayBackgroundMusic()
-//    {
-//        if (backgroundMusic != null)
-//        {
-//            musicSource.clip = backgroundMusic;
-//            musicSource.volume = musicVolume;
-//            musicSource.Play();
-//        }
-//    }
-
-//    public void PlayShootSound() => PlaySound(shootSound);
-//    public void PlayBombSound() => PlaySound(bombSound);
-//    public void PlayBombFallingSound() => PlaySound(bombFallingSound);
-//    public void PlayBombExplosionSound() => PlaySound(bombExplosionSound);
-//    public void PlayDeathSound() => PlaySound(deathSound);
-//    public void PlayBoostSound() => PlaySound(boostSound);
-//    public void PlayHitSound() => PlaySound(hitSound);
-
-//    private void PlaySound(AudioClip clip)
-//    {
-//        if (clip != null)
-//        {
-//            sfxSource.PlayOneShot(clip, sfxVolume);
-//        }
-//    }
-
-//    public void SetMusicVolume(float volume) => musicVolume = Mathf.Clamp01(volume);
-//    public void SetSFXVolume(float volume) => sfxVolume = Mathf.Clamp01(volume);
-//    public void SetEngineVolume(float volume) => engineVolume = Mathf.Clamp01(volume);
-//    public void SetRadioVolume(float volume) => radioVolume = Mathf.Clamp01(volume);
-//    public void SetSirenVolume(float volume) => sirenVolume = Mathf.Clamp01(volume);
-
-//    public void ToggleMusic(bool enabled)
-//    {
-//        if (musicSource != null)
-//        {
-//            if (enabled) musicSource.Play();
-//            else musicSource.Pause();
-//        }
-//    }
-
-//    public void ToggleSFX(bool enabled)
-//    {
-//        sfxVolume = enabled ? 0.7f : 0f;
-//    }
-
-//    public static AudioManager Instance => instance;
-//}

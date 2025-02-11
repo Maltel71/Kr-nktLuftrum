@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6471003420460693447}
   - component: {fileID: 5731178390922119550}
   - component: {fileID: 1318690216030120898}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Enemy Missile
   m_TagString: Enemy Missile
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2279591613096608426}
@@ -53,10 +53,10 @@ MonoBehaviour:
   missileExplosionPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
   rb: {fileID: 5731178390922119550}
   turnValue: 4
-  speed: 300
+  speed: 200
   rotation: 10
   selfDestroyTime: 20
-  damagePoints: 100
+  damagePoints: 50
   flareAttractionStrength: 2
 --- !u!54 &5731178390922119550
 Rigidbody:
@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Min Smoke particalsystem
       objectReference: {fileID: 0}
+    - target: {fileID: 8808621699460546745, guid: f1417effc73637349ac091727d7550b6, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -212,7 +216,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 58302892069832699, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740095483947, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -224,7 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740097687275, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7870156740097778379, guid: 0db761a7288a51a4da1d067d241f8b3d, type: 3}
       propertyPath: m_LocalScale.x

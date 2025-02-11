@@ -12,6 +12,7 @@ public class TurretScript : MonoBehaviour
     [Header("Turret Settings")]
     public float rotSpeed = 3f;
     public float shootDelay = 4f;
+    [SerializeField] private float shootRange = 30f;
 
     private bool targetAquired;
     private bool missileAway;
@@ -25,32 +26,75 @@ public class TurretScript : MonoBehaviour
 
     void Update()
     {
-        if (isDestroyed) return;  // Gör ingenting om turreten är förstörd
+        if (isDestroyed) return;
 
         if (player != null)
         {
-            // Rotera rampen mot spelaren
-            Vector3 lookDirection = player.position - transform.position;
-            missileRamp.rotation = Quaternion.Slerp(missileRamp.transform.rotation,
-                                                  Quaternion.LookRotation(lookDirection),
-                                                  rotSpeed * Time.deltaTime);
-        }
+            // Kontrollera avståndet till spelaren
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (!missileAway)
-        {
-            Invoke("Shoot", shootDelay);
-            missileAway = true;
+            // Rotera rampen bara om spelaren är inom räckvidd
+            if (distanceToPlayer <= shootRange)
+            {
+                Vector3 lookDirection = player.position - transform.position;
+                missileRamp.rotation = Quaternion.Slerp(missileRamp.transform.rotation,
+                                                      Quaternion.LookRotation(lookDirection),
+                                                      rotSpeed * Time.deltaTime);
+
+                // Skjut bara om spelaren är inom räckvidd
+                if (!missileAway)
+                {
+                    Invoke("Shoot", shootDelay);
+                    missileAway = true;
+                }
+            }
         }
     }
+
+    //void Update()
+    //{
+    //    if (isDestroyed) return;  // Gör ingenting om turreten är förstörd
+
+    //    if (player != null)
+    //    {
+
+    //        // Rotera rampen mot spelaren
+    //        Vector3 lookDirection = player.position - transform.position;
+    //        missileRamp.rotation = Quaternion.Slerp(missileRamp.transform.rotation,
+    //                                              Quaternion.LookRotation(lookDirection),
+    //                                              rotSpeed * Time.deltaTime);
+    //    }
+
+    //    if (!missileAway)
+    //    {
+    //        Invoke("Shoot", shootDelay);
+    //        missileAway = true;
+    //    }
+    //}
 
     void Shoot()
     {
         if (!isDestroyed)
         {
+            // Spela uppskjutningsljudet
+            if (audioManager != null)
+            {
+                audioManager.PlayMissileLaunchSound();
+            }
+
             Instantiate(missilePrefab, shootSpawn.position, shootSpawn.rotation);
             missileAway = false;
         }
     }
+
+    //void Shoot()
+    //{
+    //    if (!isDestroyed)
+    //    {
+    //        Instantiate(missilePrefab, shootSpawn.position, shootSpawn.rotation);
+    //        missileAway = false;
+    //    }
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {

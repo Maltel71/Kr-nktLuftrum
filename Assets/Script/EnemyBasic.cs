@@ -122,7 +122,7 @@ public class EnemyBasic : MonoBehaviour
             bulletSystem.Initialize(shootDirection, true, bulletDamage);
         }
 
-        audioManager?.PlayShootSound();
+        audioManager?.PlayEnemyShootSound();
 
         // Växla mellan vänster och höger kanon
         useLeftGun = !useLeftGun;

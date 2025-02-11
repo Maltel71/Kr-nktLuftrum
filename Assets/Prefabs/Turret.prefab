@@ -234,7 +234,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.017301943, y: 0.73451406, z: 0.018740939, w: 0.67811394}
   m_LocalPosition: {x: 0, y: 0.09, z: 5.91}
-  m_LocalScale: {x: 0.54129326, y: 0.54129326, z: 0.54129326}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2982907276916603303}
@@ -328,8 +328,9 @@ MonoBehaviour:
   missilePrefab: {fileID: 7898668078766822023, guid: 69c414a9271ddb34082865ab2c70e8c5, type: 3}
   shootSpawn: {fileID: 1005130279091895279}
   explosionEffectPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
-  rotSpeed: 1
+  rotSpeed: 2
   shootDelay: 4
+  shootRange: 4000
 --- !u!1 &6216524449018554892
 GameObject:
   m_ObjectHideFlags: 0

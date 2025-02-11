@@ -51,7 +51,7 @@ public class AirplaneController : MonoBehaviour
     {
         InitializeComponents();
         SetupInitialState();
-       
+
     }
 
     private void InitializeComponents()
@@ -125,7 +125,7 @@ public class AirplaneController : MonoBehaviour
         nextFlareTime = Time.time + flareCooldown;
 
         // Spela ljudeffekt
-        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
+        AudioManager.Instance?.PlayFlareSound();
         UpdateUI(); // Uppdatera UI efter användning
         Debug.Log($"Flare skjuten! Återstående flares: {currentFlares}");
     }
@@ -150,7 +150,7 @@ public class AirplaneController : MonoBehaviour
         currentMissiles--;
         nextmissileTime = Time.time + missileCooldown;
 
-        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Shoot);
+        AudioManager.Instance?.PlayMissileLaunchSound();
         UpdateUI(); // Uppdatera UI efter användning
         Debug.Log("Missile fired!");
     }

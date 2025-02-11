@@ -199,9 +199,9 @@ public class EnemyHealth : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
+        //Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
         currentHealth = Mathf.Max(0, currentHealth - damage);
-        Debug.Log($"Health after damage: {currentHealth}");
+        //Debug.Log($"Health after damage: {currentHealth}");
 
         if (healthSlider != null)
         {
@@ -210,7 +210,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Debug.Log($"Enemy {gameObject.name} health reached 0, starting death sequence");
+            //Debug.Log($"Enemy {gameObject.name} health reached 0, starting death sequence");
             StartDying();
         }
     }
@@ -219,11 +219,11 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDying)
         {
-            Debug.Log($"Enemy {gameObject.name} already dying, ignoring duplicate death");
+            //Debug.Log($"Enemy {gameObject.name} already dying, ignoring duplicate death");
             return;
         }
 
-        Debug.Log($"Enemy {gameObject.name} starting death sequence");
+        //Debug.Log($"Enemy {gameObject.name} starting death sequence");
         isDying = true;
         crashStartTime = Time.time;
 
