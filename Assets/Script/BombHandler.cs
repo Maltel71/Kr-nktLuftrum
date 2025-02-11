@@ -37,6 +37,11 @@ public class BombHandler : MonoBehaviour
     {
         if (hasExploded) return;
 
+        if (other.CompareTag("Ground") || other.gameObject.name == "Ground")
+        {
+            HandleExplosion(transform.position);
+        }
+
         Debug.Log($"OnTriggerEnter: Collided with {other.gameObject.name}, tag: {other.gameObject.tag}");
 
         if (other.CompareTag("BombTarget"))
@@ -54,6 +59,11 @@ public class BombHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (hasExploded) return;
+
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.name == "Ground")
+        {
+            HandleExplosion(collision.contacts[0].point);
+        }
 
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.name == "Ground")
         {
