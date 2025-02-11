@@ -50,8 +50,8 @@ public class Missile : MonoBehaviour
             currentTarget = player;
         }
 
-        Debug.Log($"Found {flares.Length} flares");
-        Debug.Log($"Current target: {currentTarget.name}");
+        //Debug.Log($"Found {flares.Length} flares");
+        //Debug.Log($"Current target: {currentTarget.name}");
     }
 
     void FixedUpdate()

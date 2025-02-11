@@ -55,7 +55,7 @@ MonoBehaviour:
   turnValue: 4
   speed: 300
   rotation: 10
-  selfDestroyTime: 8
+  selfDestroyTime: 20
   damagePoints: 100
   flareAttractionStrength: 2
 --- !u!54 &5731178390922119550

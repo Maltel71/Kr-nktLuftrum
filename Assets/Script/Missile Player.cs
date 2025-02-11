@@ -40,16 +40,29 @@ public class MissilePlayer : MonoBehaviour
 
             // Uppdatera hastigheten för att behålla konstant fart framåt
             rb.linearVelocity = transform.forward * speed;
+
+            // Debug-ray för att se missilens bana
+            Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"OnTriggerEnter: Collided with {other.gameObject.name}, tag: {other.gameObject.tag}");
+        HandleCollision(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Missile hit: {collision.gameObject.name} with tag: {collision.gameObject.tag}");
+        Debug.Log($"OnCollisionEnter: Collided with {collision.gameObject.name}, tag: {collision.gameObject.tag}");
+        HandleCollision(collision.gameObject);
+    }
 
-        if (collision.gameObject.CompareTag("Enemy"))
+    private void HandleCollision(GameObject hitObject)
+    {
+        if (hitObject.CompareTag("Enemy"))
         {
-            if (collision.gameObject.TryGetComponent<EnemyHealth>(out var enemyHealth))
+            if (hitObject.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
                 Debug.Log($"Enemy hit! Dealing {damage} damage");
@@ -65,4 +78,7 @@ public class MissilePlayer : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+
+
 }
