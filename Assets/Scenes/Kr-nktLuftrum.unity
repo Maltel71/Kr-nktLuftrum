@@ -8466,7 +8466,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536042482}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: e62676fa5db43584fb13cf3466bc6968, type: 3}
   m_Controller: {fileID: 9100000, guid: 73ceaab732c399b4fbfd411a4d35fb03, type: 2}
   m_CullingMode: 0
@@ -13476,6 +13476,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3426322291913904397, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -33.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4057736460277951244, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_Name
       value: "\xA4AirPlane"
@@ -13484,6 +13488,10 @@ PrefabInstance:
       propertyPath: flaresText
       value: 
       objectReference: {fileID: 1567770488}
+    - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: flareOffset
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: missilesText
       value: 

@@ -123,9 +123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31bd10f37ebedaf4facd2f3ff776f365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 5
+  lifetime: 10
   attractRadius: 20
-  fallSpeed: 5
+  fallSpeed: 16
 --- !u!54 &1074013417873592052
 Rigidbody:
   m_ObjectHideFlags: 0
