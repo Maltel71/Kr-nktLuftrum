@@ -78,7 +78,7 @@ public class EnemyBoss : MonoBehaviour
         if (Time.time >= nextAttackTime)
         {
             currentPattern = (AttackPattern)(((int)currentPattern + 1) % 3);
-            Debug.Log($"Attackerar med pattern: {currentPattern}");
+            //Debug.Log($"Attackerar med pattern: {currentPattern}");
 
             switch (currentPattern)
             {
@@ -119,7 +119,7 @@ public class EnemyBoss : MonoBehaviour
 
     private void FireSpreadAttack()
     {
-        Debug.Log("Startar spread attack");
+        //Debug.Log("Startar spread attack");
         float angleStep = spreadAngle / (spreadCount - 1);
         float startAngle = -spreadAngle / 2;
 
@@ -136,7 +136,7 @@ public class EnemyBoss : MonoBehaviour
 
     private IEnumerator FireBurstAttack()
     {
-        Debug.Log("Startar burst attack");
+        //Debug.Log("Startar burst attack");
         for (int i = 0; i < burstCount; i++)
         {
             Vector3 direction = (target.position - transform.position).normalized;
@@ -149,7 +149,7 @@ public class EnemyBoss : MonoBehaviour
 
     private void FireCircleAttack()
     {
-        Debug.Log("Startar circle attack");
+        //Debug.Log("Startar circle attack");
         float angleStep = 360f / circleCount;
 
         for (int i = 0; i < circleCount; i++)

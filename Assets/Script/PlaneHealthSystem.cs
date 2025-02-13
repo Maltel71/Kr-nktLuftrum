@@ -36,7 +36,11 @@ public class PlaneHealthSystem : MonoBehaviour
     [Header("Test Settings")]
     [SerializeField] private float testDamageAmount = 10f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator planeAnimator;
+    private static readonly int IsDeadAnimation = Animator.StringToHash("IsDead");
     private bool isDead = false;
+
     private AirplaneController airplaneController;
 
     private void Start()
@@ -51,6 +55,15 @@ public class PlaneHealthSystem : MonoBehaviour
         {
             planeModel = gameObject;
             Debug.Log("Using this GameObject as plane model");
+        }
+
+        if (planeAnimator == null)
+        {
+            planeAnimator = GetComponent<Animator>();
+        }
+        if (planeAnimator != null)
+        {
+            planeAnimator.SetBool("isDead", false);
         }
 
         airplaneController = GetComponent<AirplaneController>();
@@ -76,23 +89,6 @@ public class PlaneHealthSystem : MonoBehaviour
         }
 
         UpdateSliders();
-    }
-
-    public void AddHealth(float amount)
-    {
-        if (isDead) return;
-
-        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
-        targetHealthValue = currentHealth;
-        UpdateDamageEffects();
-        UpdateSlidersImmediate();
-    }
-
-    public void ApplyShieldBoost(float amount)
-    {
-        currentShield = Mathf.Min(maxShield, currentShield + amount);
-        targetShieldValue = currentShield;
-        UpdateSlidersImmediate();
     }
 
     private void UpdateSliders()
@@ -136,7 +132,7 @@ public class PlaneHealthSystem : MonoBehaviour
     {
         if (effect == null)
         {
-            Debug.LogWarning($"{effect.name} is null!");
+            Debug.LogWarning("Effect is null!");
             return;
         }
 
@@ -152,25 +148,40 @@ public class PlaneHealthSystem : MonoBehaviour
             effect.Stop();
         }
     }
-    public void TakeDamage(float damage)
+
+    public void AddHealth(float amount)
     {
-        Debug.Log($"TakeDamage called with damage: {damage}"); ;
         if (isDead) return;
 
-        // Om det finns sköld kvar
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        targetHealthValue = currentHealth;
+        UpdateDamageEffects();
+        UpdateSlidersImmediate();
+    }
+
+    public void ApplyShieldBoost(float amount)
+    {
+        currentShield = Mathf.Min(maxShield, currentShield + amount);
+        targetShieldValue = currentShield;
+        UpdateSlidersImmediate();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        //Debug.Log($"TakeDamage called with damage: {damage}");
+        if (isDead) return;
+
         if (currentShield > 0)
         {
-            // Ta bort från skölden först
             currentShield = Mathf.Max(0, currentShield - damage);
             targetShieldValue = currentShield;
-            Debug.Log($"Shield hit! Shield remaining: {currentShield}");
+            //Debug.Log($"Shield hit! Shield remaining: {currentShield}");
         }
-        // Om skölden är slut, ta skada på hälsan
         else
         {
             currentHealth = Mathf.Max(0, currentHealth - damage);
             targetHealthValue = currentHealth;
-            Debug.Log($"Health hit! Health remaining: {currentHealth}");
+            //Debug.Log($"Health hit! Health remaining: {currentHealth}");
 
             UpdateDamageEffects();
 
@@ -209,7 +220,11 @@ public class PlaneHealthSystem : MonoBehaviour
         isDead = true;
         Debug.Log("Plane destroyed!");
 
-        // Stop all effects
+        if (planeAnimator != null)
+        {
+            planeAnimator.SetBool(IsDeadAnimation, true);
+        }
+
         UpdateEffect(smokeEffect1, false);
         UpdateEffect(smokeEffect2, false);
         UpdateEffect(smokeEffect3, false);
@@ -239,7 +254,7 @@ public class PlaneHealthSystem : MonoBehaviour
                 spriteRenderer.enabled = false;
             }
         }
-        // Anropa highscore-systemet
+
         HighScoreManager highScoreManager = FindObjectOfType<HighScoreManager>();
         if (highScoreManager != null)
         {
@@ -250,10 +265,18 @@ public class PlaneHealthSystem : MonoBehaviour
         ScoreManager.Instance.ShowHighScores();
     }
 
+    public bool IsDead()
+    {
+        return isDead;
+    }
 
+    public float GetHealthPercentage()
+    {
+        return currentHealth / maxHealth;
+    }
 
-    public bool IsDead() => isDead;
-    public float GetHealthPercentage() => currentHealth / maxHealth;
-    public float GetShieldPercentage() => currentShield / maxShield;
-
+    public float GetShieldPercentage()
+    {
+        return currentShield / maxShield;
+    }
 }
