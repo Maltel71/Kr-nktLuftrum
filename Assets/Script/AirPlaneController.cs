@@ -37,8 +37,9 @@ public class AirplaneController : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private Animator planeAnimator;
     [SerializeField] private float animationThreshold = 0.1f;
-    private static readonly int TurnLeft = Animator.StringToHash("Move L");
-    private static readonly int TurnRight = Animator.StringToHash("Move R");
+    private static readonly int MoveL = Animator.StringToHash("Move_L");
+    private static readonly int MoveR = Animator.StringToHash("Move_R");
+    private static readonly int IsDead = Animator.StringToHash("isDead");
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI flaresText;
@@ -62,13 +63,25 @@ public class AirplaneController : MonoBehaviour
     private void InitializeComponents()
     {
         rb = GetComponent<Rigidbody>();
+
+        // Hitta Animator explicit
+        planeAnimator = GetComponentInChildren<Animator>();
+
         if (planeAnimator == null)
         {
-            planeAnimator = GetComponent<Animator>();
+            Debug.LogError("KRITISKT: Ingen Animator hittad på flygplanet eller dess barn!");
+
+            // Sök igenom alla barn
+            Animator[] childAnimators = GetComponentsInChildren<Animator>();
+            foreach (var animator in childAnimators)
+            {
+                Debug.Log($"Hittade Animator på: {animator.gameObject.name}");
+            }
         }
-        Collider col = GetComponent<Collider>();
-        Debug.Log($"Flygplan Collider finns: {col != null}, Är Trigger: {col?.isTrigger}");
-        Debug.Log($"Flygplan Rigidbody finns: {rb != null}, Är Kinematic: {rb?.isKinematic}");
+        else
+        {
+            Debug.Log($"Animator hittad på: {planeAnimator.gameObject.name}");
+        }
     }
 
     private void SetupInitialState()
@@ -102,11 +115,11 @@ public class AirplaneController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        // Återställ animationer när planet är fruset
         if (planeAnimator != null)
         {
-            planeAnimator.SetBool(TurnLeft, false);
-            planeAnimator.SetBool(TurnRight, false);
+            planeAnimator.SetBool(MoveL, false);
+            planeAnimator.SetBool(MoveR, false);
+            planeAnimator.SetBool(IsDead, true);
         }
     }
 
@@ -203,20 +216,37 @@ public class AirplaneController : MonoBehaviour
 #if UNITY_EDITOR
         HandleKeyboardInput();
 #endif
+        //Debug.Log($"Movement efter input: X={movement.x}, Y={movement.y}");
 
         UpdateAnimations();
     }
 
     private void UpdateAnimations()
     {
-        if (planeAnimator != null)
+        if (planeAnimator == null)
         {
-            bool isGoingLeft = movement.x < -animationThreshold;
-            bool isGoingRight = movement.x > animationThreshold;
-
-            planeAnimator.SetBool(TurnLeft, isGoingLeft);
-            planeAnimator.SetBool(TurnRight, isGoingRight);
+            Debug.LogError("Ingen Animator hittad!");
+            return;
         }
+
+        // Skriv ut mer detaljerad information
+        Debug.Log($"Animation Debug - Movement X: {movement.x}, Threshold: {animationThreshold}");
+
+        // Mer explicit logik för animationer
+        bool isMovingLeft = movement.x < -animationThreshold;
+        bool isMovingRight = movement.x > animationThreshold;
+
+        // Sätt animationsparametrar
+        planeAnimator.SetBool("Move_L", isMovingLeft);
+        planeAnimator.SetBool("Move_R", isMovingRight);
+
+        // Detaljerad loggning
+        if (isMovingLeft)
+            Debug.Log("Triggering Left Movement Animation");
+        else if (isMovingRight)
+            Debug.Log("Triggering Right Movement Animation");
+        else
+            Debug.Log("No significant movement");
     }
 
     private void HandleTouchInput()
@@ -246,6 +276,7 @@ public class AirplaneController : MonoBehaviour
         }
     }
 
+
     private void HandleKeyboardInput()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -253,6 +284,9 @@ public class AirplaneController : MonoBehaviour
         if (horizontalInput != 0 || verticalInput != 0)
         {
             movement = new Vector2(horizontalInput, verticalInput).normalized;
+            // Debug för input
+            //Debug.Log($"Keyboard Input - Horizontal: {horizontalInput}, Movement X: {movement.x}");
+            Debug.Log($"Rörelse efter input - X: {movement.x}, Y: {movement.y}");
         }
     }
 
@@ -282,6 +316,11 @@ public class AirplaneController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
+
+        if (planeAnimator != null)
+        {
+            planeAnimator.SetBool(IsDead, true);
+        }
     }
 
     public void UnfreezePosition()
@@ -290,6 +329,11 @@ public class AirplaneController : MonoBehaviour
         if (rb != null)
         {
             rb.isKinematic = false;
+        }
+
+        if (planeAnimator != null)
+        {
+            planeAnimator.SetBool(IsDead, false);
         }
     }
 
@@ -305,6 +349,13 @@ public class AirplaneController : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = false;
+        }
+
+        if (planeAnimator != null)
+        {
+            planeAnimator.SetBool(IsDead, false);
+            planeAnimator.SetBool(MoveL, false);
+            planeAnimator.SetBool(MoveR, false);
         }
     }
 
@@ -335,8 +386,8 @@ public class AirplaneController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
-        //Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
-        //Debug.Log($"- Tag: {collision.gameObject.tag}");
+        Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
+        Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
+        Debug.Log($"- Tag: {collision.gameObject.tag}");
     }
 }

@@ -5198,7 +5198,7 @@ MonoBehaviour:
   fireRate: 2
   bulletDamage: 10
   bulletSpawnOffset: 5
-  collisionDamage: 500
+  collisionDamage: 100
   destroyOnCollision: 0
   continuousShooting: 0
 --- !u!1 &1958495011441875265
