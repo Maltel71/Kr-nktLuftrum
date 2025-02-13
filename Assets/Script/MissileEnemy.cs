@@ -41,7 +41,7 @@ public class MissileEnemy : MonoBehaviour
             Debug.LogError("Kunde inte hitta spelare med Player-tag!");
         }
 
-        playerHealthSystem = player.GetComponent<PlaneHealthSystem>();
+        //playerHealthSystem = player.GetComponent<PlaneHealthSystem>();
         audioManager = AudioManager.Instance;
 
         StartCoroutine(SelfDestroyTimer());
@@ -93,9 +93,17 @@ public class MissileEnemy : MonoBehaviour
         {
             Debug.Log("Missile Collision with player detected");
 
-            if (playerHealthSystem != null)
+            // Hämta PlaneHealthSystem direkt från kollisionsobjektet
+            PlaneHealthSystem targetHealth = other.GetComponent<PlaneHealthSystem>();
+
+            if (targetHealth != null)
             {
-                playerHealthSystem.TakeDamage(damagePoints);
+                Debug.Log($"Applying {damagePoints} damage to player");
+                targetHealth.TakeDamage(damagePoints);
+            }
+            else
+            {
+                Debug.LogWarning("Player hit but no PlaneHealthSystem found!");
             }
 
             ExplodeAndDestroy(other.transform.position);
