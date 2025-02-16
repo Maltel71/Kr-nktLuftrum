@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edb8eb7125ea44f68bbe616b44fa9bc, type: 3}
+  m_Name: Color Palette
+  m_EditorClassIdentifier: 
+  colorDesigns:
+  - keyChar: '!'
+    textColor: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 0.030037368, g: 0.7075472, b: 0.039295837, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: '"'
+    textColor: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 0, g: 0.6152477, b: 1, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: '#'
+    textColor: {r: 1, g: 1, b: 1, a: 1}
+    backgroundColor: {r: 0.9622642, g: 0, b: 0.15102737, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: "\xA4"
+    textColor: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 1, g: 0.77511966, b: 0, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: /
+    textColor: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: //
+    textColor: {r: 1, g: 1, b: 1, a: 1}
+    backgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    textAlignment: 4
+    fontStyle: 1
+  - keyChar: '%'
+    textColor: {r: 1, g: 1, b: 1, a: 1}
+    backgroundColor: {r: 0.49300137, g: 0.0045834924, b: 0.9716981, a: 1}
+    textAlignment: 4
+    fontStyle: 1

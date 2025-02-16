@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -7,47 +8,200 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     private float currentHealth;
 
+    [Header("Boss Settings")]
+    [SerializeField] private bool isBoss = false;
+
     [Header("UI")]
-    [SerializeField] private Slider healthSlider;
-    [SerializeField] private Vector3 sliderOffset = new Vector3(0, 2f, 0);
-    private Camera mainCamera;
+    [SerializeField] private GameObject healthBarPrefab;
+    [SerializeField] private Vector3 healthBarOffset = new Vector3(0, 2f, 0);
+    [SerializeField] private Vector3 healthBarScale = new Vector3(0.05f, 0.05f, 0.05f);
 
-    [Header("Destruction Effects")]
+    [Header("Crash Settings")]
+    [SerializeField] private float crashSpeed = 200f;
+    [SerializeField] private float crashDuration = 5f;
+    [SerializeField] private float rotationSpeed = 3200f;
+    [SerializeField] private bool rotateClockwise = true;
+
+    [Header("Explosion Settings")]
     [SerializeField] private GameObject explosionPrefab;
-    [SerializeField] private float destroyDelay = 0.5f;
-    [SerializeField] private AudioClip explosionSound;
+    [SerializeField] private float explosionScale = 1f;
+    [SerializeField] private float randomExplosionDelayMin = 1f;
+    [SerializeField] private float randomExplosionDelayMax = 3f;
 
-    private AudioSource audioSource;
+    [Header("Smoke Effects")]
+    [SerializeField] private ParticleSystem engineExhaustSmoke;
+    [SerializeField] private float smokeHealthThreshold = 0.2f;
+    [SerializeField] private ParticleSystem damageSmokeEffect;
+    [SerializeField] private float damageSmokefadeDuration = 2f;
+
+    [Header("Boost Drops")]
+    [SerializeField] private BoostDropSystem boostDropSystem;
+
+    private Slider healthSlider;
+    private GameObject healthBarInstance;
+    private CameraShake cameraShake;
+    private ScoreManager scoreManager;
+    private bool initialized = false;
+    private bool isDying = false;
+    private bool smokeStarted = false;
+    private bool hasExploded = false;
+    private float crashStartTime;
+
+    public bool IsDying => isDying;
+
+    private void Awake()
+    {
+        isDying = false;
+        hasExploded = false;
+        initialized = false;
+       // Debug.Log($"Enemy {gameObject.name} Awake completed");
+    }
 
     private void Start()
     {
+        //Debug.Log($"Enemy {gameObject.name} starting. MaxHealth: {maxHealth}");
         currentHealth = maxHealth;
-        mainCamera = Camera.main;
+        //Debug.Log($"Set currentHealth to {currentHealth}");
 
-        if (healthSlider != null)
+        CreateHealthBar();
+        cameraShake = CameraShake.Instance;
+        scoreManager = ScoreManager.Instance;
+
+        if (boostDropSystem == null)
         {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
+            boostDropSystem = FindObjectOfType<BoostDropSystem>();
         }
 
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null && explosionSound != null)
+        if (engineExhaustSmoke != null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            engineExhaustSmoke.Play();
         }
+
+        if (damageSmokeEffect != null)
+        {
+            damageSmokeEffect.Stop();
+        }
+
+        initialized = true;
+        //Debug.Log($"Enemy {gameObject.name} initialization complete");
     }
 
     private void Update()
     {
-        if (healthSlider != null && mainCamera != null)
+        if (!initialized) return;
+
+        if (healthBarInstance != null)
         {
-            healthSlider.transform.position = mainCamera.WorldToScreenPoint(transform.position + sliderOffset);
+            healthBarInstance.transform.rotation = Camera.main.transform.rotation;
+        }
+
+        if (!isDying && !smokeStarted && GetHealthPercentage() <= smokeHealthThreshold)
+        {
+            StartDamageSmokeEffect();
+        }
+
+        if (isDying && !hasExploded)
+        {
+            HandleCrashing();
+        }
+    }
+
+    private void StartDamageSmokeEffect()
+    {
+        if (damageSmokeEffect != null)
+        {
+            damageSmokeEffect.Play();
+            smokeStarted = true;
+        }
+    }
+
+    public float GetHealthPercentage()
+    {
+        return currentHealth / maxHealth;
+    }
+
+    private void HandleCrashing()
+    {
+        if (!isDying || hasExploded) return;
+
+        Vector3 pos = transform.position;
+        pos.y -= crashSpeed * Time.deltaTime;
+        transform.position = pos;
+
+        float rotationAmount = rotateClockwise ? rotationSpeed : -rotationSpeed;
+        transform.Rotate(0, 0, rotationAmount * Time.deltaTime);
+
+        if (Time.time >= crashStartTime + crashDuration && !hasExploded)
+        {
+            Debug.Log($"Enemy {gameObject.name} starting explosion sequence");
+            AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
+            StartCoroutine(ExplodeWithRandomDelay());
+        }
+    }
+
+    private IEnumerator ExplodeWithRandomDelay()
+    {
+        if (hasExploded)
+        {
+            Debug.Log($"Enemy {gameObject.name} already exploded, skipping");
+            yield break;
+        }
+
+        hasExploded = true;
+        Debug.Log($"Enemy {gameObject.name} starting explosion delay");
+
+        float randomDelay = Random.Range(randomExplosionDelayMin, randomExplosionDelayMax);
+        yield return new WaitForSeconds(randomDelay);
+
+        if (explosionPrefab != null)
+        {
+            Debug.Log($"Enemy {gameObject.name} creating explosion effect");
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            explosion.transform.localScale = Vector3.one * explosionScale;
+            Destroy(explosion, 3f);
+        }
+
+        if (damageSmokeEffect != null)
+        {
+            StartCoroutine(FadeDamageSmoke());
+        }
+
+        Destroy(gameObject);
+    }
+
+    private IEnumerator FadeDamageSmoke()
+    {
+        if (damageSmokeEffect != null)
+        {
+            var main = damageSmokeEffect.main;
+            float originalStartLifetime = main.startLifetime.constant;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < damageSmokefadeDuration)
+            {
+                float t = elapsedTime / damageSmokefadeDuration;
+                float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
+                main.startLifetime = Mathf.Lerp(originalStartLifetime, 0f, smoothT);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            damageSmokeEffect.Stop();
         }
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        if (!initialized || isDying)
+        {
+            Debug.Log($"Enemy {gameObject.name} ignoring damage. Initialized: {initialized}, IsDying: {isDying}");
+            return;
+        }
+
+        //Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        //Debug.Log($"Health after damage: {currentHealth}");
 
         if (healthSlider != null)
         {
@@ -56,39 +210,86 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            //Debug.Log($"Enemy {gameObject.name} health reached 0, starting death sequence");
+            StartDying();
         }
     }
 
-    private void Die()
+    private void StartDying()
     {
-        if (explosionPrefab != null)
+        if (isDying)
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            //Debug.Log($"Enemy {gameObject.name} already dying, ignoring duplicate death");
+            return;
         }
 
-        if (audioSource != null && explosionSound != null)
+        //Debug.Log($"Enemy {gameObject.name} starting death sequence");
+        isDying = true;
+        crashStartTime = Time.time;
+
+        if (boostDropSystem != null)
         {
-            audioSource.PlayOneShot(explosionSound);
+            boostDropSystem.TryDropBoost(transform.position);
         }
+
+        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
+        foreach (MonoBehaviour script in scripts)
+        {
+            if (script != this)
+            {
+                script.enabled = false;
+            }
+        }
+
+        Collider[] colliders = GetComponents<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
+
+        if (scoreManager != null)
+        {
+            if (isBoss)
+            {
+                scoreManager.AddBossPoints();
+                if (cameraShake != null)
+                {
+                    cameraShake.ShakaCameraVidBossDöd();
+                }
+            }
+            else
+            {
+                scoreManager.AddEnemyShipPoints();
+            }
+        }
+
+        if (healthBarInstance != null)
+        {
+            Destroy(healthBarInstance);
+        }
+
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.Death);
+    }
+
+    private void CreateHealthBar()
+    {
+        healthBarInstance = Instantiate(healthBarPrefab, transform.position + healthBarOffset, Quaternion.identity, transform);
+        healthSlider = healthBarInstance.GetComponentInChildren<Slider>();
 
         if (healthSlider != null)
         {
-            Destroy(healthSlider.gameObject);
+            healthSlider.minValue = 0;
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
         }
 
-        var renderers = GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
+        Canvas canvas = healthBarInstance.GetComponentInChildren<Canvas>();
+        if (canvas != null)
         {
-            renderer.enabled = false;
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvas.sortingOrder = 10;
         }
 
-        var colliders = GetComponentsInChildren<Collider>();
-        foreach (var collider in colliders)
-        {
-            collider.enabled = false;
-        }
-
-        Destroy(gameObject, destroyDelay);
+        healthBarInstance.transform.localScale = healthBarScale;
     }
 }

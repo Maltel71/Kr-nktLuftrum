@@ -1,10 +1,12 @@
 using UnityEngine;
-using System;
+using System.Collections;
 
 public class WeaponSystem : MonoBehaviour
 {
-    [Header("Vapen Inst�llningar")]
+    [Header("Vapen Inställningar")]
     [SerializeField] private Transform weaponPoint;
+    [SerializeField] private Transform leftGunPoint;  // För dubbla vapen
+    [SerializeField] private Transform rightGunPoint; // För dubbla vapen
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float fireRate = 0.2f;
@@ -21,10 +23,16 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private Transform bombPoint;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private float bombCooldown = 1f;
-    [SerializeField] private float bombDropForce = 10f;
+    [SerializeField] private float bombDropForce = 200f;
+
+    [Header("Boost Settings")]
+    [SerializeField] private float fireRateBoostDuration = 10f;
+    [SerializeField] private float dualWeaponsDuration = 15f;
 
     private float nextFireTime;
     private float nextBombTime;
+    private float originalFireRate;
+    private bool dualWeaponsEnabled = false;
     private AudioManager audioManager;
     private bool canFire = true;
     private bool isInitialized;
@@ -34,6 +42,7 @@ public class WeaponSystem : MonoBehaviour
     private void Start()
     {
         InitializeComponents();
+        originalFireRate = fireRate;
     }
 
     private void InitializeComponents()
@@ -64,7 +73,7 @@ public class WeaponSystem : MonoBehaviour
 #if UNITY_EDITOR
         HandleEditorInput();
 #else
-            HandleMobileInput();
+        HandleMobileInput();
 #endif
     }
 
@@ -99,7 +108,18 @@ public class WeaponSystem : MonoBehaviour
     {
         if (!ValidateWeaponComponents()) return;
 
-        SpawnBullet();
+        if (dualWeaponsEnabled)
+        {
+            // Skjut från båda vapenpunkterna
+            SpawnBullet(leftGunPoint.position);
+            SpawnBullet(rightGunPoint.position);
+        }
+        else
+        {
+            // Skjut från huvudvapnet
+            SpawnBullet(weaponPoint.position);
+        }
+
         EjectShell();
         PlayFireEffects();
         UpdateFireCooldown();
@@ -110,25 +130,19 @@ public class WeaponSystem : MonoBehaviour
         return weaponPoint != null && bulletPrefab != null;
     }
 
-    private void SpawnBullet()
+    private void SpawnBullet(Vector3 spawnPosition)
     {
-        GameObject bullet = InstantiateBullet();
-        ConfigureBullet(bullet);
-        Destroy(bullet, bulletLifetime);
-    }
-
-    private GameObject InstantiateBullet()
-    {
-        return Instantiate(bulletPrefab, weaponPoint.position, Quaternion.identity);
-    }
-
-    private void ConfigureBullet(GameObject bullet)
-    {
+        GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
+        {
+            bulletSystem.Initialize(Vector3.forward, false, 10f); // Standardskada
+        }
         if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
         {
             bulletRb.useGravity = false;
             bulletRb.linearVelocity = BulletDirection * bulletSpeed;
         }
+        Destroy(bullet, bulletLifetime);
     }
 
     private void EjectShell()
@@ -156,13 +170,13 @@ public class WeaponSystem : MonoBehaviour
         {
             Vector3 ejectionDir = (shellEjectionPoint.right + ShellEjectionOffset).normalized;
             shellRb.AddForce(ejectionDir * shellEjectionForce, ForceMode.Impulse);
-            shellRb.AddTorque(UnityEngine.Random.insideUnitSphere * shellTorque, ForceMode.Impulse);
+            shellRb.AddTorque(Random.insideUnitSphere * shellTorque, ForceMode.Impulse);
         }
     }
 
     private void PlayFireEffects()
     {
-        audioManager?.PlayShootSound();
+        AudioManager.Instance?.PlayCombatSound(CombatSoundType.PlayerShoot);
     }
 
     private void UpdateFireCooldown()
@@ -202,7 +216,7 @@ public class WeaponSystem : MonoBehaviour
 
     private void PlayBombEffects()
     {
-        audioManager?.PlayBombSound();
+        AudioManager.Instance?.PlayBombSound(BombSoundType.Drop);
     }
 
     private void UpdateBombCooldown()
@@ -210,124 +224,31 @@ public class WeaponSystem : MonoBehaviour
         nextBombTime = Time.time + bombCooldown;
     }
 
+    // Boost metoder
+    public IEnumerator ApplyFireRateBoost(float duration)
+    {
+        float boostedFireRate = fireRate * 0.5f; // Dubbelt så snabb fire rate
+        fireRate = boostedFireRate;
+        yield return new WaitForSeconds(duration);
+        fireRate = originalFireRate;
+    }
+
+    public IEnumerator EnableDualWeapons(float duration)
+    {
+        dualWeaponsEnabled = true;
+        yield return new WaitForSeconds(duration);
+        dualWeaponsEnabled = false;
+    }
+    public IEnumerator ApplyFireRateBoost(float multiplier, float duration)
+    {
+        float originalFireRate = fireRate;
+        fireRate /= multiplier;  // Dividera för att öka fire rate
+        yield return new WaitForSeconds(duration);
+        fireRate = originalFireRate;
+    }
+
     public void EnableWeapons(bool enable)
     {
         canFire = enable;
     }
 }
-
-//using UnityEngine;
-
-//public class WeaponSystem : MonoBehaviour
-//{
-//    [Header("Weapon Settings")]
-//    [SerializeField] private Transform weaponPoint;
-//    [SerializeField] private GameObject bulletPrefab;
-//    [SerializeField] private float bulletSpeed = 20f;
-//    [SerializeField] private float fireRate = 0.2f;
-//    [SerializeField] private float bulletLifetime = 2f;
-
-//    [Header("Shell Settings")]
-//    [SerializeField] private Transform shellEjectionPoint;
-//    [SerializeField] private GameObject shellPrefab;
-//    [SerializeField] private float shellEjectionForce = 2f;
-//    [SerializeField] private float shellTorque = 2f;
-//    [SerializeField] private float shellLifetime = 3f;
-
-//    [Header("Bomb Settings")]
-//    [SerializeField] private Transform bombPoint;
-//    [SerializeField] private GameObject bombPrefab;
-//    [SerializeField] private float bombCooldown = 1f;
-//    [SerializeField] private float bombDropForce = 10f;
-
-//    private float nextFireTime;
-//    private float nextBombTime;
-//    private AudioManager audioManager;
-//    private bool canFire = true;
-
-//    private void Start()
-//    {
-//        audioManager = AudioManager.Instance;
-//    }
-
-//    private void Update()
-//    {
-//        if (!canFire) return;
-
-//#if UNITY_EDITOR
-//        if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
-//        {
-//            Fire();
-//        }
-//        if (Input.GetKeyDown(KeyCode.B) && Time.time >= nextBombTime)
-//        {
-//            DropBomb();
-//        }
-//#else
-//        if (Input.touchCount > 1 && Time.time >= nextFireTime)
-//        {
-//            Fire();
-//        }
-
-//        if (Input.touchCount > 2 && Time.time >= nextBombTime)
-//        {
-//            DropBomb();
-//        }
-//#endif
-//    }
-
-//    private void Fire()
-//    {
-//        if (weaponPoint == null || bulletPrefab == null) return;
-
-//        // Spawn bullet
-//        //GameObject bullet = Instantiate(bulletPrefab, weaponPoint.position, bulletPrefab.transform.rotation);
-//        GameObject bullet = Instantiate(bulletPrefab, weaponPoint.position, Quaternion.identity);
-//        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
-//        if (bulletRb != null)
-//        {
-//            //bulletRb.linearVelocity = bullet.transform.forward * bulletSpeed;
-//            bulletRb.linearVelocity = Vector3.forward * bulletSpeed;
-//            bulletRb.useGravity = false;
-//        }
-//        Destroy(bullet, bulletLifetime);
-
-//        // Eject shell casing
-//        if (shellEjectionPoint != null && shellPrefab != null)
-//        {
-//            GameObject shell = Instantiate(shellPrefab, shellEjectionPoint.position, shellEjectionPoint.rotation);
-//            Rigidbody shellRb = shell.GetComponent<Rigidbody>();
-//            if (shellRb != null)
-//            {
-//                // Add random variation to ejection
-//                Vector3 ejectionDir = (shellEjectionPoint.right + Vector3.up * 0.5f).normalized;
-//                shellRb.AddForce(ejectionDir * shellEjectionForce, ForceMode.Impulse);
-//                shellRb.AddTorque(Random.insideUnitSphere * shellTorque, ForceMode.Impulse);
-//            }
-//            Destroy(shell, shellLifetime);
-//        }
-
-//        audioManager?.PlayShootSound();
-//        nextFireTime = Time.time + fireRate;
-//    }
-
-//    private void DropBomb()
-//    {
-//        if (bombPoint == null || bombPrefab == null) return;
-//        GameObject bomb = Instantiate(bombPrefab, bombPoint.position, bombPoint.rotation);
-//        Rigidbody bombRb = bomb.GetComponent<Rigidbody>();
-//        if (bombRb != null)
-//        {
-//            bombRb.useGravity = true;
-//            bombRb.linearVelocity = Vector3.zero;
-//            bombRb.AddForce(Vector3.down * bombDropForce, ForceMode.Impulse);
-//        }
-//        audioManager?.PlayBombSound();
-//        nextBombTime = Time.time + bombCooldown;
-//    }
-
-//    public void EnableWeapons(bool enable)
-//    {
-//        canFire = enable;
-//    }
-//}
