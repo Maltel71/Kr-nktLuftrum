@@ -7,15 +7,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private Transform target;
     [SerializeField] private EnemyMovementType movementType;
-    [SerializeField] private float sinWaveAmplitude = 2f;    // F�r sinusv�g-r�relse
-    [SerializeField] private float sinWaveFrequency = 2f;    // F�r sinusv�g-r�relse
-    [SerializeField] private float circleRadius = 3f;        // F�r cirkelr�relse
+    [SerializeField] private float sinWaveAmplitude = 2f;    // För sinusvög-rörelse
+    [SerializeField] private float sinWaveFrequency = 2f;    // För sinusvög-rörelse
+    [SerializeField] private float circleRadius = 3f;        // För cirkelö�relse
 
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    [SerializeField] private GameObject healthBarPrefab;     // UI prefab f�r health bar
-    [SerializeField] private Vector3 healthBarOffset = new Vector3(0, 2f, 0); // Positionsoffset f�r health bar
+    [SerializeField] private GameObject healthBarPrefab;     // UI prefab för health bar
+    [SerializeField] private Vector3 healthBarOffset = new Vector3(0, 2f, 0); // Positionsoffset för health bar
 
     [Header("Attack Settings")]
     [SerializeField] private EnemyAttackType attackType;
@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
     public enum EnemyMovementType
     {
         Direct,         // R�r sig rakt mot spelaren
-        SineWave,      // R�r sig i en sinusv�g
+        SineWave,      // R�r sig i en sinusväg
         Circle,        // Cirklar runt spelaren
         Zigzag         // Zigzag-m�nster
     }
@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
     {
         None,          // Ingen attack
         SingleShot,    // Ett skott i taget
-        Burst,         // Flera skott i snabb f�ljd
+        Burst,         // Flera skott i snabb följd
         Spread,        // Sprider skott i en kon
         Circle         // Skjuter i en cirkel
     }

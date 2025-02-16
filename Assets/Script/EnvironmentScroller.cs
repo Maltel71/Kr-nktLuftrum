@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class EnvironmentScroller : MonoBehaviour
 {
 
     public Transform envEndPoint;
