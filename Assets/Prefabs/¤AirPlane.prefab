@@ -731,6 +731,8 @@ MonoBehaviour:
   startMissiles: 10
   maxMissiles: 10
   missileCooldown: 1
+  planeAnimator: {fileID: 0}
+  animationThreshold: 0.1
   flaresText: {fileID: 0}
   missilesText: {fileID: 0}
 --- !u!114 &7493533950492809955
@@ -762,6 +764,7 @@ MonoBehaviour:
   planeModel: {fileID: 4057736460277951244}
   sliderSpeed: 10
   testDamageAmount: 10
+  planeAnimator: {fileID: 0}
 --- !u!114 &1168624700910189673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,12 +783,12 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1451061741424768809, guid: 693a86de41ebe464fa9b66883e4fa0c9, type: 3}
   bulletSpeed: 150
   fireRate: 0.15
-  bulletLifetime: 0.5
+  bulletLifetime: 2
   shellEjectionPoint: {fileID: 8321685975133625665}
   shellPrefab: {fileID: 7594624446680057220, guid: 4b5818320cb1b254a880f95268c7deb0, type: 3}
   shellEjectionForce: 4
   shellTorque: 4
-  shellLifetime: 0.5
+  shellLifetime: 3
   bombPoint: {fileID: 1949869804882665934}
   bombPrefab: {fileID: 2348708888770691324, guid: 75f325f7157d139469a9f989bfcee8b7, type: 3}
   bombCooldown: 2

@@ -54,7 +54,7 @@ public class EnemyHealth : MonoBehaviour
         isDying = false;
         hasExploded = false;
         initialized = false;
-       // Debug.Log($"Enemy {gameObject.name} Awake completed");
+        // Debug.Log($"Enemy {gameObject.name} Awake completed");
     }
 
     private void Start()

@@ -230,7 +230,7 @@ public class AirplaneController : MonoBehaviour
         }
 
         // Skriv ut mer detaljerad information
-        Debug.Log($"Animation Debug - Movement X: {movement.x}, Threshold: {animationThreshold}");
+        //Debug.Log($"Animation Debug - Movement X: {movement.x}, Threshold: {animationThreshold}");
 
         // Mer explicit logik för animationer
         bool isMovingLeft = movement.x < -animationThreshold;
@@ -241,12 +241,12 @@ public class AirplaneController : MonoBehaviour
         planeAnimator.SetBool("Move_R", isMovingRight);
 
         // Detaljerad loggning
-        if (isMovingLeft)
-            Debug.Log("Triggering Left Movement Animation");
-        else if (isMovingRight)
-            Debug.Log("Triggering Right Movement Animation");
-        else
-            Debug.Log("No significant movement");
+        //if (isMovingLeft)
+        //    Debug.Log("Triggering Left Movement Animation");
+        //else if (isMovingRight)
+        //   Debug.Log("Triggering Right Movement Animation");
+        //else
+           // Debug.Log("No significant movement");
     }
 
     private void HandleTouchInput()
@@ -286,7 +286,7 @@ public class AirplaneController : MonoBehaviour
             movement = new Vector2(horizontalInput, verticalInput).normalized;
             // Debug för input
             //Debug.Log($"Keyboard Input - Horizontal: {horizontalInput}, Movement X: {movement.x}");
-            Debug.Log($"Rörelse efter input - X: {movement.x}, Y: {movement.y}");
+            //Debug.Log($"Rörelse efter input - X: {movement.x}, Y: {movement.y}");
         }
     }
 

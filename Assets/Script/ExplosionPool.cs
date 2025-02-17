@@ -223,6 +223,12 @@ public class ExplosionPool : MonoBehaviour
                   $"Large Pool Size: {largeExplosionPool?.Count ?? 0}\n" +
                   $"Boss Pool Size: {bossExplosionPool?.Count ?? 0}");
     }
+
+    private void ValidatePool(GameObject prefab, string poolType)
+    {
+        if (prefab == null)
+            Debug.LogError($"Missing prefab for {poolType} pool!");
+    }
 }
 
 public enum ExplosionType

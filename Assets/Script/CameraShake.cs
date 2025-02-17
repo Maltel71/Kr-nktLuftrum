@@ -62,11 +62,11 @@ public class CameraShake : MonoBehaviour
         if (cameraTransform != null)
         {
             originalPosition = cameraTransform.localPosition;
-            Debug.Log($"Sparar originalPosition: {originalPosition}");
+            //Debug.Log($"Sparar originalPosition: {originalPosition}");
         }
         else
         {
-            Debug.LogError("Ingen kameratransform hittad!");
+            //Debug.LogError("Ingen kameratransform hittad!");
         }
     }
 

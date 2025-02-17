@@ -218,8 +218,13 @@ public class WeaponSystem : MonoBehaviour
 
     private GameObject InstantiateBomb()
     {
-        return Instantiate(bombPrefab, bombPoint.position, bombPoint.rotation);
+        return ShellAndBombPool.Instance.GetBomb();
     }
+
+    //private GameObject InstantiateBomb()
+    //{
+    //    return Instantiate(bombPrefab, bombPoint.position, bombPoint.rotation);
+    //}
 
     private void ConfigureBomb(GameObject bomb)
     {
