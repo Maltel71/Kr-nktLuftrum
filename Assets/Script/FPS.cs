@@ -38,7 +38,7 @@ public class FPS : MonoBehaviour
 
     private void OnGUI()
     {
-        Debug.Log($"Drawing FPS: {smoothedFps}");
+        //Debug.Log($"Drawing FPS: {smoothedFps}");
         GUI.Label(new Rect(X, Y, width, height),
                  "FPS: " + Mathf.Round(smoothedFps),
                  guiStyle);

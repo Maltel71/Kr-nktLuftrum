@@ -215,15 +215,10 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    private void StartDying()
+    public void StartDying()
     {
-        if (isDying)
-        {
-            //Debug.Log($"Enemy {gameObject.name} already dying, ignoring duplicate death");
-            return;
-        }
+        if (isDying) return;
 
-        //Debug.Log($"Enemy {gameObject.name} starting death sequence");
         isDying = true;
         crashStartTime = Time.time;
 
@@ -256,10 +251,18 @@ public class EnemyHealth : MonoBehaviour
                 {
                     cameraShake.ShakaCameraVidBossDöd();
                 }
+                // Använd boss-explosion för bossar
+                GameObject bossExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Boss);
+                bossExplosion.transform.position = transform.position;
+                ExplosionPool.Instance.ReturnExplosionToPool(bossExplosion, 3f);
             }
             else
             {
                 scoreManager.AddEnemyShipPoints();
+                // Använd mindre explosion för vanliga fiender
+                GameObject enemyExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
+                enemyExplosion.transform.position = transform.position;
+                ExplosionPool.Instance.ReturnExplosionToPool(enemyExplosion, 2f);
             }
         }
 
