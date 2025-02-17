@@ -132,18 +132,35 @@ public class WeaponSystem : MonoBehaviour
 
     private void SpawnBullet(Vector3 spawnPosition)
     {
-        GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+        GameObject bullet = BulletPool.Instance.GetBullet(true); // true för spelarskott
+        bullet.transform.position = spawnPosition;
+        bullet.transform.rotation = Quaternion.identity;
+
         if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
         {
-            bulletSystem.Initialize(Vector3.forward, false, 10f); // Standardskada
+            bulletSystem.Initialize(Vector3.forward, false, 10f);
         }
         if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
         {
             bulletRb.useGravity = false;
             bulletRb.linearVelocity = BulletDirection * bulletSpeed;
         }
-        Destroy(bullet, bulletLifetime);
     }
+
+    //private void SpawnBullet(Vector3 spawnPosition)
+    //{
+    //    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
+    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
+    //    {
+    //        bulletSystem.Initialize(Vector3.forward, false, 10f); // Standardskada
+    //    }
+    //    if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
+    //    {
+    //        bulletRb.useGravity = false;
+    //        bulletRb.linearVelocity = BulletDirection * bulletSpeed;
+    //    }
+    //    Destroy(bullet, bulletLifetime);
+    //}
 
     private void EjectShell()
     {

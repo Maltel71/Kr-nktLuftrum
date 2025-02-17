@@ -152,6 +152,6 @@ MonoBehaviour:
   isEnemyProjectile: 0
   damage: 30
   speed: 600
-  bulletLifetime: 1
+  bulletLifetime: 0.5
   hitEffectPrefab: {fileID: 0}
   effectDuration: 1
