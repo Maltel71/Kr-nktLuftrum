@@ -83,6 +83,7 @@ public class ActiveBoostUI : MonoBehaviour
 
     public void AddBoost(BoostType boostType, float duration)
     {
+        Debug.Log($"AddBoost called. Type: {boostType}, Duration: {duration}");
         if (activeBoosts.ContainsKey(boostType))
         {
             RefreshBoostDuration(boostType, duration);

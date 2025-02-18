@@ -375,11 +375,24 @@ public class AirplaneController : MonoBehaviour
 
     public IEnumerator ApplySpeedBoost(float multiplier, float duration)
     {
+        Debug.Log($"Speed Boost started. Original speed: {moveSpeed}, Multiplier: {multiplier}, Duration: {duration}");
+
         float originalMoveSpeed = moveSpeed;
         moveSpeed *= multiplier;
+
         yield return new WaitForSeconds(duration);
+
         moveSpeed = originalMoveSpeed;
+        Debug.Log($"Speed Boost ended. Restored to original speed: {moveSpeed}");
     }
+
+    //public IEnumerator ApplySpeedBoost(float multiplier, float duration)
+    //{
+    //    float originalMoveSpeed = moveSpeed;
+    //    moveSpeed *= multiplier;
+    //    yield return new WaitForSeconds(duration);
+    //    moveSpeed = originalMoveSpeed;
+    //}
 
     public void ResetMoveSpeed()
     {
