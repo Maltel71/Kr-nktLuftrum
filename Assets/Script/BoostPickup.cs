@@ -11,6 +11,7 @@ public class BoostPickup : MonoBehaviour
         DualWeapons,     // Timed effect
         Flare,           // Numbers of flares
         Missile,         // Numbers of missiles
+        Bomb,           // Numbers om Bombs
     }
 
     [Header("Boost Settings")]
@@ -131,7 +132,8 @@ public class BoostPickup : MonoBehaviour
         BoostType.FireRateBoost => "Fire Rate Boost",
         BoostType.DualWeapons => "Dual Weapons",
         BoostType.Flare => "Flares Added",
-        BoostType.Missile => "Missiles Added",
+        BoostType.Missile => "Missile Added",
+        BoostType.Bomb =>"Bomb Added",
         _ => "Boost"
     };
 
@@ -194,6 +196,13 @@ public class BoostPickup : MonoBehaviour
                 if (airplaneController != null)
                 {
                     airplaneController.AddMissiles(1); // Lägg till 1 missile
+                }
+                break;
+
+            case BoostType.Bomb:
+                if (airplaneController != null)
+                {
+                    airplaneController.AddBombs(1); // Lägg till 1 Bomb
                 }
                 break;
         }

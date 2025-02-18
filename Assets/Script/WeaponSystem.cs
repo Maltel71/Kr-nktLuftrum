@@ -112,20 +112,36 @@ public class WeaponSystem : MonoBehaviour
 
     private void SpawnBullet(Vector3 spawnPosition)
     {
+        // Cacha komponenter för att minska GetComponent-anrop
         GameObject bullet = BulletPool.Instance.GetBullet(true);
-        bullet.transform.position = spawnPosition;
-        bullet.transform.rotation = Quaternion.identity;
 
-        if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
-        {
-            bulletSystem.Initialize(Vector3.forward, false, 10f);
-        }
-        if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
-        {
-            bulletRb.useGravity = false;
-            bulletRb.linearVelocity = BulletDirection * bulletSpeed;
-        }
+        BulletSystem bulletSystem = bullet.GetComponent<BulletSystem>();
+        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+
+        bullet.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
+
+        bulletSystem.Initialize(Vector3.forward, false, 10f);
+
+        bulletRb.useGravity = false;
+        bulletRb.linearVelocity = BulletDirection * bulletSpeed;
     }
+
+    //private void SpawnBullet(Vector3 spawnPosition)
+    //{
+    //    GameObject bullet = BulletPool.Instance.GetBullet(true);
+    //    bullet.transform.position = spawnPosition;
+    //    bullet.transform.rotation = Quaternion.identity;
+
+    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
+    //    {
+    //        bulletSystem.Initialize(Vector3.forward, false, 10f);
+    //    }
+    //    if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
+    //    {
+    //        bulletRb.useGravity = false;
+    //        bulletRb.linearVelocity = BulletDirection * bulletSpeed;
+    //    }
+    //}
 
     private void EjectShell()
     {
