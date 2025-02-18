@@ -7,10 +7,10 @@ using System.Linq;
 public class ActiveBoostUI : MonoBehaviour
 {
     public enum BoostType
-    {
-        SpeedBoost,      // Tidsbegränsad
-        FireRateBoost,   // Tidsbegränsad
-        DualWeapons     // Tidsbegränsad
+    { 
+        SpeedBoost,       // Tidsbegränsad
+        FireRateBoost,    // Tidsbegränsad
+        DualWeapons       // Tidsbegränsad
     }
 
     [System.Serializable]
