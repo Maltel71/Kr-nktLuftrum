@@ -50,14 +50,16 @@ public class MissilePlayer : MonoBehaviour
     {
         if (hitObject.CompareTag("Enemy"))
         {
-            if (hitObject.TryGetComponent<EnemyHealth>(out var enemyHealth))
+            EnemyHealth enemyHealth = hitObject.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage);
 
+                // Tvinga fram röksystem
+                enemyHealth.StartSmokeEffects();
             }
 
-            // Använd explosionspoolen för missilexplosion 
-            // Ta bort dessa om enemyhealth ska hantera exolosionerna
+            // Explosionshantering
             GameObject explosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
             explosion.transform.position = transform.position;
             ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
@@ -67,6 +69,28 @@ public class MissilePlayer : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    //private void HandleCollision(GameObject hitObject)
+    //{
+    //    if (hitObject.CompareTag("Enemy"))
+    //    {
+    //        if (hitObject.TryGetComponent<EnemyHealth>(out var enemyHealth))
+    //        {
+    //            enemyHealth.TakeDamage(damage);
+
+    //        }
+
+    //        // Använd explosionspoolen för missilexplosion 
+    //        // Ta bort dessa om enemyhealth ska hantera exolosionerna
+    //        GameObject explosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
+    //        explosion.transform.position = transform.position;
+    //        ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
+
+    //        AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
+    //    }
+
+    //    Destroy(gameObject);
+    //}
 }
 
 //using UnityEngine;

@@ -108,12 +108,27 @@ public class EnemyHealth : MonoBehaviour
 
     private void StartDamageSmokeEffect()
     {
-        if (damageSmokeEffect != null)
+        if (damageSmokeEffect != null && !smokeStarted)
         {
             damageSmokeEffect.Play();
             smokeStarted = true;
         }
     }
+
+    // Lägg till denna metod för extern åtkomst
+    public void StartSmokeEffects()
+    {
+        StartDamageSmokeEffect();
+    }
+
+    //private void StartDamageSmokeEffect()
+    //{
+    //    if (damageSmokeEffect != null)
+    //    {
+    //        damageSmokeEffect.Play();
+    //        smokeStarted = true;
+    //    }
+    //}
 
     public float GetHealthPercentage()
     {
