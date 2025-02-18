@@ -686,7 +686,7 @@ MonoBehaviour:
   boostUIPrefab: {fileID: 1265313601933982454, guid: 4d7531e4024633144a8307627999f89f, type: 3}
   boostContainer: {fileID: 64413819}
   spacing: 60
-  speedBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
+  speedBoostIcon: {fileID: 21300000, guid: 76ccca3129356ce4a8e7263776158f1d, type: 3}
   fireRateBoostIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
   dualWeaponsIcon: {fileID: 21300000, guid: c674acc0ed3636042a8cd1ec1f37abd9, type: 3}
 --- !u!224 &76886556
@@ -5511,19 +5511,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boostConfigs:
   - boostPrefab: {fileID: 1075953903332928773, guid: 746d35d6970cfed448c2a13749ea799f, type: 3}
-    dropChance: 0
+    dropChance: 0.459
   - boostPrefab: {fileID: 6166050984467094364, guid: 371231a4c425ca442995e7ddac0b1a33, type: 3}
-    dropChance: 0.541
+    dropChance: 0.471
   - boostPrefab: {fileID: 2410515476098949784, guid: d5db0a727a579ab41abf07a6e5b06acf, type: 3}
-    dropChance: 0
+    dropChance: 0.476
   - boostPrefab: {fileID: 4249868004629837957, guid: d9ceee0374545c846ad9107424f77d30, type: 3}
-    dropChance: 0
+    dropChance: 0.465
   - boostPrefab: {fileID: 8355150198349773989, guid: 6043a44e410581e449fc55dac87c36ad, type: 3}
-    dropChance: 0
+    dropChance: 0.482
   - boostPrefab: {fileID: 3825947452417983994, guid: ef8361228c5bec042b138b787b109e21, type: 3}
-    dropChance: 0
+    dropChance: 0.476
   - boostPrefab: {fileID: 6769471750231700892, guid: cb2b6878253a6834f900146294f6259b, type: 3}
-    dropChance: 0.588
+    dropChance: 0.518
   moveSpeed: 5
   spreadRadius: 5
 --- !u!4 &709526336
@@ -5884,43 +5884,7 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!4 &821883147 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
-  m_PrefabInstance: {fileID: 498883116}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &824439010
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 824439011}
-  m_Layer: 0
-  m_Name: /GameObject (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &824439011
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 824439010}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &831048410
+--- !u!43 &808944101
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6085,6 +6049,42 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &821883147 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
+  m_PrefabInstance: {fileID: 498883116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &824439010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824439011}
+  m_Layer: 0
+  m_Name: /GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &824439011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824439010}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &836070797
 PrefabInstance:
   m_ObjectHideFlags: 0
