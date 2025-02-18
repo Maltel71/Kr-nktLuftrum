@@ -34,6 +34,15 @@ public class AirplaneController : MonoBehaviour
     private int currentMissiles;
     private float nextmissileTime;
 
+    [Header("Bomb System")]
+    [SerializeField] private Transform bombSpawnPoint;
+    [SerializeField] private float bombOffset = 2f;
+    [SerializeField] private int startBombs = 0;
+    [SerializeField] private int maxBombs = 5;
+    [SerializeField] private float bombCooldown = 1f;
+    private int currentBombs;
+    private float nextBombTime;
+
     [Header("Animation")]
     [SerializeField] private Animator planeAnimator;
     [SerializeField] private float animationThreshold = 0.1f;
@@ -44,6 +53,7 @@ public class AirplaneController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI flaresText;
     [SerializeField] private TextMeshProUGUI missilesText;
+    [SerializeField] private TextMeshProUGUI bombsText;
 
     private Vector2 touchStart;
     private Vector2 movement;
@@ -63,24 +73,16 @@ public class AirplaneController : MonoBehaviour
     private void InitializeComponents()
     {
         rb = GetComponent<Rigidbody>();
-
-        // Hitta Animator explicit
         planeAnimator = GetComponentInChildren<Animator>();
 
         if (planeAnimator == null)
         {
             Debug.LogError("KRITISKT: Ingen Animator hittad på flygplanet eller dess barn!");
-
-            // Sök igenom alla barn
             Animator[] childAnimators = GetComponentsInChildren<Animator>();
             foreach (var animator in childAnimators)
             {
                 Debug.Log($"Hittade Animator på: {animator.gameObject.name}");
             }
-        }
-        else
-        {
-            Debug.Log($"Animator hittad på: {planeAnimator.gameObject.name}");
         }
     }
 
@@ -90,6 +92,7 @@ public class AirplaneController : MonoBehaviour
         originalMoveSpeed = moveSpeed;
         currentFlares = startFlares;
         currentMissiles = startMissiles;
+        currentBombs = startBombs;
         UpdateUI();
     }
 
@@ -134,6 +137,11 @@ public class AirplaneController : MonoBehaviour
         {
             ShootMissile();
         }
+
+        if (Input.GetKeyDown(KeyCode.B) && CanDropBomb())
+        {
+            DropBomb();
+        }
     }
 
     private bool CanShootFlare()
@@ -143,16 +151,11 @@ public class AirplaneController : MonoBehaviour
 
     private void ShootFlare()
     {
-        GameObject flare = Instantiate(flarePrefab,
-            flareSpawnPoint.position,
-            flareSpawnPoint.rotation);
-
+        GameObject flare = Instantiate(flarePrefab, flareSpawnPoint.position, flareSpawnPoint.rotation);
         currentFlares--;
         nextFlareTime = Time.time + flareCooldown;
-
         AudioManager.Instance?.PlayFlareSound();
         UpdateUI();
-        Debug.Log($"Flare skjuten! Återstående flares: {currentFlares}");
     }
 
     private bool CanShootMissile()
@@ -162,10 +165,7 @@ public class AirplaneController : MonoBehaviour
 
     private void ShootMissile()
     {
-        GameObject missile = Instantiate(MissilePrefab,
-            missileSpawnPoint.position,
-            missileSpawnPoint.rotation);
-
+        GameObject missile = Instantiate(MissilePrefab, missileSpawnPoint.position, missileSpawnPoint.rotation);
         if (missile.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.linearVelocity = transform.forward * 50f;
@@ -174,10 +174,32 @@ public class AirplaneController : MonoBehaviour
 
         currentMissiles--;
         nextmissileTime = Time.time + missileCooldown;
-
         AudioManager.Instance?.PlayMissileLaunchSound();
         UpdateUI();
-        Debug.Log("Missile fired!");
+    }
+
+    private bool CanDropBomb()
+    {
+        return currentBombs > 0 && Time.time >= nextBombTime;
+    }
+
+    private void DropBomb()
+    {
+        GameObject bomb = ShellAndBombPool.Instance.GetBomb();
+        bomb.transform.position = bombSpawnPoint.position;
+        bomb.transform.rotation = bombSpawnPoint.rotation;
+
+        if (bomb.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(Vector3.down * 200f, ForceMode.Impulse);
+        }
+
+        currentBombs--;
+        nextBombTime = Time.time + bombCooldown;
+        AudioManager.Instance?.PlayBombSound(BombSoundType.Drop);
+        UpdateUI();
     }
 
     private void UpdateUI()
@@ -189,6 +211,10 @@ public class AirplaneController : MonoBehaviour
         if (missilesText != null)
         {
             missilesText.text = $"Missiles: {currentMissiles}";
+        }
+        if (bombsText != null)
+        {
+            bombsText.text = $"Bombs: {currentBombs}";
         }
     }
 
@@ -216,37 +242,18 @@ public class AirplaneController : MonoBehaviour
 #if UNITY_EDITOR
         HandleKeyboardInput();
 #endif
-        //Debug.Log($"Movement efter input: X={movement.x}, Y={movement.y}");
-
         UpdateAnimations();
     }
 
     private void UpdateAnimations()
     {
-        if (planeAnimator == null)
-        {
-            Debug.LogError("Ingen Animator hittad!");
-            return;
-        }
+        if (planeAnimator == null) return;
 
-        // Skriv ut mer detaljerad information
-        //Debug.Log($"Animation Debug - Movement X: {movement.x}, Threshold: {animationThreshold}");
-
-        // Mer explicit logik för animationer
         bool isMovingLeft = movement.x < -animationThreshold;
         bool isMovingRight = movement.x > animationThreshold;
 
-        // Sätt animationsparametrar
         planeAnimator.SetBool("Move_L", isMovingLeft);
         planeAnimator.SetBool("Move_R", isMovingRight);
-
-        // Detaljerad loggning
-        //if (isMovingLeft)
-        //    Debug.Log("Triggering Left Movement Animation");
-        //else if (isMovingRight)
-        //   Debug.Log("Triggering Right Movement Animation");
-        //else
-           // Debug.Log("No significant movement");
     }
 
     private void HandleTouchInput()
@@ -276,7 +283,6 @@ public class AirplaneController : MonoBehaviour
         }
     }
 
-
     private void HandleKeyboardInput()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -284,9 +290,6 @@ public class AirplaneController : MonoBehaviour
         if (horizontalInput != 0 || verticalInput != 0)
         {
             movement = new Vector2(horizontalInput, verticalInput).normalized;
-            // Debug för input
-            //Debug.Log($"Keyboard Input - Horizontal: {horizontalInput}, Movement X: {movement.x}");
-            //Debug.Log($"Rörelse efter input - X: {movement.x}, Y: {movement.y}");
         }
     }
 
@@ -294,14 +297,18 @@ public class AirplaneController : MonoBehaviour
     {
         currentFlares = Mathf.Min(currentFlares + amount, maxFlares);
         UpdateUI();
-        Debug.Log($"Added {amount} flares. Total: {currentFlares}");
     }
 
     public void AddMissiles(int amount)
     {
         currentMissiles = Mathf.Min(currentMissiles + amount, maxMissiles);
         UpdateUI();
-        Debug.Log($"Added {amount} missiles. Total: {currentMissiles}");
+    }
+
+    public void AddBombs(int amount)
+    {
+        currentBombs = Mathf.Min(currentBombs + amount, maxBombs);
+        UpdateUI();
     }
 
     public void FreezePosition()
@@ -382,12 +389,5 @@ public class AirplaneController : MonoBehaviour
     public float GetOriginalMoveSpeed()
     {
         return originalMoveSpeed;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log($"SPELARE kolliderade med: {collision.gameObject.name}");
-        Debug.Log($"- Layer: {LayerMask.LayerToName(collision.gameObject.layer)}");
-        Debug.Log($"- Tag: {collision.gameObject.tag}");
     }
 }
