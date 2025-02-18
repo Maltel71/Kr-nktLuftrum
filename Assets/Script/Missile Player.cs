@@ -53,9 +53,11 @@ public class MissilePlayer : MonoBehaviour
             if (hitObject.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
+
             }
 
-            // Använd explosionspoolen för missilexplosion
+            // Använd explosionspoolen för missilexplosion 
+            // Ta bort dessa om enemyhealth ska hantera exolosionerna
             GameObject explosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
             explosion.transform.position = transform.position;
             ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);

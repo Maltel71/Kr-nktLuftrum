@@ -187,7 +187,6 @@ MonoBehaviour:
   speed: 200
   damage: 100
   missileLifetime: 6
-  explosionEffectPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
 --- !u!1 &8238763283080456090
 GameObject:
   m_ObjectHideFlags: 0
