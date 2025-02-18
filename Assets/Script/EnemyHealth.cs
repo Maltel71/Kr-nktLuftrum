@@ -276,9 +276,9 @@ public class EnemyHealth : MonoBehaviour
                 scoreManager.AddEnemyShipPoints();
                 // Använd mindre explosion för vanliga fiender
                 // Ta bort för att hantera i missile skriptet
-                //GameObject enemyExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
-                //enemyExplosion.transform.position = transform.position;
-                //ExplosionPool.Instance.ReturnExplosionToPool(enemyExplosion, 2f);
+                GameObject enemyExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
+                enemyExplosion.transform.position = transform.position;
+                ExplosionPool.Instance.ReturnExplosionToPool(enemyExplosion, 2f);
             }
         }
 

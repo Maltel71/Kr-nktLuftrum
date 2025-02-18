@@ -137,7 +137,7 @@ MonoBehaviour:
   maxHealth: 1000
   isBoss: 1
   healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
-  healthBarOffset: {x: 0, y: 2, z: 0}
+  healthBarOffset: {x: 0, y: 10, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
   crashSpeed: 1600
   crashDuration: 4
@@ -198,7 +198,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.76, y: 0.13, z: 0.61}
+  m_Size: {x: 0.85, y: 0.19, z: 0.59}
   m_Center: {x: 0, y: 0.03, z: -0.06}
 --- !u!114 &-3985228070185450049
 MonoBehaviour:

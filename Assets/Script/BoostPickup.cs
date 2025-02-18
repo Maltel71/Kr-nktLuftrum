@@ -4,14 +4,14 @@ public class BoostPickup : MonoBehaviour
 {
     public enum BoostType
     {
-        HealthBoost,     // Instant effect
-        SpeedBoost,      // Timed effect
-        ShieldBoost,     // Instant effect
-        FireRateBoost,   // Timed effect
-        DualWeapons,     // Timed effect
-        Flare,           // Numbers of flares
-        Missile,         // Numbers of missiles
-        Bomb,           // Numbers om Bombs
+        HealthBoost,        // Instant effect
+        SpeedBoost,         // Timed effect
+        ShieldBoost,        // Instant effect
+        FireRateBoost,      // Timed effect
+        DualWeapons,        // Timed effect
+        Flare,              // Numbers of flares
+        Missile,            // Numbers of missiles
+        Bomb,               // Numbers om Bombs
     }
 
     [Header("Boost Settings")]
