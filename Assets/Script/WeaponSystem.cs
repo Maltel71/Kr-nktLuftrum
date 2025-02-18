@@ -5,8 +5,8 @@ public class WeaponSystem : MonoBehaviour
 {
     [Header("Vapen Inställningar")]
     [SerializeField] private Transform weaponPoint;
-    [SerializeField] private Transform leftGunPoint;  // För dubbla vapen
-    [SerializeField] private Transform rightGunPoint; // För dubbla vapen
+    [SerializeField] private Transform leftGunPoint;
+    [SerializeField] private Transform rightGunPoint;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float fireRate = 0.2f;
@@ -19,18 +19,11 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private float shellTorque = 2f;
     [SerializeField] private float shellLifetime = 3f;
 
-    [Header("Bomber")]
-    [SerializeField] private Transform bombPoint;
-    [SerializeField] private GameObject bombPrefab;
-    [SerializeField] private float bombCooldown = 1f;
-    [SerializeField] private float bombDropForce = 200f;
-
     [Header("Boost Settings")]
     [SerializeField] private float fireRateBoostDuration = 10f;
     [SerializeField] private float dualWeaponsDuration = 15f;
 
     private float nextFireTime;
-    private float nextBombTime;
     private float originalFireRate;
     private bool dualWeaponsEnabled = false;
     private AudioManager audioManager;
@@ -58,8 +51,6 @@ public class WeaponSystem : MonoBehaviour
         if (bulletPrefab == null) Debug.LogWarning("BulletPrefab saknas!");
         if (shellEjectionPoint == null) Debug.LogWarning("ShellEjectionPoint saknas!");
         if (shellPrefab == null) Debug.LogWarning("ShellPrefab saknas!");
-        if (bombPoint == null) Debug.LogWarning("BombPoint saknas!");
-        if (bombPrefab == null) Debug.LogWarning("BombPrefab saknas!");
     }
 
     private void Update()
@@ -83,10 +74,6 @@ public class WeaponSystem : MonoBehaviour
         {
             Fire();
         }
-        if (Input.GetKeyDown(KeyCode.B) && CanDropBomb())
-        {
-            DropBomb();
-        }
     }
 
     private void HandleMobileInput()
@@ -95,14 +82,9 @@ public class WeaponSystem : MonoBehaviour
         {
             Fire();
         }
-        if (Input.touchCount > 2 && CanDropBomb())
-        {
-            DropBomb();
-        }
     }
 
     private bool CanFire() => Time.time >= nextFireTime;
-    private bool CanDropBomb() => Time.time >= nextBombTime;
 
     private void Fire()
     {
@@ -110,13 +92,11 @@ public class WeaponSystem : MonoBehaviour
 
         if (dualWeaponsEnabled)
         {
-            // Skjut från båda vapenpunkterna
             SpawnBullet(leftGunPoint.position);
             SpawnBullet(rightGunPoint.position);
         }
         else
         {
-            // Skjut från huvudvapnet
             SpawnBullet(weaponPoint.position);
         }
 
@@ -132,7 +112,7 @@ public class WeaponSystem : MonoBehaviour
 
     private void SpawnBullet(Vector3 spawnPosition)
     {
-        GameObject bullet = BulletPool.Instance.GetBullet(true); // true för spelarskott
+        GameObject bullet = BulletPool.Instance.GetBullet(true);
         bullet.transform.position = spawnPosition;
         bullet.transform.rotation = Quaternion.identity;
 
@@ -146,21 +126,6 @@ public class WeaponSystem : MonoBehaviour
             bulletRb.linearVelocity = BulletDirection * bulletSpeed;
         }
     }
-
-    //private void SpawnBullet(Vector3 spawnPosition)
-    //{
-    //    GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
-    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
-    //    {
-    //        bulletSystem.Initialize(Vector3.forward, false, 10f); // Standardskada
-    //    }
-    //    if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
-    //    {
-    //        bulletRb.useGravity = false;
-    //        bulletRb.linearVelocity = BulletDirection * bulletSpeed;
-    //    }
-    //    Destroy(bullet, bulletLifetime);
-    //}
 
     private void EjectShell()
     {
@@ -201,55 +166,10 @@ public class WeaponSystem : MonoBehaviour
         nextFireTime = Time.time + fireRate;
     }
 
-    private void DropBomb()
-    {
-        if (!ValidateBombComponents()) return;
-
-        GameObject bomb = InstantiateBomb();
-        ConfigureBomb(bomb);
-        PlayBombEffects();
-        UpdateBombCooldown();
-    }
-
-    private bool ValidateBombComponents()
-    {
-        return bombPoint != null && bombPrefab != null;
-    }
-
-    private GameObject InstantiateBomb()
-    {
-        return ShellAndBombPool.Instance.GetBomb();
-    }
-
-    //private GameObject InstantiateBomb()
-    //{
-    //    return Instantiate(bombPrefab, bombPoint.position, bombPoint.rotation);
-    //}
-
-    private void ConfigureBomb(GameObject bomb)
-    {
-        if (bomb.TryGetComponent<Rigidbody>(out var bombRb))
-        {
-            bombRb.useGravity = true;
-            bombRb.linearVelocity = Vector3.zero;
-            bombRb.AddForce(Vector3.down * bombDropForce, ForceMode.Impulse);
-        }
-    }
-
-    private void PlayBombEffects()
-    {
-        AudioManager.Instance?.PlayBombSound(BombSoundType.Drop);
-    }
-
-    private void UpdateBombCooldown()
-    {
-        nextBombTime = Time.time + bombCooldown;
-    }
-
     // Boost metoder
     public IEnumerator ApplyFireRateBoost(float duration)
     {
-        float boostedFireRate = fireRate * 0.5f; // Dubbelt så snabb fire rate
+        float boostedFireRate = fireRate * 0.5f;
         fireRate = boostedFireRate;
         yield return new WaitForSeconds(duration);
         fireRate = originalFireRate;
@@ -261,10 +181,11 @@ public class WeaponSystem : MonoBehaviour
         yield return new WaitForSeconds(duration);
         dualWeaponsEnabled = false;
     }
+
     public IEnumerator ApplyFireRateBoost(float multiplier, float duration)
     {
         float originalFireRate = fireRate;
-        fireRate /= multiplier;  // Dividera för att öka fire rate
+        fireRate /= multiplier;
         yield return new WaitForSeconds(duration);
         fireRate = originalFireRate;
     }

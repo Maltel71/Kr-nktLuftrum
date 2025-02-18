@@ -136,7 +136,7 @@ public class PlaneHealthSystem : MonoBehaviour
             return;
         }
 
-        Debug.Log($"UpdateEffect called for {effect.name} with shouldPlay: {shouldPlay}");
+       // Debug.Log($"UpdateEffect called for {effect.name} with shouldPlay: {shouldPlay}");
 
         if (shouldPlay && !effect.isPlaying)
         {

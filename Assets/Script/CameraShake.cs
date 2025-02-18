@@ -118,19 +118,19 @@ public class CameraShake : MonoBehaviour
 
             if (förflutenTid % 0.5f < Time.deltaTime) // Logga var 0.5 sekund
             {
-                Debug.Log($"Skakar kamera. Position: {nyPosition}, Dämpning: {dämpning}");
+                //Debug.Log($"Skakar kamera. Position: {nyPosition}, Dämpning: {dämpning}");
             }
 
             yield return null;
         }
 
-        Debug.Log("Skakning klar, återgår till originalposition");
+        //Debug.Log("Skakning klar, återgår till originalposition");
         StartCoroutine(ÅtergåTillOriginalPosition());
     }
 
     private IEnumerator ÅtergåTillOriginalPosition()
     {
-        Debug.Log($"Börjar återgå till originalPosition: {originalPosition}");
+        //Debug.Log($"Börjar återgå till originalPosition: {originalPosition}");
 
         while (Vector3.Distance(cameraTransform.localPosition, originalPosition) > 0.01f)
         {
@@ -144,7 +144,7 @@ public class CameraShake : MonoBehaviour
 
         cameraTransform.localPosition = originalPosition;
         isShaking = false;
-        Debug.Log("Återgång till originalposition klar");
+        //Debug.Log("Återgång till originalposition klar");
     }
 
     public void StoppaSkakning()

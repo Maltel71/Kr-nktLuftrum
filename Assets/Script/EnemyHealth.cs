@@ -148,7 +148,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
         hasExploded = true;
-        Debug.Log($"Enemy {gameObject.name} starting explosion delay");
+        //Debug.Log($"Enemy {gameObject.name} starting explosion delay");
 
         float randomDelay = Random.Range(randomExplosionDelayMin, randomExplosionDelayMax);
         yield return new WaitForSeconds(randomDelay);
