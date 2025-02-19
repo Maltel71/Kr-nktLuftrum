@@ -106,7 +106,7 @@ public class CameraShake : MonoBehaviour
 
     private IEnumerator Skaka(float intensitet, float varaktighet)
     {
-        Debug.Log($"Startar skakning med intensitet {intensitet} och varaktighet {varaktighet}");
+        //Debug.Log($"Startar skakning med intensitet {intensitet} och varaktighet {varaktighet}");
         isShaking = true;
         float förflutenTid = 0f;
         Vector3 startPos = cameraTransform.localPosition;

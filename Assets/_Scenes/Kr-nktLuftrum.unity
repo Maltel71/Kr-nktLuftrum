@@ -6331,7 +6331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smallExplosionPrefab: {fileID: 2633928242017020019, guid: cbefdac54607d144b9411e0bc8d47c11, type: 3}
   largeExplosionPrefab: {fileID: 6569611937835722543, guid: d1faf4760c35ece47b8d541bb4623cda, type: 3}
-  bossExplosionPrefab: {fileID: 6569611937835722543, guid: d1faf4760c35ece47b8d541bb4623cda, type: 3}
+  bossExplosionPrefab: {fileID: 6569611937835722543, guid: d87503c4609a1ca47ab2c1bf30966724, type: 3}
   usePooling: 1
   smallExplosionPoolSize: 10
   largeExplosionPoolSize: 6
@@ -11944,10 +11944,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4283443511449919783, guid: 97c197d52d739814f983a2b3a1804355, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97c197d52d739814f983a2b3a1804355, type: 3}
 --- !u!1001 &1943704891
 PrefabInstance:
@@ -13392,8 +13389,16 @@ PrefabInstance:
       value: Terrain_Level1
       objectReference: {fileID: 0}
     - target: {fileID: 957275887979435233, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 957275887979435233, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 957275887979435233, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 6778877213956855769, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13664,6 +13669,10 @@ PrefabInstance:
       propertyPath: shellPrefab
       value: 
       objectReference: {fileID: 1655021944451725265, guid: 8275b35e99927f240991f269a5b59c28, type: 3}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: dualWeaponsDuration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1731098264254746876, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 44.90689
