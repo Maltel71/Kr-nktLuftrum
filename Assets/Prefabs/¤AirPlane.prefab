@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 1033012633600161874}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0376, z: -11.25}
+  m_LocalPosition: {x: 0, y: 0.0376, z: 0.017}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -879,9 +879,9 @@ MonoBehaviour:
   maxHealth: 500
   shieldSlider: {fileID: 0}
   maxShield: 300
-  smokeEffect1: {fileID: 3635112798565014671, guid: cc4bdfc3b2246a548b44fef20d066a50, type: 3}
-  smokeEffect2: {fileID: 5095628693067180827, guid: 44ee49a2393652743989abed830ac7bc, type: 3}
-  smokeEffect3: {fileID: 2477205024082004622, guid: cc20702ae9f5ca34f80c6b871b9c35af, type: 3}
+  smokeEffect1: {fileID: 3713190357204832623, guid: 5174f7fa0b8eff24dbd97b5e49749e43, type: 3}
+  smokeEffect2: {fileID: 7317409256195922096, guid: 56cd4766233d0bf49ad4bf8ea9156ef0, type: 3}
+  smokeEffect3: {fileID: 1886538138297638851, guid: 00c35ad1a1a5a4b48b8637f116d0d199, type: 3}
   fireEffect: {fileID: 8788105186648406869, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
   smokeSpawnPoint: {fileID: 2606206605926967592}
   smoke1HPTrigger: 75
@@ -893,6 +893,9 @@ MonoBehaviour:
   sliderSpeed: 10
   testDamageAmount: 10
   planeAnimator: {fileID: 0}
+  crashSpeed: 100
+  crashRotationSpeed: 800
+  groundY: 0
 --- !u!114 &1168624700910189673
 MonoBehaviour:
   m_ObjectHideFlags: 0
