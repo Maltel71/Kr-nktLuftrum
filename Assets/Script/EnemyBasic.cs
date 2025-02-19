@@ -11,6 +11,7 @@ public class EnemyBasic : MonoBehaviour
     [Header("Target & Range")]
     [SerializeField] private float shootingRange = 20f;
     private Transform target;
+    [SerializeField] private float destroyDistanceBehindPlayer = 20f;
 
     [Header("Weapon Settings")]
     [SerializeField] private Transform leftGun;
@@ -71,6 +72,7 @@ public class EnemyBasic : MonoBehaviour
 
         HandleMovement();
         HandleShooting();
+        CheckIfBehindPlayer();
     }
 
     private void HandleMovement()
@@ -96,6 +98,18 @@ public class EnemyBasic : MonoBehaviour
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
+        }
+    }
+
+    private void CheckIfBehindPlayer()
+    {
+        if (target != null)
+        {
+            // Om fienden är tillräckligt långt bakom spelaren på z-axeln
+            if (transform.position.z < target.position.z - destroyDistanceBehindPlayer)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

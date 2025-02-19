@@ -5192,12 +5192,11 @@ MonoBehaviour:
   waveAmplitude: 4
   waveFrequency: 4
   shootingRange: 350
-  bulletPrefab: {fileID: 1451061741424768809, guid: b216dcdfc094cf04986e4afdbfc2604c, type: 3}
+  destroyDistanceBehindPlayer: 900
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
   fireRate: 2
   bulletDamage: 10
-  bulletSpawnOffset: 5
   collisionDamage: 100
   destroyOnCollision: 0
   continuousShooting: 0
