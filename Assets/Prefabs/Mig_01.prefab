@@ -5198,7 +5198,7 @@ MonoBehaviour:
   fireRate: 2
   bulletDamage: 10
   continuousShooting: 0
-  playerCollisionDamage: 200
+  playerCollisionDamage: 400
   collisionExplosionType: 1
 --- !u!1 &1958495011441875265
 GameObject:

@@ -148,19 +148,14 @@ public class EnemyBasic : MonoBehaviour
 
                 // Skapa explosion
                 GameObject explosion = ExplosionPool.Instance.GetExplosion(collisionExplosionType);
-                explosion.transform.position = collision.contacts[0].point;
+                explosion.transform.position = transform.position;
                 ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
 
-                // Starta dödssekvens för båda planen
-                EnemyHealth enemyHealth = GetComponent<EnemyHealth>();
-                if (enemyHealth != null)
-                {
-                    enemyHealth.StartDying();
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
+                // Lägg till poäng
+                ScoreManager.Instance?.AddEnemyShipPoints();
+
+                // Förstör fienden omedelbart
+                Destroy(gameObject);
             }
         }
     }
