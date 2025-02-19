@@ -84,6 +84,8 @@ public class BulletSystem : MonoBehaviour
                 playerHealth.TakeDamage(damage);
                 PlayHitEffect();
                 audioManager?.PlayCombatSound(CombatSoundType.Hit);
+
+                CameraShake.Instance?.ShakaCameraVidTraff();
             }
         }
         // Player bullet hits enemy

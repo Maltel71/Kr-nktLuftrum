@@ -100,6 +100,8 @@ public class MissileEnemy : MonoBehaviour
             {
                 Debug.Log($"Applying {damagePoints} damage to player");
                 targetHealth.TakeDamage(damagePoints);
+
+                CameraShake.Instance?.ShakaCameraVidBomb();
             }
             else
             {

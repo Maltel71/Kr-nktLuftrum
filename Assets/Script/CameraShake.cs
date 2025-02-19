@@ -71,6 +71,11 @@ public class CameraShake : MonoBehaviour
         }
     }
 
+    public void ShakaCameraVidTraff()
+    {
+        StartCoroutine(Skaka(3.0f, 0.4f)); // Ännu lägre intensitet och kortare varaktighet
+    }
+
     public void ShakaCameraVidBomb()
     {
         Debug.Log("ShakaCameraVidBomb anropad");
