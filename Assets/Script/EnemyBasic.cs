@@ -20,11 +20,15 @@ public class EnemyBasic : MonoBehaviour
     [SerializeField] private float bulletDamage = 20f;
 
     [Header("Collision Settings")]
-    [SerializeField] private float collisionDamage = 25f;
-    [SerializeField] private bool destroyOnCollision = true;
+    //[SerializeField] private float collisionDamage = 25f;
+    //[SerializeField] private bool destroyOnCollision = true;
 
     [Header("Shooting Settings")]
     [SerializeField] private bool continuousShooting = false;
+
+    [Header("Collision Settings")]
+    [SerializeField] private float playerCollisionDamage = 25f;
+    [SerializeField] private ExplosionType collisionExplosionType = ExplosionType.Small;
 
     private float nextFireTime;
     private bool useLeftGun = true;
@@ -138,10 +142,22 @@ public class EnemyBasic : MonoBehaviour
         {
             if (collision.gameObject.TryGetComponent<PlaneHealthSystem>(out var playerHealth))
             {
-                playerHealth.TakeDamage(collisionDamage);
+                // Skada spelaren
+                playerHealth.TakeDamage(playerCollisionDamage);
                 AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
 
-                if (destroyOnCollision)
+                // Skapa explosion
+                GameObject explosion = ExplosionPool.Instance.GetExplosion(collisionExplosionType);
+                explosion.transform.position = collision.contacts[0].point;
+                ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
+
+                // Starta dödssekvens för båda planen
+                EnemyHealth enemyHealth = GetComponent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.StartDying();
+                }
+                else
                 {
                     Destroy(gameObject);
                 }
