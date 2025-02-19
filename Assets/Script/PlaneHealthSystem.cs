@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlaneHealthSystem : MonoBehaviour
 {
@@ -38,8 +39,14 @@ public class PlaneHealthSystem : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] private Animator planeAnimator;
-    private static readonly int IsDeadAnimation = Animator.StringToHash("IsDead");
+    private static readonly int PlayerDeathTrigger = Animator.StringToHash("Player_Death");
     private bool isDead = false;
+
+    [Header("Crash Settings")]
+    [SerializeField] private float crashSpeed = 200f;
+    [SerializeField] private float crashRotationSpeed = 1000f;
+    [SerializeField] private float groundY = 0f;
+    private bool isCrashing = false;
 
     private AirplaneController airplaneController;
 
@@ -60,10 +67,10 @@ public class PlaneHealthSystem : MonoBehaviour
         if (planeAnimator == null)
         {
             planeAnimator = GetComponent<Animator>();
-        }
-        if (planeAnimator != null)
-        {
-            planeAnimator.SetBool("isDead", false);
+            if (planeAnimator == null)
+            {
+                Debug.LogWarning("Ingen Animator hittad på spelaren!");
+            }
         }
 
         airplaneController = GetComponent<AirplaneController>();
@@ -121,7 +128,6 @@ public class PlaneHealthSystem : MonoBehaviour
 
     private void UpdateDamageEffects()
     {
-        Debug.Log($"UpdateDamageEffects called with currentHealth: {currentHealth}");
         UpdateEffect(smokeEffect1, currentHealth <= smoke1HPTrigger);
         UpdateEffect(smokeEffect2, currentHealth <= smoke2HPTrigger);
         UpdateEffect(smokeEffect3, currentHealth <= smoke3HPTrigger);
@@ -135,8 +141,6 @@ public class PlaneHealthSystem : MonoBehaviour
             Debug.LogWarning("Effect is null!");
             return;
         }
-
-       // Debug.Log($"UpdateEffect called for {effect.name} with shouldPlay: {shouldPlay}");
 
         if (shouldPlay && !effect.isPlaying)
         {
@@ -168,20 +172,17 @@ public class PlaneHealthSystem : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        //Debug.Log($"TakeDamage called with damage: {damage}");
         if (isDead) return;
 
         if (currentShield > 0)
         {
             currentShield = Mathf.Max(0, currentShield - damage);
             targetShieldValue = currentShield;
-            //Debug.Log($"Shield hit! Shield remaining: {currentShield}");
         }
         else
         {
             currentHealth = Mathf.Max(0, currentHealth - damage);
             targetHealthValue = currentHealth;
-            //Debug.Log($"Health hit! Health remaining: {currentHealth}");
 
             UpdateDamageEffects();
 
@@ -222,9 +223,11 @@ public class PlaneHealthSystem : MonoBehaviour
 
         if (planeAnimator != null)
         {
-            planeAnimator.SetBool(IsDeadAnimation, true);
+            planeAnimator.SetTrigger(PlayerDeathTrigger);
+            Debug.Log("Death animation triggered");
         }
 
+        // Stäng av partikeleffekter
         UpdateEffect(smokeEffect1, false);
         UpdateEffect(smokeEffect2, false);
         UpdateEffect(smokeEffect3, false);
@@ -240,21 +243,16 @@ public class PlaneHealthSystem : MonoBehaviour
             airplaneController.FreezePosition();
         }
 
-        if (planeModel != null)
-        {
-            Renderer[] renderers = planeModel.GetComponentsInChildren<Renderer>();
-            foreach (var renderer in renderers)
-            {
-                renderer.enabled = false;
-            }
+        // Starta störtningen
+        StartCoroutine(CrashSequence());
+    }
 
-            SpriteRenderer[] spriteRenderers = planeModel.GetComponentsInChildren<SpriteRenderer>();
-            foreach (var spriteRenderer in spriteRenderers)
-            {
-                spriteRenderer.enabled = false;
-            }
-        }
+    private IEnumerator CrashSequence()
+    {
+        isCrashing = true;
+        float elapsedTime = 0f;
 
+        // Visa highscore
         HighScoreManager highScoreManager = FindObjectOfType<HighScoreManager>();
         if (highScoreManager != null)
         {
@@ -263,6 +261,57 @@ public class PlaneHealthSystem : MonoBehaviour
 
         ScoreManager.Instance.StopGame();
         ScoreManager.Instance.ShowHighScores();
+
+        while (transform.position.y > groundY)
+        {
+            // Rotera planet medan det faller
+            transform.Rotate(Vector3.forward * crashRotationSpeed * Time.deltaTime);
+
+            // Flytta planet nedåt
+            Vector3 newPosition = transform.position;
+            newPosition.y -= crashSpeed * Time.deltaTime;
+
+            // Se till att vi inte går under marknivån
+            if (newPosition.y <= groundY)
+            {
+                newPosition.y = groundY;
+                CreateExplosion();
+                break;
+            }
+
+            transform.position = newPosition;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Vänta lite efter explosionen innan highscore visas
+        yield return new WaitForSeconds(1f);
+
+
+    }
+
+    private void CreateExplosion()
+    {
+        // Skapa explosion från poolen
+        GameObject explosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Large);
+        explosion.transform.position = transform.position;
+        ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
+
+        // Spela explosionsljud
+        AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
+
+        // Skaka kameran
+        CameraShake cameraShake = FindObjectOfType<CameraShake>();
+        if (cameraShake != null)
+        {
+            cameraShake.ShakaCameraVidBomb();
+        }
+
+        // Göm planet
+        if (planeModel != null)
+        {
+            planeModel.SetActive(false);
+        }
     }
 
     public bool IsDead()
