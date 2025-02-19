@@ -22,13 +22,12 @@ public class EnemyBasic : MonoBehaviour
     [Header("Collision Settings")]
     //[SerializeField] private float collisionDamage = 25f;
     //[SerializeField] private bool destroyOnCollision = true;
+    [SerializeField] private float playerCollisionDamage = 25f;
+    [SerializeField] private ExplosionType collisionExplosionType = ExplosionType.Small;
 
     [Header("Shooting Settings")]
     [SerializeField] private bool continuousShooting = false;
 
-    [Header("Collision Settings")]
-    [SerializeField] private float playerCollisionDamage = 25f;
-    [SerializeField] private ExplosionType collisionExplosionType = ExplosionType.Small;
 
     private float nextFireTime;
     private bool useLeftGun = true;

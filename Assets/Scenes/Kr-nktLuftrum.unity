@@ -6494,8 +6494,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smallExplosionPrefab: {fileID: 2633928242017020019, guid: cbefdac54607d144b9411e0bc8d47c11, type: 3}
-  largeExplosionPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
-  bossExplosionPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
+  largeExplosionPrefab: {fileID: 6569611937835722543, guid: d1faf4760c35ece47b8d541bb4623cda, type: 3}
+  bossExplosionPrefab: {fileID: 6569611937835722543, guid: d1faf4760c35ece47b8d541bb4623cda, type: 3}
   usePooling: 1
   smallExplosionPoolSize: 10
   largeExplosionPoolSize: 6
