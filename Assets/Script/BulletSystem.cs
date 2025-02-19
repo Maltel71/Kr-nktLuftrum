@@ -93,7 +93,7 @@ public class BulletSystem : MonoBehaviour
             {
                 enemyHealth.TakeDamage(damage);
                 PlayHitEffect();
-                audioManager?.PlayCombatSound(CombatSoundType.Hit);
+                //audioManager?.PlayCombatSound(CombatSoundType.Hit);
             }
         }
 

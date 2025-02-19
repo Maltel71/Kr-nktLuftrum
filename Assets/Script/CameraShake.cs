@@ -17,6 +17,7 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float bossIntensitet = 0.5f;
     [SerializeField] private float bossTid = 1f;
     [SerializeField] private float dämpningHastighet = 2f;
+    
 
     public static CameraShake Instance => instance;
 
@@ -79,6 +80,12 @@ public class CameraShake : MonoBehaviour
             return;
         }
         StartCoroutine(Skaka(standardIntensitet, standardTid));
+    }
+
+    public void ShakaCameraVidFiendePlanKollision()
+    {
+        // Kan ha specifika parametrar för intensitet och varaktighet
+        StartCoroutine(Skaka(0.2f, 0.3f)); // Lägre intensitet, kortare varaktighet
     }
 
     public void ShakaCameraVidBossDöd()

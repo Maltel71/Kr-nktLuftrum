@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Andreas Test scen.unity
+    path: Assets/_Scenes/Andreas Test scen.unity
     guid: cdfe6ddae551c5f48814a8942f8766a6
   - enabled: 1
-    path: Assets/Scenes/Kr-nktLuftrum.unity
+    path: Assets/_Scenes/Kr-nktLuftrum.unity
     guid: 69d24866bd8b4b7468558743a91c1445
   - enabled: 0
-    path: Assets/Scenes/MainScen.unity
+    path: Assets/_Scenes/MainScen.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

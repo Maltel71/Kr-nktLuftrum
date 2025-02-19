@@ -143,18 +143,28 @@ public class EnemyBasic : MonoBehaviour
             {
                 // Skada spelaren
                 playerHealth.TakeDamage(playerCollisionDamage);
+
+                // Spela bara hit-ljud när den träffar spelaren
                 AudioManager.Instance?.PlayCombatSound(CombatSoundType.Hit);
 
                 // Skapa explosion
                 GameObject explosion = ExplosionPool.Instance.GetExplosion(collisionExplosionType);
-                explosion.transform.position = transform.position;
+                explosion.transform.position = collision.contacts[0].point;
                 ExplosionPool.Instance.ReturnExplosionToPool(explosion, 2f);
 
-                // Lägg till poäng
-                ScoreManager.Instance?.AddEnemyShipPoints();
+                // Lägg till kameraskakning
+                CameraShake.Instance?.ShakaCameraVidBomb();
 
-                // Förstör fienden omedelbart
-                Destroy(gameObject);
+                // Starta dödssekvens för båda planen
+                EnemyHealth enemyHealth = GetComponent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.StartDying();
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }

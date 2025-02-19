@@ -180,7 +180,20 @@ public class AudioManager : MonoBehaviour
     {
         if (hitSound != null && sfxSource != null)
         {
+            // Bredare pitch-variation
+            float randomPitch = Random.Range(0.6f, 1.4f);
+
+            // Spara ursprunglig pitch
+            float originalPitch = sfxSource.pitch;
+
+            // Sätt ny pitch
+            sfxSource.pitch = randomPitch;
+
+            // Spela ljudet
             sfxSource.PlayOneShot(hitSound, hitVolume);
+
+            // Återställ pitch
+            sfxSource.pitch = originalPitch;
         }
     }
 

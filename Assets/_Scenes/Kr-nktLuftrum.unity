@@ -2783,7 +2783,7 @@ GameObject:
   - component: {fileID: 371827927}
   - component: {fileID: 371827926}
   m_Layer: 0
-  m_Name: Camera Holder
+  m_Name: '"Camera Holder'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9978,8 +9978,8 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: f88670eda07cd484aad79a15c2a735b6, type: 3}
   deathSound: {fileID: 8300000, guid: 6005bcc324e39814a908c8e16b2a8538, type: 3}
   playerShootVolume: 0.3
-  enemyShootVolume: 0.1
-  hitVolume: 0.1
+  enemyShootVolume: 0.23
+  hitVolume: 0.6
   bombDropSound: {fileID: 8300000, guid: f66e812e961c5ef47b944f0a23154756, type: 3}
   bombFallingSound: {fileID: 0}
   bombExplosionSound: {fileID: 8300000, guid: 53eae6c9ac1c25f43905fae8b1bc89a7, type: 3}
