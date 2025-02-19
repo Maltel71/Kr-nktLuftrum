@@ -139,7 +139,7 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4038366390463760817, guid: 71f6762584712214c969bb4856f3adcc, type: 3}
   healthBarOffset: {x: 0, y: 10, z: 0}
   healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
-  crashSpeed: 1600
+  crashSpeed: 1000
   crashDuration: 4
   rotationSpeed: 200
   rotateClockwise: 0

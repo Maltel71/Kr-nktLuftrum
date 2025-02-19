@@ -140,7 +140,7 @@ public class EnemyHealth : MonoBehaviour
         if (!isDying || hasExploded) return;
 
         Vector3 pos = transform.position;
-        pos.y -= crashSpeed * Time.deltaTime;
+        pos.y -= (isBoss ? crashSpeed * 0.5f : crashSpeed) * Time.deltaTime; // Långsammare för bossar
         transform.position = pos;
 
         float rotationAmount = rotateClockwise ? rotationSpeed : -rotationSpeed;
@@ -148,9 +148,23 @@ public class EnemyHealth : MonoBehaviour
 
         if (Time.time >= crashStartTime + crashDuration && !hasExploded)
         {
+            hasExploded = false;
+
             Debug.Log($"Enemy {gameObject.name} starting explosion sequence");
             AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
-            StartCoroutine(ExplodeWithRandomDelay());
+
+            // Specifik explosionshantering för bossar
+            if (isBoss)
+            {
+                GameObject bossExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Boss);
+                bossExplosion.transform.position = transform.position;
+                ExplosionPool.Instance.ReturnExplosionToPool(bossExplosion, 3f);
+                Destroy(gameObject);
+            }
+            else
+            {
+                StartCoroutine(ExplodeWithRandomDelay());
+            }
         }
     }
 
