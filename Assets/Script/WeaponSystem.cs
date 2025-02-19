@@ -147,6 +147,11 @@ public class WeaponSystem : MonoBehaviour
         bulletRb.linearVelocity = BulletDirection * bulletSpeed;
     }
 
+    public void ResetFireRate()
+    {
+        fireRate = originalFireRate;
+    }
+
     //private void SpawnBullet(Vector3 spawnPosition)
     //{
     //    GameObject bullet = BulletPool.Instance.GetBullet(true);

@@ -191,5 +191,14 @@ public class ActiveBoostUI : MonoBehaviour
                 airplaneController.ResetMoveSpeed();
             }
         }
+
+        else if (boostType == BoostType.FireRateBoost)
+        {
+            WeaponSystem weaponSystem = FindObjectOfType<WeaponSystem>();
+            if (weaponSystem != null)
+            {
+                weaponSystem.ResetFireRate();
+            }
+        }
     }
 }

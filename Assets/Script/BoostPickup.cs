@@ -215,6 +215,7 @@ public class BoostPickup : MonoBehaviour
         isDestroyed = true;
         isPickedUp = true;
     }
+
 }
 
 
