@@ -7,38 +7,29 @@ using UnityEngine.SceneManagement;
 
 public class HighScoreManager : MonoBehaviour
 {
-    // UI Referenser
-    [SerializeField] private GameObject highScorePanel;      // Panel för toplistan
-    [SerializeField] private GameObject nameInputPanel;      // Panel för namn-input
-    [SerializeField] private TMP_InputField nameInputField;  // Input-fältet
-    [SerializeField] private TextMeshProUGUI[] scoreTexts;   // Array med text-elementen för topplistan
+    [SerializeField] private GameObject highScorePanel;
+    [SerializeField] private GameObject nameInputPanel;
+    [SerializeField] private TMP_InputField nameInputField;
+    [SerializeField] private TextMeshProUGUI[] scoreTexts;
 
     [SerializeField] private Button retryButton;
     [SerializeField] private Button quitButton;
 
     private const int MAX_SCORES = 5;
     private List<HighScoreEntry> highScores = new List<HighScoreEntry>();
-    private int currentScore;  // Temporär lagring av aktuell poäng
-
-    // Denna struktur håller data för varje highscore-post
-    [System.Serializable]
-    private struct HighScoreEntry
-    {
-        public string name;
-        public int score;
-
-        public HighScoreEntry(string name, int score)
-        {
-            this.name = name;
-            this.score = score;
-        }
-    }
+    private int currentScore;
 
     private void Start()
     {
-        LoadHighScores();         // Ladda sparade highscores
+        LoadHighScores();
         highScorePanel.SetActive(false);
         nameInputPanel.SetActive(false);
+
+        // Lägg till lyssnare för Enter-tangenten på input-fältet
+        if (nameInputField != null)
+        {
+            nameInputField.onSubmit.AddListener(OnInputFieldSubmit);
+        }
 
         if (retryButton != null)
             retryButton.onClick.AddListener(RetryGame);
@@ -46,51 +37,53 @@ public class HighScoreManager : MonoBehaviour
             quitButton.onClick.AddListener(QuitToTitleScreen);
     }
 
-    // Anropas när spelaren dör
+    // Ny metod för att hantera Enter-tangenten
+    private void OnInputFieldSubmit(string value)
+    {
+        if (!string.IsNullOrEmpty(value))
+        {
+            OnNameSubmitted();
+        }
+    }
+
     public void OnPlayerDeath(int score)
     {
         currentScore = score;
 
-        // Kolla om poängen är tillräckligt hög
         if (IsHighScore(score))
         {
-            nameInputPanel.SetActive(true);  // Visa namn-input först
+            nameInputPanel.SetActive(true);
             nameInputField.text = "";
             nameInputField.Select();
+            nameInputField.ActivateInputField();
         }
         else
         {
-            ShowHighScores();  // Visa bara topplistan
+            ShowHighScores();
         }
     }
 
-    // Kollar om poängen är tillräckligt hög för topplistan
     private bool IsHighScore(int score)
     {
         return highScores.Count < MAX_SCORES || score > highScores.Min(x => x.score);
     }
 
-    // Anropas när spelaren klickar på OK-knappen
     public void OnNameSubmitted()
     {
         string playerName = nameInputField.text;
         if (string.IsNullOrEmpty(playerName))
         {
-            playerName = "Player";  // Default namn om inget anges
+            playerName = "Player";
         }
 
-        // Lägg till ny highscore
         highScores.Add(new HighScoreEntry(playerName, currentScore));
-
-        // Sortera och behåll bara top 5
         highScores = highScores.OrderByDescending(x => x.score).Take(MAX_SCORES).ToList();
 
-        SaveHighScores();        // Spara till PlayerPrefs
+        SaveHighScores();
         nameInputPanel.SetActive(false);
-        ShowHighScores();        // Visa topplistan
+        ShowHighScores();
     }
 
-    // Visar highscore-panelen och uppdaterar texten
     private void ShowHighScores()
     {
         highScorePanel.SetActive(true);
@@ -108,7 +101,6 @@ public class HighScoreManager : MonoBehaviour
         }
     }
 
-    // Sparar highscores i PlayerPrefs
     private void SaveHighScores()
     {
         for (int i = 0; i < highScores.Count; i++)
@@ -119,7 +111,6 @@ public class HighScoreManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // Laddar highscores från PlayerPrefs
     private void LoadHighScores()
     {
         highScores.Clear();
@@ -134,7 +125,6 @@ public class HighScoreManager : MonoBehaviour
         }
     }
 
-    // Knapp för att stänga highscore-panelen
     public void HideHighScores()
     {
         highScorePanel.SetActive(false);
@@ -143,13 +133,10 @@ public class HighScoreManager : MonoBehaviour
     private void RetryGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        SceneManager.LoadScene(1);
     }
 
     private void QuitToTitleScreen()
     {
         SceneManager.LoadScene(0);
-        SceneManager.LoadScene("Andreas Test scen"); // Se till att du har en scen med detta namn
     }
-
 }

@@ -32,6 +32,8 @@ public class WeaponSystem : MonoBehaviour
     private readonly Vector3 BulletDirection = Vector3.forward;
     private readonly Vector3 ShellEjectionOffset = Vector3.up * 0.5f;
 
+    private PlaneHealthSystem planeHealth;
+
     private void Start()
     {
         InitializeComponents();
@@ -41,6 +43,11 @@ public class WeaponSystem : MonoBehaviour
     private void InitializeComponents()
     {
         audioManager = AudioManager.Instance;
+        planeHealth = GetComponent<PlaneHealthSystem>();
+        if (planeHealth == null)
+        {
+            Debug.LogWarning("PlaneHealthSystem hittades inte på spelaren!");
+        }
         ValidateComponents();
         isInitialized = true;
     }
@@ -55,8 +62,22 @@ public class WeaponSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!isInitialized || !canFire) return;
+        if (!isInitialized || !canFire || (planeHealth != null && planeHealth.IsDead()))
+        {
+            return;
+        }
         HandleWeaponInput();
+    }
+
+    public void EnableWeapons(bool enable)
+    {
+        // Tillåt bara aktivering av vapen om spelaren lever
+        if (planeHealth != null && planeHealth.IsDead())
+        {
+            canFire = false;
+            return;
+        }
+        canFire = enable;
     }
 
     private void HandleWeaponInput()
@@ -206,8 +227,8 @@ public class WeaponSystem : MonoBehaviour
         fireRate = originalFireRate;
     }
 
-    public void EnableWeapons(bool enable)
-    {
-        canFire = enable;
-    }
+    //public void EnableWeapons(bool enable)
+    //{
+    //    canFire = enable;
+    //}
 }
