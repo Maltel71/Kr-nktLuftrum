@@ -64,6 +64,8 @@ public class BulletSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Bullet collision start with: {other.gameObject.name}");
+
         if (hasCollided) return;
 
         // Skip bullet-bullet collisions
@@ -92,6 +94,7 @@ public class BulletSystem : MonoBehaviour
         // Enemy bullet hits player - check invincibility
         if (isEnemyProjectile && other.CompareTag("Player"))
         {
+            Debug.Log("Enemy hit process complete");
             if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth) && !playerHealth.IsInvincible() && !playerHealth.IsDead())
             {
                 playerHealth.TakeDamage(damage);
@@ -99,10 +102,12 @@ public class BulletSystem : MonoBehaviour
                 audioManager?.PlayCombatSound(CombatSoundType.Hit);
                 CameraShake.Instance?.ShakaCameraVidTraff();
             }
+            Debug.Log("Enemy hit process complete");
         }
 
         hasCollided = true;
         ReturnToPool();
+        Debug.Log("Bullet returned to pool");
     }
 
     private void PlayHitEffect()
