@@ -37,6 +37,10 @@ public class EnemyHealth : MonoBehaviour
     [Header("Boost Drops")]
     [SerializeField] private BoostDropSystem boostDropSystem;
 
+    [Header("Colliders")]
+    [SerializeField] public Collider mainCollider;        // Drag n drop huvudcollidern här i Unity
+    [SerializeField] private Collider damageCollider;      // Drag n 
+
     private Slider healthSlider;
     private GameObject healthBarInstance;
     private CameraShake cameraShake;
@@ -80,6 +84,19 @@ public class EnemyHealth : MonoBehaviour
         if (damageSmokeEffect != null)
         {
             damageSmokeEffect.Stop();
+        }
+
+        if (mainCollider == null)
+            mainCollider = GetComponent<Collider>();
+
+        if (damageCollider == null)
+        {
+            // Skapa en trigger collider om ingen är tilldelad
+            var triggerObj = new GameObject("DamageCollider");
+            triggerObj.transform.parent = transform;
+            triggerObj.transform.localPosition = Vector3.zero;
+            damageCollider = triggerObj.AddComponent<BoxCollider>();
+            damageCollider.isTrigger = true;
         }
 
         initialized = true;

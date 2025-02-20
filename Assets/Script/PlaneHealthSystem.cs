@@ -243,10 +243,10 @@ public class PlaneHealthSystem : MonoBehaviour
 
         foreach (var enemy in enemyObjects)
         {
-            var collider = enemy.GetComponent<Collider>();
-            if (collider != null)
+            var enemyHealth = enemy.GetComponent<EnemyHealth>();
+            if (enemyHealth != null && enemyHealth.mainCollider != null)
             {
-                collider.enabled = enabled;
+                enemyHealth.mainCollider.enabled = enabled;
             }
         }
     }

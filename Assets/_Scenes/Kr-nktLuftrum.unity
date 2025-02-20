@@ -24094,7 +24094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: invincibilityDuration
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7531627791751459283, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_Avatar

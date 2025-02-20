@@ -76,21 +76,30 @@ public class BulletSystem : MonoBehaviour
             other.CompareTag("Player Bullet"))
             return;
 
-        // Kontrollera om spelaren är odödlig
-        PlaneHealthSystem playerHealth = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlaneHealthSystem>();
-        bool isPlayerInvincible = playerHealth != null && playerHealth.IsInvincible();
-
-        // Fiende träffas av spelarens skott, även under odödlighet
+        // När spelaren är odödlig, låt fortfarande spelarens skott träffa fiender
         if (!isEnemyProjectile && other.CompareTag("Enemy"))
         {
             if (other.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
                 enemyHealth.TakeDamage(damage);
                 PlayHitEffect();
-                //audioManager?.PlayCombatSound(CombatSoundType.Hit);
+            }
+            hasCollided = true;
+            ReturnToPool();
+            return;
+        }
+
+        // Enemy bullet hits player - check invincibility
+        if (isEnemyProjectile && other.CompareTag("Player"))
+        {
+            if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth) && !playerHealth.IsInvincible() && !playerHealth.IsDead())
+            {
+                playerHealth.TakeDamage(damage);
+                PlayHitEffect();
+                audioManager?.PlayCombatSound(CombatSoundType.Hit);
+                CameraShake.Instance?.ShakaCameraVidTraff();
             }
         }
-  
 
         hasCollided = true;
         ReturnToPool();

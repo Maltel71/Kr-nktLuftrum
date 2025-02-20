@@ -5034,6 +5034,7 @@ GameObject:
   - component: {fileID: 8151402360514474810}
   - component: {fileID: -3985228070185450049}
   - component: {fileID: 8500370060819798468}
+  - component: {fileID: 5791244609231749924}
   m_Layer: 10
   m_Name: Mig_01
   m_TagString: Enemy
@@ -5111,6 +5112,8 @@ MonoBehaviour:
   damageSmokeEffect: {fileID: 8202876443604673614}
   damageSmokefadeDuration: 4
   boostDropSystem: {fileID: 0}
+  mainCollider: {fileID: 8151402360514474810}
+  damageCollider: {fileID: 5791244609231749924}
 --- !u!54 &1546925361892836530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5200,6 +5203,29 @@ MonoBehaviour:
   playerCollisionDamage: 400
   collisionExplosionType: 1
   continuousShooting: 0
+--- !u!136 &5791244609231749924
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884269351238135773}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35
+  m_Height: 0.1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1958495011441875265
 GameObject:
   m_ObjectHideFlags: 0
