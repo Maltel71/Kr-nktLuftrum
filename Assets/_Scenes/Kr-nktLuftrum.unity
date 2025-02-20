@@ -13668,10 +13668,30 @@ PrefabInstance:
     - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: shellPrefab
       value: 
-      objectReference: {fileID: 1655021944451725265, guid: 8275b35e99927f240991f269a5b59c28, type: 3}
+      objectReference: {fileID: 7594624446680057220, guid: 4b5818320cb1b254a880f95268c7deb0, type: 3}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: shellLifetime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: maxShellTorque
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: minShellTorque
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: dualWeaponsDuration
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: maxShellEjectionForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168624700910189673, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: minShellEjectionForce
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1731098264254746876, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13900,6 +13920,14 @@ PrefabInstance:
     - target: {fileID: 7561783120145738096, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0.0000025044778
+      objectReference: {fileID: 0}
+    - target: {fileID: 8321685975133625665, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8321685975133625665, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.66
       objectReference: {fileID: 0}
     - target: {fileID: 8853598271092524929, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

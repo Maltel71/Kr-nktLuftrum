@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponSystem : MonoBehaviour
 {
-    [Header("Vapen Inställningar")]
+    [Header("Weapon Settings")]
     [SerializeField] private Transform weaponPoint;
     [SerializeField] private Transform leftGunPoint;
     [SerializeField] private Transform rightGunPoint;
@@ -12,12 +12,14 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float bulletLifetime = 2f;
 
-    [Header("Hylsor")]
+    [Header("Shells Settings")]
     [SerializeField] private Transform shellEjectionPoint;
     [SerializeField] private GameObject shellPrefab;
-    [SerializeField] private float shellEjectionForce = 2f;
-    [SerializeField] private float shellTorque = 2f;
     [SerializeField] private float shellLifetime = 3f;
+    [SerializeField] private float minShellEjectionForce = 3f;
+    [SerializeField] private float maxShellEjectionForce = 6f;
+    [SerializeField] private float minShellTorque = 3f;
+    [SerializeField] private float maxShellTorque = 8f;
 
     [Header("Boost Settings")]
     [SerializeField] private float fireRateBoostDuration = 10f;
@@ -133,16 +135,12 @@ public class WeaponSystem : MonoBehaviour
 
     private void SpawnBullet(Vector3 spawnPosition)
     {
-        // Cacha komponenter för att minska GetComponent-anrop
         GameObject bullet = BulletPool.Instance.GetBullet(true);
-
         BulletSystem bulletSystem = bullet.GetComponent<BulletSystem>();
         Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
         bullet.transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
-
         bulletSystem.Initialize(Vector3.forward, false, 10f);
-
         bulletRb.useGravity = false;
         bulletRb.linearVelocity = BulletDirection * bulletSpeed;
     }
@@ -151,23 +149,6 @@ public class WeaponSystem : MonoBehaviour
     {
         fireRate = originalFireRate;
     }
-
-    //private void SpawnBullet(Vector3 spawnPosition)
-    //{
-    //    GameObject bullet = BulletPool.Instance.GetBullet(true);
-    //    bullet.transform.position = spawnPosition;
-    //    bullet.transform.rotation = Quaternion.identity;
-
-    //    if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
-    //    {
-    //        bulletSystem.Initialize(Vector3.forward, false, 10f);
-    //    }
-    //    if (bullet.TryGetComponent<Rigidbody>(out var bulletRb))
-    //    {
-    //        bulletRb.useGravity = false;
-    //        bulletRb.linearVelocity = BulletDirection * bulletSpeed;
-    //    }
-    //}
 
     private void EjectShell()
     {
@@ -192,9 +173,33 @@ public class WeaponSystem : MonoBehaviour
     {
         if (shell.TryGetComponent<Rigidbody>(out var shellRb))
         {
-            Vector3 ejectionDir = (shellEjectionPoint.right + ShellEjectionOffset).normalized;
-            shellRb.AddForce(ejectionDir * shellEjectionForce, ForceMode.Impulse);
-            shellRb.AddTorque(Random.insideUnitSphere * shellTorque, ForceMode.Impulse);
+            // Aktivera gravitation
+            shellRb.useGravity = true;
+
+            // Grundkrafter för utkast
+            float baseForce = Random.Range(3f, 5f);
+            float upwardForce = Random.Range(2f, 4f);
+            // Ändrad för att favorisera bakåtriktning (-4 till 1 istället för -2 till 2)
+            float sideForce = Random.Range(-4f, 1f);
+
+            // Applicera krafter
+            Vector3 totalForce = transform.right * baseForce +      // Huvudriktning (åt höger)
+                               transform.up * upwardForce +         // Uppåt
+                               transform.forward * sideForce;       // Mestadels bakåt
+
+            shellRb.AddForce(totalForce, ForceMode.Impulse);
+
+            // Rotation
+            shellRb.AddTorque(
+                Random.Range(-5f, 5f),
+                Random.Range(-5f, 5f),
+                Random.Range(-5f, 5f),
+                ForceMode.Impulse
+            );
+
+            // Se till att den inte "sover"
+            shellRb.sleepThreshold = 0;
+            shellRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
 
@@ -208,7 +213,6 @@ public class WeaponSystem : MonoBehaviour
         nextFireTime = Time.time + fireRate;
     }
 
-    // Boost metoder
     public IEnumerator ApplyFireRateBoost(float duration)
     {
         float boostedFireRate = fireRate * 0.5f;
@@ -231,9 +235,4 @@ public class WeaponSystem : MonoBehaviour
         yield return new WaitForSeconds(duration);
         fireRate = originalFireRate;
     }
-
-    //public void EnableWeapons(bool enable)
-    //{
-    //    canFire = enable;
-    //}
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   missile: {fileID: 2279591613096608426}
-  missileExplosionPrefab: {fileID: 6569611937835722543, guid: 4fd4d1b1c26985b409ebbc452c3894db, type: 3}
+  missileExplosionPrefab: {fileID: 6569611937835722543, guid: d87503c4609a1ca47ab2c1bf30966724, type: 3}
   rb: {fileID: 5731178390922119550}
   turnValue: 1
   speed: 150
