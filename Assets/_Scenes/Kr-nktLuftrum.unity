@@ -24149,8 +24149,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1014472289}
     - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: planeBaseMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 799d9f76c012d7a4d87e84b6c67ce602, type: 2}
+    - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: crashRotationSpeed
       value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: invincibilityColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: invincibilityColor.g
+      value: 0.843017
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493533950492809955, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
+      propertyPath: invincibilityColor.r
+      value: 0.9716981
       objectReference: {fileID: 0}
     - target: {fileID: 7531627791751459283, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: m_Avatar
