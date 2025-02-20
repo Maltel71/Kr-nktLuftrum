@@ -76,20 +76,12 @@ public class BulletSystem : MonoBehaviour
             other.CompareTag("Player Bullet"))
             return;
 
-        // Enemy bullet hits player
-        if (isEnemyProjectile && other.CompareTag("Player"))
-        {
-            if (other.TryGetComponent<PlaneHealthSystem>(out var playerHealth) && !playerHealth.IsDead())
-            {
-                playerHealth.TakeDamage(damage);
-                PlayHitEffect();
-                audioManager?.PlayCombatSound(CombatSoundType.Hit);
+        // Kontrollera om spelaren är odödlig
+        PlaneHealthSystem playerHealth = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlaneHealthSystem>();
+        bool isPlayerInvincible = playerHealth != null && playerHealth.IsInvincible();
 
-                CameraShake.Instance?.ShakaCameraVidTraff();
-            }
-        }
-        // Player bullet hits enemy
-        else if (!isEnemyProjectile && other.CompareTag("Enemy"))
+        // Fiende träffas av spelarens skott, även under odödlighet
+        if (!isEnemyProjectile && other.CompareTag("Enemy"))
         {
             if (other.TryGetComponent<EnemyHealth>(out var enemyHealth))
             {
@@ -98,6 +90,7 @@ public class BulletSystem : MonoBehaviour
                 //audioManager?.PlayCombatSound(CombatSoundType.Hit);
             }
         }
+  
 
         hasCollided = true;
         ReturnToPool();

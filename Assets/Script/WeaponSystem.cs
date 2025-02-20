@@ -34,12 +34,16 @@ public class WeaponSystem : MonoBehaviour
     private readonly Vector3 BulletDirection = Vector3.forward;
     private readonly Vector3 ShellEjectionOffset = Vector3.up * 0.5f;
 
+    private PlaneHealthSystem healthSystem;
+
     private PlaneHealthSystem planeHealth;
 
     private void Start()
     {
         InitializeComponents();
         originalFireRate = fireRate;
+
+        healthSystem = GetComponent<PlaneHealthSystem>();
     }
 
     private void InitializeComponents()
@@ -62,6 +66,11 @@ public class WeaponSystem : MonoBehaviour
         if (shellPrefab == null) Debug.LogWarning("ShellPrefab saknas!");
     }
 
+    private bool CanFire()
+    {
+        // Tillåt skjutning även när spelaren är odödlig
+        return Time.time >= nextFireTime;
+    }
     private void Update()
     {
         if (!isInitialized || !canFire || (planeHealth != null && planeHealth.IsDead()))
@@ -107,7 +116,7 @@ public class WeaponSystem : MonoBehaviour
         }
     }
 
-    private bool CanFire() => Time.time >= nextFireTime;
+   
 
     private void Fire()
     {

@@ -228,9 +228,9 @@ public class EnemyHealth : MonoBehaviour
             return;
         }
 
-        //Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
+        Debug.Log($"Enemy {gameObject.name} taking {damage} damage. Current health: {currentHealth}");
         currentHealth = Mathf.Max(0, currentHealth - damage);
-        //Debug.Log($"Health after damage: {currentHealth}");
+        Debug.Log($"Health after damage: {currentHealth}");
 
         if (healthSlider != null)
         {
