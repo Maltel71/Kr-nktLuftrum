@@ -158,10 +158,32 @@ public class PlaneHealthSystem : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            OnEnemyCollision();
+            if (!isInvincible)  // Om vi inte är odödliga
+            {
+                float collisionDamage = 200f;  // Eller annat lämpligt värde
+
+                if (currentShield > 0)
+                {
+                    // Ta bort från skölden först
+                    float remainingDamage = Mathf.Max(0, collisionDamage - currentShield);
+                    currentShield = Mathf.Max(0, currentShield - collisionDamage);
+                    targetShieldValue = currentShield;
+
+                    // Om det finns skada kvar efter skölden är slut, ta från hälsan
+                    if (remainingDamage > 0)
+                    {
+                        TakeDamage(remainingDamage);
+                    }
+                }
+                else
+                {
+                    // Om ingen sköld finns, ta direkt från hälsan
+                    TakeDamage(collisionDamage);
+                }
+            }
+            OnEnemyCollision();  // Starta invincibility efter skadan
         }
     }
 

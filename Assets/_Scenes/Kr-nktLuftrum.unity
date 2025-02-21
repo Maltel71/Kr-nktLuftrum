@@ -3839,6 +3839,13 @@ MonoBehaviour:
   - {fileID: 1740135278}
   - {fileID: 2136661544}
   - {fileID: 1980043201}
+  gameplayUIElements:
+  - {fileID: 1567770486}
+  - {fileID: 93362838}
+  - {fileID: 1164510392}
+  - {fileID: 1318871452}
+  - {fileID: 710864722}
+  - {fileID: 64413818}
   retryButton: {fileID: 536214374}
   quitButton: {fileID: 158179963}
 --- !u!4 &289055079
@@ -4203,7 +4210,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: HIGHSCORE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4230,8 +4237,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -15937,7 +15944,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1193457582
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18370,9 +18377,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Score
-
-'
+  m_text: Score
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
