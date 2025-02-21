@@ -24,7 +24,6 @@ public class ExplosionPool : MonoBehaviour
     private List<GameObject> largeExplosionPool;
     private List<GameObject> bossExplosionPool;
 
-    // Statistik för debugging
     private int totalExplosionsCreated = 0;
     private int totalExplosionsReused = 0;
     private int missedPoolAttempts = 0;
@@ -96,11 +95,22 @@ public class ExplosionPool : MonoBehaviour
         GameObject prefab = GetPrefabForType(type);
         if (prefab == null)
         {
-            DebugLog($"Failed to create explosion of type {type} - prefab missing");
+            Debug.LogWarning($"Failed to create explosion of type {type} - prefab missing");
             return false;
         }
 
         GameObject explosion = Instantiate(prefab, transform);
+
+        // Inaktivera och återställ alla partikelsystem
+        var particleSystems = explosion.GetComponentsInChildren<ParticleSystem>(true);
+        foreach (var ps in particleSystems)
+        {
+            var main = ps.main;
+            main.playOnAwake = false;
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ps.Clear();
+        }
+
         explosion.SetActive(false);
         totalExplosionsCreated++;
 
@@ -144,6 +154,15 @@ public class ExplosionPool : MonoBehaviour
         {
             DebugLog($"Creating new non-pooled explosion of type: {type}");
             GameObject explosion = Instantiate(prefab);
+
+            // Starta alla partikelsystem explicit
+            var particles = explosion.GetComponentsInChildren<ParticleSystem>();
+            foreach (var ps in particles)
+            {
+                ps.Clear();
+                ps.Play();
+            }
+
             totalExplosionsCreated++;
             Destroy(explosion, 2f);
             return explosion;
@@ -151,21 +170,37 @@ public class ExplosionPool : MonoBehaviour
 
         List<GameObject> pool = GetPoolForType(type);
 
-        // Hitta första inaktiva explosionen
         foreach (GameObject explosion in pool)
         {
             if (!explosion.activeInHierarchy)
             {
                 explosion.SetActive(true);
+
+                // Starta alla partikelsystem explicit
+                var particles = explosion.GetComponentsInChildren<ParticleSystem>();
+                foreach (var ps in particles)
+                {
+                    ps.Clear();
+                    ps.Play();
+                }
+
                 totalExplosionsReused++;
                 DebugLog($"Reusing explosion of type: {type}. Total reused: {totalExplosionsReused}");
                 return explosion;
             }
         }
 
-        // Om alla explosioner är aktiva, skapa en ny
         DebugLog($"Pool exhausted for type: {type}, creating new explosion");
         GameObject newExplosion = Instantiate(prefab, transform);
+
+        // Starta alla partikelsystem explicit
+        var newParticles = newExplosion.GetComponentsInChildren<ParticleSystem>();
+        foreach (var ps in newParticles)
+        {
+            ps.Clear();
+            ps.Play();
+        }
+
         totalExplosionsCreated++;
         pool.Add(newExplosion);
         return newExplosion;
@@ -198,6 +233,14 @@ public class ExplosionPool : MonoBehaviour
         yield return new WaitForSeconds(delay);
         if (explosion != null)
         {
+            // Stoppa alla partikelsystem
+            var particles = explosion.GetComponentsInChildren<ParticleSystem>();
+            foreach (var ps in particles)
+            {
+                ps.Stop();
+                ps.Clear();
+            }
+
             explosion.SetActive(false);
             explosion.transform.position = transform.position;
             DebugLog("Explosion returned to pool");
@@ -212,7 +255,6 @@ public class ExplosionPool : MonoBehaviour
         }
     }
 
-    // Debug information som kan kallas från andra skript eller inspektorn
     public void PrintPoolStatistics()
     {
         Debug.Log($"=== ExplosionPool Statistics ===\n" +
@@ -222,12 +264,6 @@ public class ExplosionPool : MonoBehaviour
                   $"Small Pool Size: {smallExplosionPool?.Count ?? 0}\n" +
                   $"Large Pool Size: {largeExplosionPool?.Count ?? 0}\n" +
                   $"Boss Pool Size: {bossExplosionPool?.Count ?? 0}");
-    }
-
-    private void ValidatePool(GameObject prefab, string poolType)
-    {
-        if (prefab == null)
-            Debug.LogError($"Missing prefab for {poolType} pool!");
     }
 }
 
