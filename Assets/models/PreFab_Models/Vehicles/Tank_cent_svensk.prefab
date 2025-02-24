@@ -9,32 +9,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.156494
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0703194
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -31.360924
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.70710665
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.707107
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -42,11 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e1738650c272c474b874549eef84bfd5, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5215299815803115452, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -66,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6bfe121b387975e4484b5e9429910902, type: 2}
     - target: {fileID: 919132149155446097, guid: e1738650c272c474b874549eef84bfd5, type: 3}
       propertyPath: m_Name
-      value: Tank_cent
+      value: Tank_cent_svensk
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
