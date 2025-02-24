@@ -21,6 +21,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float crashDuration = 5f;
     [SerializeField] private float rotationSpeed = 3200f;
     [SerializeField] private bool rotateClockwise = true;
+    [SerializeField] private float groundLevel = 0f; // Y-positionen för marknivån
 
     [Header("Explosion Settings")]
     [SerializeField] private GameObject explosionPrefab;
@@ -98,6 +99,7 @@ public class EnemyHealth : MonoBehaviour
             damageCollider = triggerObj.AddComponent<BoxCollider>();
             damageCollider.isTrigger = true;
         }
+        IgnoreEnemyCollisions();
 
         initialized = true;
         //Debug.Log($"Enemy {gameObject.name} initialization complete");
@@ -120,6 +122,43 @@ public class EnemyHealth : MonoBehaviour
         if (isDying && !hasExploded)
         {
             HandleCrashing();
+        }
+    }
+
+    private void IgnoreEnemyCollisions()
+    {
+        // Hämta alla colliders på denna fiende
+        Collider[] myColliders = GetComponentsInChildren<Collider>();
+
+        // Hämta alla andra fiendeobjekt
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            // Ignorera kollisioner med andra fiender
+            if (enemy != gameObject)
+            {
+                Collider[] enemyColliders = enemy.GetComponentsInChildren<Collider>();
+
+                foreach (Collider myCol in myColliders)
+                {
+                    foreach (Collider enemyCol in enemyColliders)
+                    {
+                        Physics.IgnoreCollision(myCol, enemyCol);
+                    }
+                }
+            }
+            else
+            {
+                // Ignorera kollisioner med sig själv också (undvik "Mig_01 kolliderade med Mig_01")
+                for (int i = 0; i < myColliders.Length; i++)
+                {
+                    for (int j = i + 1; j < myColliders.Length; j++)
+                    {
+                        Physics.IgnoreCollision(myColliders[i], myColliders[j]);
+                    }
+                }
+            }
         }
     }
 
@@ -156,32 +195,82 @@ public class EnemyHealth : MonoBehaviour
     {
         if (!isDying || hasExploded) return;
 
+        // Rörelse nedåt
         Vector3 pos = transform.position;
-        pos.y -= (isBoss ? crashSpeed * 0.5f : crashSpeed) * Time.deltaTime; // Långsammare för bossar
+        pos.y -= (isBoss ? crashSpeed * 0.5f : crashSpeed) * Time.deltaTime;
         transform.position = pos;
 
+        // Rotation
         float rotationAmount = rotateClockwise ? rotationSpeed : -rotationSpeed;
         transform.Rotate(0, 0, rotationAmount * Time.deltaTime);
 
-        if (Time.time >= crashStartTime + crashDuration && !hasExploded)
-        {
-            hasExploded = false;
+        // Kolla om planet nått marknivån eller om tiden gått ut
+        bool reachedGround = transform.position.y <= groundLevel;
+        bool timeIsUp = Time.time >= crashStartTime + crashDuration;
 
-            Debug.Log($"Enemy {gameObject.name} starting explosion sequence");
+        if ((reachedGround || timeIsUp) && !hasExploded)
+        {
+            hasExploded = true; // VIKTIGT: Sätt till true, inte false!
+
+            Debug.Log($"Enemy {gameObject.name} nådde marken eller tidsgränsen. Skapar explosion...");
+
+            // Skapa FLERA explosioner för visuell effekt - en stor i mitten och några mindre runtomkring
+            if (ExplosionPool.Instance != null)
+            {
+                // Huvudexplosion
+                GameObject mainExplosion = ExplosionPool.Instance.GetExplosion(
+                    isBoss ? ExplosionType.Boss : ExplosionType.Large
+                );
+
+                if (mainExplosion != null)
+                {
+                    mainExplosion.transform.position = transform.position;
+                    ExplosionPool.Instance.ReturnExplosionToPool(mainExplosion, 2f);
+
+                    // Skapa 3-5 små explosioner runt den stora för en mer dramatisk effekt
+                    if (!isBoss) // Skippa extraexplosioner för bossar som har sina egna fina explosioner
+                    {
+                        int extraExplosions = Random.Range(3, 6);
+                        for (int i = 0; i < extraExplosions; i++)
+                        {
+                            Vector3 offset = new Vector3(
+                                Random.Range(-1.5f, 1.5f),
+                                Random.Range(-1f, 1f),
+                                Random.Range(-1.5f, 1.5f)
+                            );
+
+                            GameObject extraExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Small);
+                            if (extraExplosion != null)
+                            {
+                                extraExplosion.transform.position = transform.position + offset;
+                                ExplosionPool.Instance.ReturnExplosionToPool(extraExplosion, 1f);
+                            }
+                        }
+                    }
+                }
+            }
+            // Fallback till prefab om poolen saknas
+            else if (explosionPrefab != null)
+            {
+                GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+                explosion.transform.localScale = Vector3.one * explosionScale;
+                Destroy(explosion, 3f);
+            }
+
+            // VIKTIGT: Spela ljud för explosion
             AudioManager.Instance?.PlayBombSound(BombSoundType.Explosion);
 
-            // Specifik explosionshantering för bossar
-            if (isBoss)
+            // VIKTIGT: Lägg till kameraskakning för bättre känsla
+            if (cameraShake != null)
             {
-                GameObject bossExplosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Boss);
-                bossExplosion.transform.position = transform.position;
-                ExplosionPool.Instance.ReturnExplosionToPool(bossExplosion, 3f);
-                Destroy(gameObject);
+                if (isBoss)
+                    cameraShake.ShakaCameraVidBossDöd();
+                else
+                    cameraShake.ShakaCameraVidBomb();
             }
-            else
-            {
-                StartCoroutine(ExplodeWithRandomDelay());
-            }
+
+            // Förstör fiendeobjektet med en kort fördröjning för att låta explosionen synas
+            Destroy(gameObject, 0.2f);
         }
     }
 

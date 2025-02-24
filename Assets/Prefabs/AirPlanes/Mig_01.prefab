@@ -5103,6 +5103,7 @@ MonoBehaviour:
   crashDuration: 2
   rotationSpeed: 300
   rotateClockwise: 1
+  groundLevel: 0
   explosionPrefab: {fileID: 2633928242017020019, guid: cbefdac54607d144b9411e0bc8d47c11, type: 3}
   explosionScale: 1
   randomExplosionDelayMin: 0
