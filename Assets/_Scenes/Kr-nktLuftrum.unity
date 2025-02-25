@@ -31032,6 +31032,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 3678121040987848069, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_ShadowCastingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678121040987848069, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_HeightmapMaximumLOD
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678121040987848069, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_HeightmapPixelError
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3678121040987848069, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
+      propertyPath: m_HeightmapMinimumLODSimplification
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6778877213956855769, guid: 5236287e63eec5a40899935167c1aab4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10500
