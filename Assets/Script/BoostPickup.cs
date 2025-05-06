@@ -183,7 +183,7 @@ public class BoostPickup : MonoBehaviour
             case BoostType.DualWeapons:
                 if (weaponSystem != null)
                 {
-                    StartCoroutine(weaponSystem.EnableDualWeapons(boostDuration));
+                    weaponSystem.EnableDualWeapons(boostDuration);
                 }
                 break;
 
