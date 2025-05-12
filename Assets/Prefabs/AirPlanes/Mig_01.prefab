@@ -5096,7 +5096,7 @@ MonoBehaviour:
   isBoss: 0
   healthBarPrefab: {fileID: 4038366390463760817, guid: c6d42154e73097c40a027b778bde9032, type: 3}
   healthBarOffset: {x: 0, y: 2, z: 0}
-  healthBarScale: {x: 0.05, y: 0.05, z: 0.05}
+  healthBarScale: {x: 0.05, y: -0.02, z: 0.05}
   crashSpeed: 60
   crashDuration: 2
   rotationSpeed: 300
