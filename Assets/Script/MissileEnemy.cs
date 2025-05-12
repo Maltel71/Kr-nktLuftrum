@@ -134,8 +134,29 @@ public class MissileEnemy : MonoBehaviour
 
     private void CreateExplosion(Vector3 position)
     {
-        GameObject explosion = Instantiate(missileExplosionPrefab, position, Quaternion.identity);
-        Destroy(explosion, 4f);
+        // Använd ExplosionPool istället för direkt instansiering
+        if (ExplosionPool.Instance != null)
+        {
+            GameObject explosion = ExplosionPool.Instance.GetExplosion(ExplosionType.Large);
+            if (explosion != null)
+            {
+                explosion.transform.position = position;
+                ExplosionPool.Instance.ReturnExplosionToPool(explosion, 3f);
+                Debug.Log("Enemy missile: Explosion created from pool");
+            }
+        }
+        else if (missileExplosionPrefab != null)
+        {
+            // Fallback till original-implementering
+            GameObject explosion = Instantiate(missileExplosionPrefab, position, Quaternion.identity);
+            explosion.transform.localScale = Vector3.one * 2f; // Gör explosionen större för bättre synlighet
+            Destroy(explosion, 4f);
+            Debug.Log("Enemy missile: Explosion created via Instantiate");
+        }
+        else
+        {
+            Debug.LogError("No explosion prefab assigned and no ExplosionPool available");
+        }
     }
 
     IEnumerator SelfDestroyTimer()
