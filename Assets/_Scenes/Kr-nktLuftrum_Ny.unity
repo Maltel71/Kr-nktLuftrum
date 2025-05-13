@@ -923,6 +923,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_TagString
       value: BombTarget
       objectReference: {fileID: 0}
@@ -1412,11 +1416,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -150
+        z: -155
       TangentOut:
         x: 0
         y: 0
-        z: 150
+        z: 155
       Rotation:
         value:
           x: 0
@@ -1424,17 +1428,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 1500
+        x: 1550
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -150
+        z: -155
       TangentOut:
         x: 0
         y: 0
-        z: 150
+        z: 155
       Rotation:
         value:
           x: 0
@@ -1686,7 +1690,7 @@ Transform:
   m_GameObject: {fileID: 93712923}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1150, y: 100, z: 700}
+  m_LocalPosition: {x: 1173.8, y: 100, z: 700}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1728,11 +1732,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -455
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 455
       Rotation:
         value:
           x: 0
@@ -1740,17 +1744,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 4500
+        x: 4550
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -455
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 455
       Rotation:
         value:
           x: 0
@@ -2300,11 +2304,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -190
+        z: -195
       TangentOut:
         x: 0
         y: 0
-        z: 190
+        z: 195
       Rotation:
         value:
           x: 0
@@ -2312,17 +2316,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 1900
+        x: 1950
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -190
+        z: -195
       TangentOut:
         x: 0
         y: 0
-        z: 190
+        z: 195
       Rotation:
         value:
           x: 0
@@ -2647,7 +2651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &155069142
 Transform:
   m_ObjectHideFlags: 0
@@ -5516,7 +5520,7 @@ Transform:
   m_GameObject: {fileID: 351589910}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1000, y: 100, z: 22518}
+  m_LocalPosition: {x: 1000, y: 100, z: 13706}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6727,7 +6731,7 @@ MonoBehaviour:
   explosionEffectPrefab: {fileID: 6569611937835722543, guid: 091c50b728fd70443963b168686e1857, type: 3}
   rotSpeed: 2
   shootDelay: 6
-  shootRange: 800
+  shootRange: 400
 --- !u!4 &425970041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
@@ -7128,11 +7132,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -7140,17 +7144,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 3900
+        x: 4100
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -7283,15 +7287,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264890431, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1528.9
+      value: 1007
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264890431, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -443.5
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264890431, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -266.1
+      value: 1494
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264890431, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8808,11 +8812,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -455
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 455
       Rotation:
         value:
           x: 0
@@ -8820,17 +8824,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 4500
+        x: 4550
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -455
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 455
       Rotation:
         value:
           x: 0
@@ -9257,7 +9261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &606799156
 Transform:
   m_ObjectHideFlags: 0
@@ -10152,7 +10156,7 @@ Transform:
   m_GameObject: {fileID: 684389295}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1050, y: 100, z: 700}
+  m_LocalPosition: {x: 1026.5, y: 100, z: 700}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10194,11 +10198,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -460
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 460
       Rotation:
         value:
           x: 0
@@ -10206,17 +10210,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 4500
+        x: 4600
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -450
+        z: -460
       TangentOut:
         x: 0
         y: 0
-        z: 450
+        z: 460
       Rotation:
         value:
           x: 0
@@ -10914,6 +10918,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &754782725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754782726}
+  m_Layer: 0
+  m_Name: Spawnpoint 1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &754782726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754782725}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1500, y: 100, z: 1815}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1252422328}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &773611227
 GameObject:
   m_ObjectHideFlags: 0
@@ -11068,6 +11103,37 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!1 &796219872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 796219873}
+  m_Layer: 0
+  m_Name: Spawnpoint 1 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &796219873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796219872}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 86, y: 100, z: 2271}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1252422328}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &798120312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12205,7 +12271,7 @@ Transform:
   m_GameObject: {fileID: 874601407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1500, y: 100, z: 23081}
+  m_LocalPosition: {x: 1500, y: 100, z: 14269}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12556,7 +12622,7 @@ Transform:
   m_GameObject: {fileID: 893685351}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1050, y: 100, z: 1480}
+  m_LocalPosition: {x: 1026.2, y: 100, z: 1480}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12598,11 +12664,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -12610,17 +12676,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 3900
+        x: 4100
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -14087,7 +14153,7 @@ Transform:
   m_GameObject: {fileID: 1093690510}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 1150, y: 100, z: 1480}
+  m_LocalPosition: {x: 1173.4, y: 100, z: 1480}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14129,11 +14195,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -14141,17 +14207,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 3900
+        x: 4100
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -390
+        z: -410
       TangentOut:
         x: 0
         y: 0
-        z: 390
+        z: 410
       Rotation:
         value:
           x: 0
@@ -15548,6 +15614,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_TagString
       value: BombTarget
       objectReference: {fileID: 0}
@@ -15812,6 +15882,10 @@ PrefabInstance:
     - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_TagString
@@ -16356,6 +16430,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 874601408}
+  - {fileID: 754782726}
+  - {fileID: 796219873}
   - {fileID: 1473566939}
   - {fileID: 1276130074}
   - {fileID: 351589911}
@@ -16787,7 +16863,7 @@ Transform:
   m_GameObject: {fileID: 1276130073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 1818, y: 100, z: 22748}
+  m_LocalPosition: {x: 1818, y: 100, z: 13936}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17367,7 +17443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1339346262
 Transform:
   m_ObjectHideFlags: 0
@@ -19171,7 +19247,7 @@ Transform:
   m_GameObject: {fileID: 1473566938}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 600, y: 100, z: 23131}
+  m_LocalPosition: {x: 600, y: 100, z: 14319}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23259,6 +23335,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933490897264791071, guid: 9de1aceb90d7e0b42bef3ebe6ef37927, type: 3}
       propertyPath: m_TagString
       value: BombTarget
       objectReference: {fileID: 0}
@@ -24705,7 +24785,7 @@ PrefabInstance:
       objectReference: {fileID: 893685353}
     - target: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8018006084420186897, guid: 29b146b460d388c46a0bd59006147e7e, type: 3}
       propertyPath: m_LocalPosition.y

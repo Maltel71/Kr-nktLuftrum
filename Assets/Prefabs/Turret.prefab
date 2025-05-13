@@ -330,7 +330,7 @@ MonoBehaviour:
   explosionEffectPrefab: {fileID: 6569611937835722543, guid: 091c50b728fd70443963b168686e1857, type: 3}
   rotSpeed: 6
   shootDelay: 2
-  shootRange: 800
+  shootRange: 300
 --- !u!1 &6216524449018554892
 GameObject:
   m_ObjectHideFlags: 0
