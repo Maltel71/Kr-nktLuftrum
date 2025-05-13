@@ -210,4 +210,10 @@ public class ScoreManager : MonoBehaviour
     }
 
     public int GetCurrentScore() => currentScore;
+
+    public void SetScore(int score)
+    {
+        currentScore = score;
+        UpdateScoreDisplay();
+    }
 }

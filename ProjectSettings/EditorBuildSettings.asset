@@ -6,9 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Scenes/Level0.unity
+    guid: e96b6100b33dbf049a606e6372932335
+  - enabled: 1
+    path: Assets/_Scenes/Level1.unity
+    guid: de8b484dc50f40e4ba616ac15be747c0
+  - enabled: 1
+    path: Assets/_Scenes/Level2.unity
+    guid: e821bfcdf846be04d84998ccc1460c03
+  - enabled: 1
+    path: Assets/_Scenes/Level3.unity
+    guid: 0bcde6a168aa4e14ca82f4cad724cbfa
+  - enabled: 0
     path: Assets/_Scenes/Andreas Test scen.unity
     guid: cdfe6ddae551c5f48814a8942f8766a6
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Kr-nktLuftrum.unity
     guid: 69d24866bd8b4b7468558743a91c1445
   - enabled: 0

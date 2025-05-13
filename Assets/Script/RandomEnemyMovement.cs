@@ -23,17 +23,17 @@ public class RandomEnemyMovement : MonoBehaviour
 
         if (playerObject == null)
         {
-            Debug.LogError("Kunde inte hitta spelaren! Se till att spelaren har taggen 'Player'");
+            //Debug.LogError("Kunde inte hitta spelaren! Se till att spelaren har taggen 'Player'");
         }
         else
         {
             playerTransform = playerObject.transform;
-            Debug.Log("Hittade spelaren på position: " + playerTransform.position);
+            //Debug.Log("Hittade spelaren på position: " + playerTransform.position);
         }
 
         // Spara startposition för debugging
         lastPosition = transform.position;
-        Debug.Log($"Enemy spawned at position: {transform.position}");
+        //Debug.Log($"Enemy spawned at position: {transform.position}");
     }
 
     private void Update()
@@ -85,9 +85,21 @@ public class RandomEnemyMovement : MonoBehaviour
         // Logga position för debugging
         if (showDebugLogs && Vector3.Distance(transform.position, lastPosition) > 0.1f)
         {
-            Debug.Log($"Enemy moved from {lastPosition} to {transform.position}, isReturning: {isReturning}");
+            //Debug.Log($"Enemy moved from {lastPosition} to {transform.position}, isReturning: {isReturning}");
             lastPosition = transform.position;
         }
+
+        // Visualisera triggern med debug-pilar
+        BoxCollider boxCol = GetComponent<BoxCollider>();
+        Vector3 center = transform.TransformPoint(boxCol.center);
+
+        // Rita pilar i alla riktningar från triggerns centrum
+        Debug.DrawRay(center, Vector3.forward * 2f, Color.red);
+        Debug.DrawRay(center, Vector3.back * 2f, Color.red);
+        Debug.DrawRay(center, Vector3.right * 2f, Color.red);
+        Debug.DrawRay(center, Vector3.left * 2f, Color.red);
+        Debug.DrawRay(center, Vector3.up * 2f, Color.red);
+        Debug.DrawRay(center, Vector3.down * 2f, Color.red);
     }
 
     private void CheckIfBehindPlayer()
@@ -100,14 +112,14 @@ public class RandomEnemyMovement : MonoBehaviour
             if (!isReturning)
             {
                 isReturning = true;
-                Debug.Log("Enemy is turning around to attack player again");
+                //Debug.Log("Enemy is turning around to attack player again");
             }
         }
         // Om fienden är framför spelaren igen, sätt isReturning = false
         else if (transform.position.z > playerTransform.position.z && isReturning)
         {
             isReturning = false;
-            Debug.Log("Enemy is now in front of player again");
+            //Debug.Log("Enemy is now in front of player again");
         }
     }
 
@@ -116,6 +128,6 @@ public class RandomEnemyMovement : MonoBehaviour
     {
         transform.position = position;
         lastPosition = position;
-        Debug.Log($"Enemy position forced to: {position}");
+        //Debug.Log($"Enemy position forced to: {position}");
     }
 }
