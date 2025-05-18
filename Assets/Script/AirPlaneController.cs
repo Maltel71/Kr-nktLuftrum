@@ -133,7 +133,7 @@ public class AirplaneController : MonoBehaviour
             ShootFlare();
         }
 
-        if (Input.GetKeyDown(KeyCode.G) && CanShootMissile())
+        if (Input.GetKeyDown(KeyCode.M) && CanShootMissile())
         {
             ShootMissile();
         }
