@@ -199,15 +199,15 @@ public class TutorialSystem : MonoBehaviour
     {
         return stepType switch
         {
-            TutorialStep.StepType.MoveLeft => "Bra! Du har rört planet åt vänster.",
-            TutorialStep.StepType.MoveRight => "Utmärkt! Du har rört planet åt höger.",
-            TutorialStep.StepType.MoveForward => "Perfekt! Du har flugit framåt.",
-            TutorialStep.StepType.MoveBackward => "Bra! Du har flugit bakåt.",
-            TutorialStep.StepType.Shoot => "Perfekt! Du har skjutit.",
-            TutorialStep.StepType.Bomb => "Bra jobbat! Du har släppt en bomb.",
-            TutorialStep.StepType.Missile => "Missil avfyrad!",
-            TutorialStep.StepType.Flare => "Fackla avfyrad!",
-            _ => "Steg klarat!"
+            TutorialStep.StepType.MoveLeft => "Great! You've moved the plane to the left.",
+            TutorialStep.StepType.MoveRight => "Excellent! You've moved the plane to the right.",
+            TutorialStep.StepType.MoveForward => "Perfect! You've flown forward.",
+            TutorialStep.StepType.MoveBackward => "Good! You've flown backward.",
+            TutorialStep.StepType.Shoot => "Perfect! You've fired your weapon.",
+            TutorialStep.StepType.Bomb => "Well done! You've dropped a bomb.",
+            TutorialStep.StepType.Missile => "Missile launched!",
+            TutorialStep.StepType.Flare => "Flare deployed!",
+            _ => "Step completed!"
         };
     }
 
@@ -219,16 +219,14 @@ public class TutorialSystem : MonoBehaviour
 
     private void DisplayStep(TutorialStep step)
     {
-        if (tutorialText != null)
-            tutorialText.text = step.description;
-
-        if (instructionText != null)
-            instructionText.text = step.instruction;
-
-        // Visa meddelande om tillgängligt
         if (messageSystem != null)
         {
-            messageSystem.ShowBoostMessage("Nytt tutorial-steg: " + step.type.ToString());
+            string message = "New tutorial step: " + step.type.ToString();
+            if (!string.IsNullOrEmpty(step.keyBinding))
+            {
+                message += " Use " + step.keyBinding;
+            }
+            messageSystem.ShowBoostMessage(message);
         }
     }
 
@@ -246,7 +244,7 @@ public class TutorialSystem : MonoBehaviour
         // Visa slutmeddelande
         if (messageSystem != null)
         {
-            messageSystem.ShowBoostMessage("Tutorial klar! Level 1 börjar nu!");
+            messageSystem.ShowBoostMessage("Tutorial complete! Level 1 starts now!");
         }
 
         // Ladda Level 1 eller fortsätt spelet

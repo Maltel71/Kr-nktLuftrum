@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionDuration: 3
-  explosionRadius: 20
+  explosionRadius: 10
   explosionForce: 20
   explosionDamage: 50
 --- !u!136 &4649419463657451770
