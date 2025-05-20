@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class BoostMover : MonoBehaviour
@@ -11,6 +12,10 @@ public class BoostMover : MonoBehaviour
     [SerializeField] private float bobHeight = 0.5f;
     [SerializeField] private float rotationSpeed = 90f;
 
+    [Header("Lifetime")]
+    [SerializeField] private float boostLifetime = 15f; // Korrigerad variabelnamn
+
+    private float aliveTime = 0f; // Korrigerad variabelnamn
     private Transform playerTransform;
     private Vector3 startPosition;
     private float timeSinceSpawn;
@@ -28,6 +33,15 @@ public class BoostMover : MonoBehaviour
 
     private void Update()
     {
+        aliveTime += Time.deltaTime; // Korrigerad variabelnamn
+
+        if (aliveTime >= boostLifetime) // Korrigerad variabelnamn
+        {
+            Debug.Log($"Boost {gameObject.name} förstörs - livstid uppnådd");
+            Destroy(gameObject);
+            return;
+        }
+
         if (playerTransform != null)
         {
             timeSinceSpawn += Time.deltaTime;

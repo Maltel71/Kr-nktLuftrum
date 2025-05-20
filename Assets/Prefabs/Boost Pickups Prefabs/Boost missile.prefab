@@ -161,7 +161,7 @@ MonoBehaviour:
   speedBoostAmount: 0
   shieldAmount: 0
   fireRateMultiplier: 0
-  boostDuration: 20
+  boostDuration: 0
 --- !u!114 &8773205768664623017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +179,7 @@ MonoBehaviour:
   bobSpeed: 2
   bobHeight: 0.5
   rotationSpeed: 90
+  boostLifetime: 5
 --- !u!1 &8832503607063398246
 GameObject:
   m_ObjectHideFlags: 0

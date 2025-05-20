@@ -133,7 +133,7 @@ public class BoostPickup : MonoBehaviour
         BoostType.DualWeapons => "Dual Weapons",
         BoostType.Flare => "Flares Added",
         BoostType.Missile => "Missile Added",
-        BoostType.Bomb =>"Bomb Added",
+        BoostType.Bomb => "Bomb Added",
         _ => "Boost"
     };
 

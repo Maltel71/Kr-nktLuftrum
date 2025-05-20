@@ -6190,7 +6190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &388719841
 Transform:
   m_ObjectHideFlags: 0
@@ -6391,7 +6391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &412610905
 Transform:
   m_ObjectHideFlags: 0
@@ -9148,7 +9148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &605897610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9260,7 +9260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &606799156
 Transform:
   m_ObjectHideFlags: 0
@@ -10476,9 +10476,9 @@ MonoBehaviour:
   - boostPrefab: {fileID: 2410515476098949784, guid: d5db0a727a579ab41abf07a6e5b06acf, type: 3}
     dropChance: 0.148
   - boostPrefab: {fileID: 4249868004629837957, guid: d9ceee0374545c846ad9107424f77d30, type: 3}
-    dropChance: 1
+    dropChance: 0.148
   - boostPrefab: {fileID: 8355150198349773989, guid: 6043a44e410581e449fc55dac87c36ad, type: 3}
-    dropChance: 1
+    dropChance: 0.148
   - boostPrefab: {fileID: 3825947452417983994, guid: ef8361228c5bec042b138b787b109e21, type: 3}
     dropChance: 0.148
   - boostPrefab: {fileID: 6769471750231700892, guid: cb2b6878253a6834f900146294f6259b, type: 3}
@@ -14888,7 +14888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1139066609
 Transform:
   m_ObjectHideFlags: 0
@@ -17439,7 +17439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1339346262
 Transform:
   m_ObjectHideFlags: 0

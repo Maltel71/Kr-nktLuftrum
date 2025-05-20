@@ -52,10 +52,10 @@ MonoBehaviour:
   missile: {fileID: 2279591613096608426}
   missileExplosionPrefab: {fileID: 6569611937835722543, guid: 091c50b728fd70443963b168686e1857, type: 3}
   rb: {fileID: 5731178390922119550}
-  turnValue: 2
-  speed: 300
+  turnValue: 4
+  speed: 200
   rotation: 10
-  selfDestroyTime: 20
+  selfDestroyTime: 10
   damagePoints: 50
   flareAttractionStrength: 2
 --- !u!54 &5731178390922119550
