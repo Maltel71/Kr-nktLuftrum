@@ -266,4 +266,4 @@ MonoBehaviour:
   bobSpeed: 2
   bobHeight: 0.5
   rotationSpeed: 90
-  boostLifetime: 5
+  boostLifetime: 10
