@@ -117,7 +117,7 @@ public class TurretScript : MonoBehaviour
         }
 
         // Spela explosionsljud
-        audioManager?.PlayCombatSound(CombatSoundType.Death);
+        //audioManager?.PlayCombatSound(CombatSoundType.Death);
 
         // Inaktivera alla colliders
         Collider[] colliders = GetComponents<Collider>();

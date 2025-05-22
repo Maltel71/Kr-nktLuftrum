@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class AudioManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             SetupAudioSources();
+            InitializeAudioPool();
         }
         else
         {
@@ -25,20 +27,23 @@ public class AudioManager : MonoBehaviour
     #region Audio Sources
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioSource engineSource;
     [SerializeField] private AudioSource radioSource;
+
+    // Snabba ljud källor för låg latency
+    [SerializeField] private AudioSource bulletsSource;
+    [SerializeField] private AudioSource missilesSource;
+    [SerializeField] private AudioSource bombsSource;
+    [SerializeField] private AudioSource explosionsSource;
+    [SerializeField] private AudioSource specialSource;
     #endregion
 
-    #region Volume Settings
-    [Header("Main Volume Settings")]
+    #region Master Volume Settings
+    [Header("Master Volume Settings")]
+    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
     [SerializeField, Range(0f, 1f)] private float musicVolume = 0.5f;
     [SerializeField, Range(0f, 1f)] private float engineVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float radioVolume = 0.7f;
-
-    [Header("Effect Volumes")]
-    [SerializeField, Range(0f, 1f)] private float deathVolume = 0.7f;
-
     #endregion
 
     #region Music Control
@@ -47,57 +52,83 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private bool isRadioEnabled = true;
     #endregion
 
-    #region Audio Clips
-    [Header("Game Audio")]
+    #region Audio Clips - Grundljud
+    [Header("Grundljud")]
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip engineSound;
+    #endregion
 
-    [Header("Gun Audio")]
+    #region Audio Clips - Bullets & Vapen
+    [Header("Bullets & Vapen Audio")]
     [SerializeField] private AudioClip playerShootSound;
     [SerializeField] private AudioClip enemyShootSound;
     [SerializeField] private AudioClip hitSound;
-    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip flareSound;
     [SerializeField, Range(0f, 1f)] private float playerShootVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float enemyShootVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float hitVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float flareVolume = 0.7f;
+    #endregion
 
+    #region Audio Clips - Missiles
+    [Header("Missile Audio")]
+    [SerializeField] private AudioClip missileLaunchSound;
+    [SerializeField] private AudioClip missileHitSound;
+    [SerializeField, Range(0f, 1f)] private float missileLaunchVolume = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float missileHitVolume = 0.8f;
+    #endregion
+
+    #region Audio Clips - Bombs
     [Header("Bomb Audio")]
     [SerializeField] private AudioClip bombDropSound;
     [SerializeField] private AudioClip bombFallingSound;
     [SerializeField] private AudioClip bombExplosionSound;
     [SerializeField, Range(0f, 1f)] private float bombDropVolume = 0.7f;
-    [SerializeField, Range(0f, 1f)] private float bombFallingVolume = 0.7f;
-    [SerializeField, Range(0f, 1f)] private float bombExplosionVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float bombFallingVolume = 0.6f;
+    [SerializeField, Range(0f, 1f)] private float bombExplosionVolume = 0.9f;
+    #endregion
 
-    [Header("Missile Sounds")]
-    [SerializeField] private AudioClip missileHitSound;
-    [SerializeField] private AudioClip missileLaunchSound;
-    [SerializeField, Range(0f, 1f)] private float missileHitVolume = 0.7f;
-    [SerializeField, Range(0f, 1f)] private float missileLaunchVolume = 0.7f;
-
-    [Header("Flare Sound")]
-    [SerializeField] private AudioClip flareSound;
-    [SerializeField, Range(0f, 1f)] private float flareVolume = 0.7f;
-
-    [Header("Power-up Audio")]
+    #region Audio Clips - Special & Alerts
+    [Header("Special & Alert Audio")]
     [SerializeField] private AudioClip boostSound;
-    [SerializeField, Range(0f, 1f)] private float boostVolume = 0.7f;
-
-    [Header("Alert Audio")]
     [SerializeField] private AudioClip airRaidSiren;
-    [SerializeField, Range(0f, 1f)] private float sirenVolume = 0.7f;
     [SerializeField] private AudioClip bossAlertSound;
-    [SerializeField, Range(0f, 1f)] private float bossAlertVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float boostVolume = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float sirenVolume = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float bossAlertVolume = 0.8f;
+    #endregion
 
-    [Header("Radio Audio")]
+    #region Radio System
+    [Header("Radio System")]
     [SerializeField] private AudioClip radioStart;
     [SerializeField] private AudioClip radioEnd;
     [SerializeField] private AudioClip[] radioMessages;
     [SerializeField] private float radioDelay = 30f;
     #endregion
 
+    #region Miljöljud
+    [Header("Fordons & Miljöljud")]
+    [SerializeField] private AudioClip helicopterSound;
+    [SerializeField] private AudioClip boatEngineSound;
+    [SerializeField] private AudioClip tankMovementSound;
+    [SerializeField] private AudioClip waterSplashSound;
+    [SerializeField] private AudioClip sandImpactSound;
+    [SerializeField] private AudioClip metalHitSound;
+    [SerializeField, Range(0f, 1f)] private float vehicleVolume = 0.6f;
+    [SerializeField, Range(0f, 1f)] private float environmentVolume = 0.5f;
+    #endregion
+
+    #region Audio Pooling
+    [Header("Audio Pooling")]
+    [SerializeField] private int audioPoolSize = 15;
+    private Queue<AudioSource> audioSourcePool;
+    #endregion
+
+    #region Prewarming - PRELOAD FÖR ZERO LATENCY
     [Header("Prewarming")]
     [SerializeField] private bool prewarmSoundsOnStart = true;
+    [SerializeField] private bool usePreloadedSounds = true;
+    #endregion
 
     private bool isEnginePlaying = false;
 
@@ -113,86 +144,64 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void LoadAudioSettings()
-    {
-        // Ladda sparade inställningar (standard är på)
-        isMusicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
-        isRadioEnabled = PlayerPrefs.GetInt("RadioEnabled", 1) == 1;
-
-        Debug.Log($"[AudioManager] Laddade ljudinställningar - Musik: {isMusicEnabled}, Radio: {isRadioEnabled}");
-    }
-
-    private IEnumerator PrewarmAllSounds()
-    {
-        // Vänta ett frame för att låta andra system initialisera
-        yield return null;
-
-        Debug.Log("[AudioManager] Starting sound prewarming...");
-
-        // Skapa en temporary AudioSource för prewarming
-        GameObject tempObj = new GameObject("AudioPrewarmer");
-        AudioSource prewarmer = tempObj.AddComponent<AudioSource>();
-        prewarmer.volume = 0f; // Noll volym
-        prewarmer.playOnAwake = false;
-
-        // Lista alla ljudklipp som används
-        AudioClip[] clipsToPrewarm = new AudioClip[]
-        {
-            // Explosioner
-            bombExplosionSound,
-            missileHitSound,
-            deathSound,
-            bombFallingSound,
-            bombDropSound,
-            
-            // Skottsystem
-            playerShootSound,
-            enemyShootSound,
-            hitSound,
-            
-            // Power-ups och övriga
-            boostSound,
-            flareSound,
-            missileLaunchSound,
-            airRaidSiren,
-            bossAlertSound
-        };
-
-        // Spela upp varje ljud i noll-volym för att ladda dem
-        foreach (var clip in clipsToPrewarm)
-        {
-            if (clip != null)
-            {
-                prewarmer.clip = clip;
-                prewarmer.Play();
-
-                // Vänta lite för att låta ljudet ladda
-                yield return new WaitForSeconds(0.05f);
-
-                prewarmer.Stop();
-            }
-        }
-
-        // Förstör temporary object
-        Destroy(tempObj);
-        Debug.Log("[AudioManager] Sound prewarming complete");
-    }
-
     private void SetupAudioSources()
     {
-        SetupAudioSource(ref musicSource, true);
-        SetupAudioSource(ref sfxSource, false);
-        SetupAudioSource(ref engineSource, true);
-        SetupAudioSource(ref radioSource, false);
+        // Konfigurera alla ljudkällor för optimal prestanda
+        SetupAudioSource(ref musicSource, true, false);
+        SetupAudioSource(ref engineSource, true, false);
+        SetupAudioSource(ref radioSource, false, false);
+
+        // Snabba källor för action-ljud
+        SetupAudioSource(ref bulletsSource, false, true);
+        SetupAudioSource(ref missilesSource, false, true);
+        SetupAudioSource(ref bombsSource, false, true);
+        SetupAudioSource(ref explosionsSource, false, true);
+        SetupAudioSource(ref specialSource, false, true);
     }
 
-    private void SetupAudioSource(ref AudioSource source, bool loop)
+    private void SetupAudioSource(ref AudioSource source, bool loop, bool lowLatency)
     {
         if (source == null)
         {
             source = gameObject.AddComponent<AudioSource>();
-            source.loop = loop;
         }
+
+        source.loop = loop;
+        source.playOnAwake = false;
+
+        if (lowLatency)
+        {
+            // KRITISKA inställningar för låg latency
+            source.priority = 0; // HÖGSTA prioritet (0 = högst)
+            source.bypassEffects = true; // Ingen processing
+            source.bypassListenerEffects = true; // Ingen listener processing
+            source.bypassReverbZones = true; // Ingen reverb
+            source.rolloffMode = AudioRolloffMode.Linear; // Enklare beräkning
+            source.dopplerLevel = 0f; // Ingen doppler effect
+            source.spread = 0f; // Mono ljud
+            source.spatialBlend = 0f; // 2D ljud för snabbhet
+        }
+    }
+
+    private void InitializeAudioPool()
+    {
+        audioSourcePool = new Queue<AudioSource>();
+        for (int i = 0; i < audioPoolSize; i++)
+        {
+            GameObject pooledSource = new GameObject($"PooledAudioSource_{i}");
+            pooledSource.transform.SetParent(transform);
+            AudioSource source = pooledSource.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.priority = 200;
+            audioSourcePool.Enqueue(source);
+        }
+    }
+
+    private void LoadAudioSettings()
+    {
+        isMusicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
+        isRadioEnabled = PlayerPrefs.GetInt("RadioEnabled", 1) == 1;
+        Debug.Log($"[AudioManager] Ljudinställningar laddade - Musik: {isMusicEnabled}, Radio: {isRadioEnabled}");
     }
 
     private void StartGameAudio()
@@ -209,17 +218,93 @@ public class AudioManager : MonoBehaviour
             StartCoroutine(PlayDelayedRadio());
         }
     }
+
+    private IEnumerator PrewarmAllSounds()
+    {
+        yield return null;
+        Debug.Log("[AudioManager] Starting ULTRA sound prewarming...");
+
+        // Preload de mest använda ljuden i sina källor
+        if (usePreloadedSounds)
+        {
+            PreloadCriticalSounds();
+        }
+
+        GameObject tempObj = new GameObject("AudioPrewarmer");
+        AudioSource prewarmer = tempObj.AddComponent<AudioSource>();
+        prewarmer.volume = 0f;
+        prewarmer.playOnAwake = false;
+        prewarmer.priority = 256;
+
+        AudioClip[] clipsToPrewarm = new AudioClip[]
+        {
+            // KRITISKA ljud först (mest latency-känsliga)
+            playerShootSound,
+            enemyShootSound,
+            hitSound,
+            
+            // Explosioner
+            bombExplosionSound,
+            missileHitSound,
+            
+            // Vapen
+            missileLaunchSound,
+            flareSound,
+            
+            // Bombs
+            bombDropSound,
+            bombFallingSound,
+            
+            // Special
+            boostSound,
+            airRaidSiren,
+            bossAlertSound
+        };
+
+        foreach (var clip in clipsToPrewarm)
+        {
+            if (clip != null)
+            {
+                prewarmer.clip = clip;
+                prewarmer.Play();
+                yield return new WaitForSeconds(0.02f);
+                prewarmer.Stop();
+            }
+        }
+
+        Destroy(tempObj);
+        Debug.Log("[AudioManager] ULTRA sound prewarming complete");
+    }
+
+    private void PreloadCriticalSounds()
+    {
+        // Preload de mest kritiska ljuden i sina dedikerade källor
+        if (bulletsSource != null && playerShootSound != null)
+        {
+            bulletsSource.clip = playerShootSound;
+        }
+
+        if (explosionsSource != null && bombExplosionSound != null)
+        {
+            explosionsSource.clip = bombExplosionSound;
+        }
+
+        if (missilesSource != null && missileLaunchSound != null)
+        {
+            missilesSource.clip = missileLaunchSound;
+        }
+
+        Debug.Log("[AudioManager] Critical sounds preloaded for zero-latency playback");
+    }
     #endregion
 
     #region Music Control Methods
-    // Metod för att växla musik på/av
     public void ToggleMusic()
     {
         isMusicEnabled = !isMusicEnabled;
 
         if (isMusicEnabled)
         {
-            // Sätt på musiken
             if (musicSource != null && backgroundMusic != null)
             {
                 musicSource.Play();
@@ -228,7 +313,6 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Stäng av musiken
             if (musicSource != null)
             {
                 musicSource.Pause();
@@ -236,12 +320,10 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        // Spara inställningen
         PlayerPrefs.SetInt("MusicEnabled", isMusicEnabled ? 1 : 0);
         PlayerPrefs.Save();
     }
 
-    // Metod för att sätta musik på/av direkt
     public void SetMusicEnabled(bool enabled)
     {
         isMusicEnabled = enabled;
@@ -251,7 +333,6 @@ public class AudioManager : MonoBehaviour
             if (musicSource != null && backgroundMusic != null)
             {
                 musicSource.Play();
-                Debug.Log("[AudioManager] Musik aktiverad");
             }
         }
         else
@@ -259,23 +340,19 @@ public class AudioManager : MonoBehaviour
             if (musicSource != null)
             {
                 musicSource.Pause();
-                Debug.Log("[AudioManager] Musik inaktiverad");
             }
         }
 
-        // Spara inställningen
         PlayerPrefs.SetInt("MusicEnabled", enabled ? 1 : 0);
         PlayerPrefs.Save();
     }
 
-    // Metod för att växla radio på/av
     public void ToggleRadio()
     {
         isRadioEnabled = !isRadioEnabled;
 
         if (!isRadioEnabled)
         {
-            // Stäng av radion
             if (radioSource != null)
             {
                 radioSource.Stop();
@@ -285,109 +362,143 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.Log("[AudioManager] Radio påslagen");
-            // Radio kommer spela nästa gång den är schemalagd
         }
 
-        // Spara inställningen
         PlayerPrefs.SetInt("RadioEnabled", isRadioEnabled ? 1 : 0);
         PlayerPrefs.Save();
     }
 
-    // Metod för att få status på musiken
-    public bool IsMusicEnabled()
-    {
-        return isMusicEnabled;
-    }
-
-    // Metod för att få status på radion
-    public bool IsRadioEnabled()
-    {
-        return isRadioEnabled;
-    }
+    public bool IsMusicEnabled() => isMusicEnabled;
+    public bool IsRadioEnabled() => isRadioEnabled;
     #endregion
 
-    #region Sound Effects
+    #region Background Audio
     public void PlayBackgroundMusic()
     {
         if (backgroundMusic != null && musicSource != null && isMusicEnabled)
         {
             musicSource.clip = backgroundMusic;
-            musicSource.volume = musicVolume;
+            musicSource.volume = musicVolume * masterVolume;
             musicSource.Play();
         }
     }
 
-    public void PlayMissileLaunchSound()
+    private void StartEngine()
     {
-        if (missileLaunchSound != null && sfxSource != null)
+        if (engineSound != null && engineSource != null && !isEnginePlaying)
         {
-            sfxSource.PlayOneShot(missileLaunchSound, missileLaunchVolume);
+            engineSource.clip = engineSound;
+            engineSource.volume = engineVolume * masterVolume;
+            engineSource.Play();
+            isEnginePlaying = true;
         }
     }
+    #endregion
 
-    public void PlayMissileHitSound()
-    {
-        if (missileHitSound != null && sfxSource != null)
-        {
-            sfxSource.PlayOneShot(missileHitSound, missileHitVolume);
-            PlayBombSound(BombSoundType.Explosion);
-        }
-    }
-
-    // Nya direkta metoder för skott
+    #region Bullet & Weapon Sounds - ULTRA LOW LATENCY
     public void PlayPlayerShootSound()
     {
-        if (playerShootSound != null && sfxSource != null)
+        if (usePreloadedSounds && bulletsSource != null && bulletsSource.clip == playerShootSound)
         {
-            sfxSource.PlayOneShot(playerShootSound, playerShootVolume);
+            PlayPreloadedSound(playerShootSound, bulletsSource, playerShootVolume);
         }
-    }
-
-    public void PlayFlareSound()
-    {
-        if (flareSound != null && sfxSource != null)
+        else
         {
-            sfxSource.PlayOneShot(flareSound, flareVolume);
+            PlayFastSound(playerShootSound, bulletsSource, playerShootVolume);
         }
     }
 
     public void PlayEnemyShootSound()
     {
-        if (enemyShootSound != null && sfxSource != null)
-        {
-            sfxSource.PlayOneShot(enemyShootSound, enemyShootVolume);
-        }
+        PlayFastSound(enemyShootSound, bulletsSource, enemyShootVolume);
     }
 
     public void PlayHitSound()
     {
-        if (hitSound != null && sfxSource != null)
+        // Använd slumpmässig pitch för variation men snabbare implementation
+        if (explosionsSource != null)
         {
-            // Bredare pitch-variation
-            float randomPitch = Random.Range(0.6f, 1.4f);
-
-            // Spara ursprunglig pitch
-            float originalPitch = sfxSource.pitch;
-
-            // Sätt ny pitch
-            sfxSource.pitch = randomPitch;
-
-            // Spela ljudet
-            sfxSource.PlayOneShot(hitSound, hitVolume);
-
-            // Återställ pitch
-            sfxSource.pitch = originalPitch;
+            float randomPitch = Random.Range(0.8f, 1.2f);
+            explosionsSource.pitch = randomPitch;
+            PlayFastSound(hitSound, explosionsSource, hitVolume);
+            // Återställ pitch direkt efter
+            explosionsSource.pitch = 1f;
         }
     }
 
-    public void PlayDeathSound()
+    public void PlayFlareSound()
     {
-        if (deathSound != null && sfxSource != null)
+        PlayFastSound(flareSound, specialSource, flareVolume);
+    }
+    #endregion
+
+    #region Missile Sounds
+    public void PlayMissileLaunchSound()
+    {
+        PlayFastSound(missileLaunchSound, missilesSource, missileLaunchVolume);
+    }
+
+    public void PlayMissileHitSound()
+    {
+        PlayFastSound(missileHitSound, missilesSource, missileHitVolume);
+        // Spela även explosionsljud
+        PlayBombSound(BombSoundType.Explosion);
+    }
+    #endregion
+
+    #region Bomb Sounds
+    public void PlayBombSound(BombSoundType type)
+    {
+        AudioClip clip = null;
+        float volume = 0f;
+
+        switch (type)
         {
-            sfxSource.PlayOneShot(deathSound, deathVolume);
+            case BombSoundType.Drop:
+                clip = bombDropSound;
+                volume = bombDropVolume;
+                break;
+            case BombSoundType.Falling:
+                clip = bombFallingSound;
+                volume = bombFallingVolume;
+                break;
+            case BombSoundType.Explosion:
+                clip = bombExplosionSound;
+                volume = bombExplosionVolume;
+                break;
+        }
+
+        if (clip != null)
+        {
+            if (type == BombSoundType.Explosion)
+            {
+                PlayFastSound(clip, explosionsSource, volume);
+            }
+            else
+            {
+                PlayFastSound(clip, bombsSource, volume);
+            }
         }
     }
 
+    // Bakåtkompatibilitetsmetoder
+    public void PlayBombDropSound()
+    {
+        PlayBombSound(BombSoundType.Drop);
+    }
+
+    public void PlayBombFallingSound()
+    {
+        PlayBombSound(BombSoundType.Falling);
+    }
+
+    public void PlayBombExplosionSound()
+    {
+        PlayBombSound(BombSoundType.Explosion);
+    }
+    #endregion
+
+    #region Combat Sounds
     public void PlayCombatSound(CombatSoundType type)
     {
         switch (type)
@@ -401,49 +512,39 @@ public class AudioManager : MonoBehaviour
             case CombatSoundType.Hit:
                 PlayHitSound();
                 break;
-            case CombatSoundType.Death:
-                PlayDeathSound();
-                break;
         }
     }
 
-    public void PlayBombSound(BombSoundType type)
+    // Bakåtkompatibilitet
+    public void PlayShootSound()
     {
-        AudioClip clip = type switch
-        {
-            BombSoundType.Drop => bombDropSound,
-            BombSoundType.Falling => bombFallingSound,
-            BombSoundType.Explosion => bombExplosionSound,
-            _ => null
-        };
+        PlayPlayerShootSound();
+    }
 
-        float volume = type switch
-        {
-            BombSoundType.Drop => bombDropVolume,
-            BombSoundType.Falling => bombFallingVolume,
-            BombSoundType.Explosion => bombExplosionVolume,
-            _ => 0f
-        };
-
-        if (clip != null && sfxSource != null)
-        {
-            sfxSource.PlayOneShot(clip, volume);
-        }
+    public void PlayDeathSound()
+    {
+        // Tom metod för bakåtkompatibilitet - ingen deathsound som du ville
     }
     #endregion
 
-    #region Engine and Radio
-    private void StartEngine()
+    #region Special Sounds & Alerts
+    public void PlayBoostSound()
     {
-        if (engineSound != null && engineSource != null && !isEnginePlaying)
-        {
-            engineSource.clip = engineSound;
-            engineSource.volume = engineVolume;
-            engineSource.Play();
-            isEnginePlaying = true;
-        }
+        PlayFastSound(boostSound, specialSource, boostVolume);
     }
 
+    public void PlayAirRaidSiren()
+    {
+        PlayFastSound(airRaidSiren, specialSource, sirenVolume);
+    }
+
+    public void PlayBossAlert()
+    {
+        PlayFastSound(bossAlertSound, specialSource, bossAlertVolume);
+    }
+    #endregion
+
+    #region Radio System
     private IEnumerator PlayDelayedRadio()
     {
         yield return new WaitForSeconds(radioDelay);
@@ -467,94 +568,195 @@ public class AudioManager : MonoBehaviour
 
         if (radioStart != null)
         {
-            radioSource.PlayOneShot(radioStart, radioVolume);
+            radioSource.PlayOneShot(radioStart, radioVolume * masterVolume);
             yield return new WaitForSeconds(radioStart.length);
         }
 
         foreach (AudioClip message in radioMessages)
         {
-            if (!isRadioEnabled) yield break; // Avbryt om radio stängs av under sekvensen
+            if (!isRadioEnabled) yield break;
 
             if (message != null)
             {
-                radioSource.PlayOneShot(message, radioVolume);
+                radioSource.PlayOneShot(message, radioVolume * masterVolume);
                 yield return new WaitForSeconds(message.length);
             }
         }
 
         if (isRadioEnabled && radioEnd != null)
         {
-            radioSource.PlayOneShot(radioEnd, radioVolume);
+            radioSource.PlayOneShot(radioEnd, radioVolume * masterVolume);
         }
     }
     #endregion
 
-    #region Alert Sounds
-    public void PlayAirRaidSiren()
+    #region Fordons- och Miljöljud
+    public void PlayVehicleEngineSound(VehicleType vehicleType, Vector3 position)
     {
-        if (airRaidSiren != null && sfxSource != null)
+        AudioClip clip = vehicleType switch
         {
-            sfxSource.PlayOneShot(airRaidSiren, sirenVolume);
+            VehicleType.Helicopter => helicopterSound,
+            VehicleType.Boat => boatEngineSound,
+            VehicleType.Tank => tankMovementSound,
+            _ => null
+        };
+
+        if (clip != null)
+        {
+            PlaySoundAtPosition(clip, position, vehicleVolume);
         }
     }
 
-    public void PlayBossAlert()
+    public void PlayEnvironmentalSound(EnvironmentType environment, Vector3 position)
     {
-        if (bossAlertSound != null && sfxSource != null)
+        AudioClip clip = environment switch
         {
-            sfxSource.PlayOneShot(bossAlertSound, bossAlertVolume);
+            EnvironmentType.Water => waterSplashSound,
+            EnvironmentType.Desert => sandImpactSound,
+            EnvironmentType.Metal => metalHitSound,
+            _ => null
+        };
+
+        if (clip != null)
+        {
+            PlaySoundAtPosition(clip, position, environmentVolume);
         }
     }
 
-    public void PlayBoostSound()
+    public void PlaySoundAtPosition(AudioClip clip, Vector3 position, float volume = 1f)
     {
-        if (boostSound != null && sfxSource != null)
+        if (clip == null) return;
+
+        AudioSource source = GetPooledAudioSource();
+        if (source != null)
         {
-            sfxSource.PlayOneShot(boostSound, boostVolume);
+            source.transform.position = position;
+            source.clip = clip;
+            source.volume = volume * masterVolume;
+            source.spatialBlend = 1f; // 3D ljud
+            source.Play();
+
+            StartCoroutine(ReturnSourceAfterPlay(source, clip.length));
+        }
+    }
+    #endregion
+
+    #region Audio Pool Management
+    private AudioSource GetPooledAudioSource()
+    {
+        if (audioSourcePool.Count > 0)
+        {
+            return audioSourcePool.Dequeue();
+        }
+
+        GameObject newSource = new GameObject("TempAudioSource");
+        newSource.transform.SetParent(transform);
+        return newSource.AddComponent<AudioSource>();
+    }
+
+    private void ReturnToPool(AudioSource source)
+    {
+        if (source != null)
+        {
+            source.Stop();
+            source.clip = null;
+            if (audioSourcePool.Count < audioPoolSize)
+            {
+                audioSourcePool.Enqueue(source);
+            }
+            else
+            {
+                Destroy(source.gameObject);
+            }
         }
     }
 
+    private IEnumerator ReturnSourceAfterPlay(AudioSource source, float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        ReturnToPool(source);
+    }
+    #endregion
+
+    #region Optimerad ljudavspelning - ULTRA LOW LATENCY
+    private void PlayFastSound(AudioClip clip, AudioSource source, float volume)
+    {
+        if (clip == null || source == null) return;
+
+        // DIREKT avspelning utan att stoppa - låter flera ljud spelas samtidigt
+        source.volume = volume * masterVolume;
+        source.pitch = 1f;
+        source.PlayOneShot(clip); // PlayOneShot är faktiskt snabbare för korta ljud
+    }
+
+    // ALTERNATIV metod för ännu lägre latency - kräver förladdat ljud
+    private void PlayPreloadedSound(AudioClip clip, AudioSource source, float volume)
+    {
+        if (clip == null || source == null) return;
+
+        // Om samma ljud redan är laddat, spela direkt
+        if (source.clip == clip)
+        {
+            source.volume = volume * masterVolume;
+            source.Play();
+        }
+        else
+        {
+            // Preload och spela
+            source.clip = clip;
+            source.volume = volume * masterVolume;
+            source.Play();
+        }
+    }
     #endregion
 
     #region Volume Control
+    public void SetMasterVolume(float volume)
+    {
+        masterVolume = Mathf.Clamp01(volume);
+        UpdateAllVolumes();
+    }
+
     public void SetMusicVolume(float volume)
     {
         musicVolume = Mathf.Clamp01(volume);
         if (musicSource != null)
-            musicSource.volume = musicVolume;
+            musicSource.volume = musicVolume * masterVolume;
     }
 
     public void SetEngineVolume(float volume)
     {
         engineVolume = Mathf.Clamp01(volume);
         if (engineSource != null)
-            engineSource.volume = engineVolume;
+            engineSource.volume = engineVolume * masterVolume;
     }
 
     public void SetRadioVolume(float volume)
     {
         radioVolume = Mathf.Clamp01(volume);
         if (radioSource != null)
-            radioSource.volume = radioVolume;
+            radioSource.volume = radioVolume * masterVolume;
     }
 
-    public void ToggleMusic(bool enabled)
+    private void UpdateAllVolumes()
     {
         if (musicSource != null)
-        {
-            if (enabled)
-                musicSource.Play();
-            else
-                musicSource.Pause();
-        }
+            musicSource.volume = musicVolume * masterVolume;
+        if (engineSource != null)
+            engineSource.volume = engineVolume * masterVolume;
+        // AudioSources för vapen uppdateras vid nästa avspelning
     }
 
     public void StopAllSounds()
     {
         if (musicSource != null) musicSource.Stop();
-        if (sfxSource != null) sfxSource.Stop();
         if (engineSource != null) engineSource.Stop();
         if (radioSource != null) radioSource.Stop();
+        if (bulletsSource != null) bulletsSource.Stop();
+        if (missilesSource != null) missilesSource.Stop();
+        if (bombsSource != null) bombsSource.Stop();
+        if (explosionsSource != null) explosionsSource.Stop();
+        if (specialSource != null) specialSource.Stop();
         StopAllCoroutines();
     }
     #endregion
@@ -565,8 +767,7 @@ public enum CombatSoundType
 {
     PlayerShoot,
     EnemyShoot,
-    Hit,
-    Death
+    Hit
 }
 
 public enum BombSoundType
@@ -574,5 +775,21 @@ public enum BombSoundType
     Drop,
     Falling,
     Explosion
+}
+
+public enum VehicleType
+{
+    Helicopter,
+    Boat,
+    Tank,
+    Plane
+}
+
+public enum EnvironmentType
+{
+    Water,
+    Desert,
+    Metal,
+    Grass
 }
 #endregion

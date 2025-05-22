@@ -654,11 +654,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -666,17 +666,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -1369,7 +1369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &62005891
 Transform:
   m_ObjectHideFlags: 0
@@ -1836,11 +1836,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -580
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 580
+        z: 350
       Rotation:
         value:
           x: 0
@@ -1848,17 +1848,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5800
+        x: 3500
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -580
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 580
+        z: 350
       Rotation:
         value:
           x: 0
@@ -2937,7 +2937,7 @@ Transform:
   m_GameObject: {fileID: 155069141}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 8789}
+  m_LocalPosition: {x: 0, y: 0, z: -275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5350,11 +5350,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -5362,17 +5362,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -7607,7 +7607,6 @@ RectTransform:
   - {fileID: 540267680}
   - {fileID: 573216728}
   - {fileID: 64413819}
-  - {fileID: 1658293162}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -8057,142 +8056,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427386251}
   m_CullTransparentMesh: 1
---- !u!1 &428332284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 428332285}
-  - component: {fileID: 428332287}
-  - component: {fileID: 428332286}
-  m_Layer: 5
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &428332285
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428332284}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1658293162}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &428332286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428332284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: Radio
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &428332287
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428332284}
-  m_CullTransparentMesh: 1
 --- !u!1001 &428657415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8339,11 +8202,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -8351,17 +8214,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -8452,11 +8315,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -8464,17 +8327,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5600
+        x: 3000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -20117,11 +19980,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -20129,17 +19992,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -20413,11 +20276,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -590
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 590
+        z: 350
       Rotation:
         value:
           x: 0
@@ -20425,17 +20288,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5900
+        x: 3500
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -590
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 590
+        z: 350
       Rotation:
         value:
           x: 0
@@ -26862,11 +26725,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -580
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 580
+        z: 350
       Rotation:
         value:
           x: 0
@@ -26874,17 +26737,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5800
+        x: 3500
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -580
+        z: -350
       TangentOut:
         x: 0
         y: 0
-        z: 580
+        z: 350
       Rotation:
         value:
           x: 0
@@ -28639,7 +28502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &824439011
 Transform:
   m_ObjectHideFlags: 0
@@ -28805,7 +28668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &841068604
 Transform:
   m_ObjectHideFlags: 0
@@ -30265,11 +30128,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -30277,17 +30140,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5600
+        x: 3000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -31542,6 +31405,10 @@ PrefabInstance:
     - target: {fileID: 4440788598766191197, guid: c449bdb29c2d8464cac29ad11c3c3cd2, type: 3}
       propertyPath: m_Name
       value: Tank Player Spline
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856854539374932963, guid: c449bdb29c2d8464cac29ad11c3c3cd2, type: 3}
+      propertyPath: splineLength
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 4856854539374932963, guid: c449bdb29c2d8464cac29ad11c3c3cd2, type: 3}
       propertyPath: delayBeforeDamageSmoke
@@ -32890,11 +32757,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -32902,17 +32769,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -33238,11 +33105,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -33250,17 +33117,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 5600
+        x: 3000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -560
+        z: -300
       TangentOut:
         x: 0
         y: 0
-        z: 560
+        z: 300
       Rotation:
         value:
           x: 0
@@ -35478,11 +35345,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -35490,17 +35357,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -35618,7 +35485,7 @@ Transform:
   m_GameObject: {fileID: 1223350899}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 8289}
+  m_LocalPosition: {x: 0, y: 0, z: 2640}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36009,7 +35876,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1250769995
 Transform:
   m_ObjectHideFlags: 0
@@ -46033,11 +45900,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -46045,17 +45912,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -46098,7 +45965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1511699611
 Transform:
   m_ObjectHideFlags: 0
@@ -46671,11 +46538,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -46683,17 +46550,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -47900,11 +47767,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -47912,17 +47779,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48061,13 +47928,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 0}
-  sfxSource: {fileID: 0}
   engineSource: {fileID: 0}
   radioSource: {fileID: 0}
+  bulletsSource: {fileID: 0}
+  missilesSource: {fileID: 0}
+  bombsSource: {fileID: 0}
+  explosionsSource: {fileID: 0}
+  specialSource: {fileID: 0}
+  masterVolume: 1
   musicVolume: 0.5
-  engineVolume: 0.6
-  radioVolume: 0.3
-  deathVolume: 0
+  engineVolume: 0.2
+  radioVolume: 0
   isMusicEnabled: 1
   isRadioEnabled: 1
   backgroundMusic: {fileID: 8300000, guid: 3091166dcf4e734449271b1ceaffd1db, type: 3}
@@ -48075,33 +47946,42 @@ MonoBehaviour:
   playerShootSound: {fileID: 8300000, guid: 6b0c05bc2c6e4cf4298231604c58c748, type: 3}
   enemyShootSound: {fileID: 8300000, guid: 6b0c05bc2c6e4cf4298231604c58c748, type: 3}
   hitSound: {fileID: 8300000, guid: f88670eda07cd484aad79a15c2a735b6, type: 3}
-  deathSound: {fileID: 8300000, guid: 6005bcc324e39814a908c8e16b2a8538, type: 3}
-  playerShootVolume: 0.3
-  enemyShootVolume: 0.23
-  hitVolume: 0.6
+  flareSound: {fileID: 0}
+  playerShootVolume: 0.7
+  enemyShootVolume: 0.7
+  hitVolume: 0.7
+  flareVolume: 0.7
+  missileLaunchSound: {fileID: 8300000, guid: 1f11acadc80182c48a98c4a6fff1ebd3, type: 3}
+  missileHitSound: {fileID: 8300000, guid: e4583df7880f6eb4aacee3cac93a4ccf, type: 3}
+  missileLaunchVolume: 0.8
+  missileHitVolume: 0.8
   bombDropSound: {fileID: 8300000, guid: f66e812e961c5ef47b944f0a23154756, type: 3}
   bombFallingSound: {fileID: 0}
   bombExplosionSound: {fileID: 8300000, guid: 53eae6c9ac1c25f43905fae8b1bc89a7, type: 3}
   bombDropVolume: 0.7
-  bombFallingVolume: 0.5
-  bombExplosionVolume: 0.7
-  missileHitSound: {fileID: 8300000, guid: e4583df7880f6eb4aacee3cac93a4ccf, type: 3}
-  missileLaunchSound: {fileID: 8300000, guid: 1f11acadc80182c48a98c4a6fff1ebd3, type: 3}
-  missileHitVolume: 0.1
-  missileLaunchVolume: 0.1
-  flareSound: {fileID: 0}
-  flareVolume: 0.7
+  bombFallingVolume: 0.6
+  bombExplosionVolume: 0.9
   boostSound: {fileID: 0}
-  boostVolume: 0
   airRaidSiren: {fileID: 0}
-  sirenVolume: 0.01
   bossAlertSound: {fileID: 0}
-  bossAlertVolume: 0.5
-  radioStart: {fileID: 8300000, guid: 213414df5e30c9f4a8f4351528fdebe7, type: 3}
+  boostVolume: 0.7
+  sirenVolume: 0.8
+  bossAlertVolume: 0.8
+  radioStart: {fileID: 0}
   radioEnd: {fileID: 0}
   radioMessages: []
-  radioDelay: 2
+  radioDelay: 30
+  helicopterSound: {fileID: 0}
+  boatEngineSound: {fileID: 0}
+  tankMovementSound: {fileID: 0}
+  waterSplashSound: {fileID: 0}
+  sandImpactSound: {fileID: 0}
+  metalHitSound: {fileID: 0}
+  vehicleVolume: 0.6
+  environmentVolume: 0.5
+  audioPoolSize: 10
   prewarmSoundsOnStart: 1
+  usePreloadedSounds: 1
 --- !u!4 &1656626386
 Transform:
   m_ObjectHideFlags: 0
@@ -48117,149 +47997,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1658293161
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1658293162}
-  - component: {fileID: 1658293166}
-  - component: {fileID: 1658293165}
-  - component: {fileID: 1658293164}
-  - component: {fileID: 1658293163}
-  m_Layer: 5
-  m_Name: Radio Button
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1658293162
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658293161}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.95168215, y: 4.1411, z: 4.1411}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 428332285}
-  m_Father: {fileID: 413099179}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1136, y: 517}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1658293163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658293161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3ac2b7bcbc1f3247a50080e9fa3f829, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toggleButton: {fileID: 1658293164}
-  buttonText: {fileID: 428332286}
-  buttonImage: {fileID: 0}
-  musicOnText: "\u266A ON"
-  musicOffText: "\u266A OFF"
-  musicOnColor: {r: 0, g: 1, b: 0, a: 1}
-  musicOffColor: {r: 1, g: 0, b: 0, a: 1}
-  musicOnIcon: {fileID: 0}
-  musicOffIcon: {fileID: 0}
---- !u!114 &1658293164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658293161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1658293165}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1658293165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658293161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.64779866, g: 0.5968711, b: 0.5968711, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6bab432d1457cc34b9108f611c74eb96, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1658293166
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658293161}
-  m_CullTransparentMesh: 1
 --- !u!4 &1658340126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2965678784902805641, guid: 63794e49fab85bd468ac4dc9431fd12c, type: 3}
@@ -48419,11 +48156,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48431,17 +48168,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48775,11 +48512,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48787,17 +48524,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48888,11 +48625,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -48900,17 +48637,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -50274,11 +50011,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -50286,17 +50023,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 13100
+        x: 5000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -1290
+        z: -480
       TangentOut:
         x: 0
         y: 0
-        z: 1290
+        z: 480
       Rotation:
         value:
           x: 0
@@ -51175,7 +50912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1858926491
 Transform:
   m_ObjectHideFlags: 0
@@ -51948,11 +51685,11 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0
@@ -51960,17 +51697,17 @@ MonoBehaviour:
           z: 0
           w: 0.70710677
     - Position:
-        x: 7150
+        x: 4000
         y: 0
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -715
+        z: -400
       TangentOut:
         x: 0
         y: 0
-        z: 715
+        z: 400
       Rotation:
         value:
           x: 0

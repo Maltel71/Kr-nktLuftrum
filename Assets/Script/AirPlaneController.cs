@@ -142,6 +142,33 @@ public class AirplaneController : MonoBehaviour
         {
             DropBomb();
         }
+
+        // NYTT: Radio musik toggle med R-knappen
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ToggleRadioMusic();
+        }
+    }
+
+    // NYTT: Metod för att togglea radio musik
+    private void ToggleRadioMusic()
+    {
+        AudioManager audioManager = AudioManager.Instance;
+        if (audioManager != null)
+        {
+            audioManager.ToggleMusic();
+            
+            // Visa meddelande till spelaren
+            GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
+            if (messageSystem != null)
+            {
+                string status = audioManager.IsMusicEnabled() ? "ON" : "OFF";
+                messageSystem.ShowBoostMessage($"Radio: {status}");
+            }
+            
+            // Debug för att se i konsolen
+            Debug.Log($"Radio music toggled: {(audioManager.IsMusicEnabled() ? "ON" : "OFF")}");
+        }
     }
 
     private bool CanShootFlare()
@@ -385,14 +412,6 @@ public class AirplaneController : MonoBehaviour
         moveSpeed = originalMoveSpeed;
         Debug.Log($"Speed Boost ended. Restored to original speed: {moveSpeed}");
     }
-
-    //public IEnumerator ApplySpeedBoost(float multiplier, float duration)
-    //{
-    //    float originalMoveSpeed = moveSpeed;
-    //    moveSpeed *= multiplier;
-    //    yield return new WaitForSeconds(duration);
-    //    moveSpeed = originalMoveSpeed;
-    //}
 
     public void ResetMoveSpeed()
     {

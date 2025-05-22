@@ -378,7 +378,7 @@ public class EnemyHealth : MonoBehaviour
             Destroy(healthBarInstance);
         }
 
-        audioManager?.PlayCombatSound(CombatSoundType.Death);
+        //audioManager?.PlayCombatSound(CombatSoundType.Death);
     }
 
     private void CreateHealthBar()
