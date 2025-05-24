@@ -5,33 +5,30 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/_Scenes/MainScen.unity
+    guid: cdfe6ddae551c5f48814a8942f8766a6
   - enabled: 1
     path: Assets/_Scenes/Level0.unity
     guid: e96b6100b33dbf049a606e6372932335
   - enabled: 1
     path: Assets/_Scenes/Level1.unity
     guid: 6a8c1069c6d020848bc17df6424ed5f9
+  - enabled: 0
+    path: Assets/_Scenes/LoadingScreen.unity
+    guid: 3c62ae298d77bce449832dfeee627d17
   - enabled: 1
     path: Assets/_Scenes/Level2.unity
-    guid: de8b484dc50f40e4ba616ac15be747c0
+    guid: 26fc4f0802045a44c89ddb8830ed022c
   - enabled: 1
     path: Assets/_Scenes/Level3.unity
-    guid: e821bfcdf846be04d84998ccc1460c03
+    guid: 0698123ec22f92c40a0dbe93b2f1c6f6
   - enabled: 1
+    path: Assets/_Scenes/Level4.unity
+    guid: cc21c97058b198b42aaf1872aa85f13c
+  - enabled: 0
     path: Assets/_Scenes/LevelEnd.unity
     guid: 715665930e798a3459e91fac773f6d91
-  - enabled: 0
-    path: Assets/_Scenes/Level3.unity
-    guid: e821bfcdf846be04d84998ccc1460c03
-  - enabled: 0
-    path: Assets/_Scenes/Andreas Test scen.unity
-    guid: cdfe6ddae551c5f48814a8942f8766a6
-  - enabled: 0
-    path: Assets/_Scenes/Kr-nktLuftrum.unity
-    guid: 69d24866bd8b4b7468558743a91c1445
-  - enabled: 0
-    path: Assets/_Scenes/MainScen.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

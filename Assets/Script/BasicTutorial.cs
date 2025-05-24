@@ -3,10 +3,11 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement; // TILLAGD för scenhantering
 
-public class TutorialSystem : MonoBehaviour
+public class BasicTutorial : MonoBehaviour
 {
-    [Header("UI Referencias")]
+    [Header("UI Referenser")]
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private TextMeshProUGUI instructionText;
@@ -199,15 +200,15 @@ public class TutorialSystem : MonoBehaviour
     {
         return stepType switch
         {
-            TutorialStep.StepType.MoveLeft => "Great! You've moved the plane to the left.",
-            TutorialStep.StepType.MoveRight => "Excellent! You've moved the plane to the right.",
-            TutorialStep.StepType.MoveForward => "Perfect! You've flown forward.",
-            TutorialStep.StepType.MoveBackward => "Good! You've flown backward.",
-            TutorialStep.StepType.Shoot => "Perfect! You've fired your weapon.",
-            TutorialStep.StepType.Bomb => "Well done! You've dropped a bomb.",
-            TutorialStep.StepType.Missile => "Missile launched!",
-            TutorialStep.StepType.Flare => "Flare deployed!",
-            _ => "Step completed!"
+            TutorialStep.StepType.MoveLeft => "Bra! Du rörde planet åt vänster.",
+            TutorialStep.StepType.MoveRight => "Utmärkt! Du rörde planet åt höger.",
+            TutorialStep.StepType.MoveForward => "Perfekt! Du flög framåt.",
+            TutorialStep.StepType.MoveBackward => "Bra! Du flög bakåt.",
+            TutorialStep.StepType.Shoot => "Perfekt! Du sköt med vapnet.",
+            TutorialStep.StepType.Bomb => "Bra gjort! Du släppte en bomb.",
+            TutorialStep.StepType.Missile => "Missil avfyrad!",
+            TutorialStep.StepType.Flare => "Flare utlöst!",
+            _ => "Steg slutfört!"
         };
     }
 
@@ -221,10 +222,10 @@ public class TutorialSystem : MonoBehaviour
     {
         if (messageSystem != null)
         {
-            string message = "New tutorial step: " + step.type.ToString();
+            string message = "Nytt tutorialsteg: " + step.type.ToString();
             if (!string.IsNullOrEmpty(step.keyBinding))
             {
-                message += " Use " + step.keyBinding;
+                message += " Använd " + step.keyBinding;
             }
             messageSystem.ShowBoostMessage(message);
         }
@@ -244,28 +245,70 @@ public class TutorialSystem : MonoBehaviour
         // Visa slutmeddelande
         if (messageSystem != null)
         {
-            messageSystem.ShowBoostMessage("Tutorial complete! Level 1 starts now!");
+            messageSystem.ShowBoostMessage("Tutorial klar! Level 1 startar nu!");
         }
 
-        // Ladda Level 1 eller fortsätt spelet
+        // Ladda Level 1
         StartCoroutine(StartLevel1AfterDelay(3.0f));
     }
 
+    // ÄNDRAT: Nu går vi till Level1 istället för StartNextLevel()
     private IEnumerator StartLevel1AfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        // Implementera Level 1-start här
+        Debug.Log("BasicTutorial: Tutorial complete - loading Level1");
+
+        // Uppdatera LevelManager om det finns
         if (LevelManager.Instance != null)
         {
-            LevelManager.Instance.StartNextLevel();
+            LevelManager.Instance.currentLevel = 1; // VIKTIGT: Sätt till Level 1
+        }
+
+        // Ladda Level1 direkt
+        LoadLevel1();
+    }
+
+    // NY METOD: Laddar Level1 på flera sätt
+    private void LoadLevel1()
+    {
+        string[] possibleNames = {
+            "Level1",
+            "Level 1",
+            "Scenes/Level1",
+            "Level_1"
+        };
+
+        foreach (string sceneName in possibleNames)
+        {
+            try
+            {
+                if (Application.CanStreamedLevelBeLoaded(sceneName))
+                {
+                    Debug.Log($"BasicTutorial: Loading scene: {sceneName}");
+                    SceneManager.LoadScene(sceneName);
+                    return;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"BasicTutorial: Could not load {sceneName}: {e.Message}");
+            }
+        }
+
+        // Fallback: ladda scen index 2 (borde vara Level1 enligt din build order)
+        Debug.LogWarning("BasicTutorial: Could not find Level1 by name - loading scene index 2");
+        if (SceneManager.sceneCountInBuildSettings > 2)
+        {
+            SceneManager.LoadScene(2);
         }
         else
         {
-            Debug.LogWarning("LevelManager saknas!");
+            Debug.LogError("BasicTutorial: Not enough scenes in build for Level1!");
         }
     }
 
+    // ÄNDRAT: Nu hoppar vi direkt till Level1
     public void SkipTutorial()
     {
         if (!tutorialActive)
@@ -275,14 +318,15 @@ public class TutorialSystem : MonoBehaviour
         StopAllCoroutines();
         ShowTutorialPanel(false);
 
-        // Starta Level 1 direkt
+        Debug.Log("BasicTutorial: Tutorial skipped - loading Level1");
+
+        // Uppdatera LevelManager om det finns
         if (LevelManager.Instance != null)
         {
-            LevelManager.Instance.StartNextLevel();
+            LevelManager.Instance.currentLevel = 1; // VIKTIGT: Sätt till Level 1
         }
-        else
-        {
-            Debug.LogWarning("LevelManager saknas!");
-        }
+
+        // Ladda Level1 direkt
+        LoadLevel1();
     }
 }

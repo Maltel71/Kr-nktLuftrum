@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EmptyShell_02 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3046732180413942399, guid: c26c262bdbdb56c4597b3bf0073627eb, type: 3}
+      propertyPath: m_TagString
+      value: Shell
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

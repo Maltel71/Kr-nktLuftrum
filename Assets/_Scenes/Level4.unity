@@ -1256,8 +1256,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1387068948}
   - {fileID: 1898062883}
+  - {fileID: 885687220}
+  - {fileID: 1377669792}
   - {fileID: 841068604}
   - {fileID: 1573038143}
   - {fileID: 1018255892}
@@ -9880,76 +9881,87 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3817038509740591159, guid: 1c382ce8115c375408d366defb46edde, type: 3}
   m_PrefabInstance: {fileID: 875689563}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &883561333
-GameObject:
+--- !u!1001 &885687219
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 108921239}
+    m_Modifications:
+    - target: {fileID: 6342130790483050280, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_Name
+      value: '"Level  End Trigger'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8108697276632639089, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: levelEnd
+      value: 
+      objectReference: {fileID: 885687221}
+    - target: {fileID: 8108697276632639089, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: proximityDistance
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -960
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -201.09999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1144
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+--- !u!4 &885687220 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8272704868170383524, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+  m_PrefabInstance: {fileID: 885687219}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 883561336}
-  - component: {fileID: 883561335}
-  - component: {fileID: 883561334}
-  m_Layer: 0
-  m_Name: '"Level Manager'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &883561334
+--- !u!114 &885687221 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7311782611014608763, guid: a42c8eefcd613ed4fbb7bcea54eb61f3, type: 3}
+  m_PrefabInstance: {fileID: 885687219}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883561333}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a355935510a5e44287d12fc90959380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerWidth: 10
-  triggerHeight: 5
-  showDebugGizmo: 1
-  completionEffect: {fileID: 0}
---- !u!114 &883561335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883561333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4b4402e2e634b49bbff6631b4ae514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentLevel: 0
-  maxLevel: 2
-  playerStartingHealth:
-  - 100
-  - 100
-  - 100
-  enemyDifficulty: 010000000200000003000000
-  levelTransitionDelay: 10
-  levelCompleteUI: {fileID: 1391058556}
---- !u!4 &883561336
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883561333}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &888188244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15145,6 +15157,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 413099179}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1377669791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1377669792}
+  m_Layer: 0
+  m_Name: /GameObject (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1377669792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377669791}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -148.4, z: -903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 108921239}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1384571876
 GameObject:
   m_ObjectHideFlags: 0
@@ -15175,78 +15218,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 413099179}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1387068945
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1387068948}
-  - component: {fileID: 1387068947}
-  - component: {fileID: 1387068946}
-  m_Layer: 0
-  m_Name: '"Level  End Trigger'
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1387068946
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387068945}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.9758301}
-  m_Center: {x: 0, y: 0, z: 0.012084961}
---- !u!114 &1387068947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387068945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 768b00c2e24a4f54a9709426faacb422, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelEnd: {fileID: 883561334}
-  triggerWidth: 30
-  triggerHeight: 20
-  triggerDepth: 20
-  useProximityTrigger: 1
-  proximityDistance: 20
---- !u!4 &1387068948
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387068945}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -52.7, z: 10227}
-  m_LocalScale: {x: 500, y: 100, z: 100}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 108921239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1391058556
 GameObject:
@@ -19665,7 +19636,7 @@ MonoBehaviour:
   directionalLight: {fileID: 669434552}
   spotlights: []
   mainCamera: {fileID: 0}
-  darknessLevel: 0
+  darknessLevel: 0.159
   nightAmbientColor: {r: 0.25490198, g: 0.25490198, b: 0.25490198, a: 1}
   darknessCurve:
     serializedVersion: 2
@@ -19693,8 +19664,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   extremeDarkness: 0
   veryDarkColor: {r: 0.005, g: 0.005, b: 0.01, a: 1}
-  useExtremeDarkness: 1
-  enableFog: 1
+  useExtremeDarkness: 0
+  enableFog: 0
   fogColor: {r: 0.02, g: 0.02, b: 0.05, a: 1}
   fogDensity: 0.03
   groundLights: []
@@ -23090,7 +23061,6 @@ SceneRoots:
   - {fileID: 934734364}
   - {fileID: 251386235}
   - {fileID: 1683426445}
-  - {fileID: 883561336}
   - {fileID: 2014920817}
   - {fileID: 657862391}
   - {fileID: 1237995527}

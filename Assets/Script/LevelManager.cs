@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
@@ -7,21 +7,22 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance => instance;
 
     [Header("Level Settings")]
-    public int currentLevel = 0;
-    public int maxLevel = 2; // 0-baserat, så 0, 1, 2 = tre nivåer
+    public int currentLevel = -1; // -1 = StartMenu, 0 = Tutorial, 1+ = Game levels
+    public int maxGameLevel = 4; // Level1, Level2, Level3, Level4
 
-    [Header("Level Data")]
-    public float[] playerStartingHealth = { 100f, 100f, 100f };
-    public int[] enemyDifficulty = { 1, 2, 3 }; // Svårighetsgrad per nivå
+    [Header("Scene Names - VIKTIGT: Ange rÃ¤tt scennamn")]
+    [SerializeField] private string startMenuScene = "MainScene";
+    [SerializeField] private string tutorialScene = "Level0";
+    [SerializeField] private string loadingScene = "LoadingScreen";
+    [SerializeField] private string endScene = "EndScene";
 
     [Header("Level Transition")]
-    [SerializeField] private float levelTransitionDelay = 2f; // Tid innan nästa nivå laddas
-    [SerializeField] private GameObject levelCompleteUI; // UI som visas när nivån är klar
+    [SerializeField] private float levelTransitionDelay = 2f;
+    [SerializeField] private GameObject levelCompleteUI;
 
-    // Spara spelardata mellan nivåer
+    // Spara spelardata mellan nivÃ¥er
     private float playerHealth;
     private int playerScore;
-    private int collectedPowerups;
     private bool isTransitioning = false;
 
     private void Awake()
@@ -30,9 +31,10 @@ public class LevelManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-
-            // Lyssna på när en scen har laddats klart
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            // SÃ¤tt currentLevel baserat pÃ¥ nuvarande scen
+            DetermineCurrentLevel();
         }
         else
         {
@@ -40,79 +42,183 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void DetermineCurrentLevel()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (sceneName.Contains("MainScene") || sceneName.Contains("StartMenu"))
+            currentLevel = -1;
+        else if (sceneName.Contains("Level0"))
+            currentLevel = 0;
+        else if (sceneName.Contains("Level1"))
+            currentLevel = 1;
+        else if (sceneName.Contains("Level2"))
+            currentLevel = 2;
+        else if (sceneName.Contains("Level3"))
+            currentLevel = 3;
+        else if (sceneName.Contains("Level4"))
+            currentLevel = 4;
+        else if (sceneName.Contains("Loading"))
+            currentLevel = currentLevel; // BehÃ¥ll nuvarande level
+
+        Debug.Log($"LevelManager: Determined current level as {currentLevel} from scene {sceneName}");
+    }
+
     private void OnDestroy()
     {
-        // Viktigt för att undvika minneslöckor
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Anropas när en ny scen har laddats
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Kontrollera om det är en spelnivå
-        if (scene.name.StartsWith("Level"))
+        Debug.Log($"Scene loaded: {scene.name}");
+
+        // Ã…terstÃ¤ll spelardata nÃ¤r vi laddar gameplay-scener
+        if (scene.name.Contains("Level") && !scene.name.Contains("Loading"))
         {
-            Debug.Log($"Level {currentLevel} loaded, restoring player data");
             RestorePlayerData();
             isTransitioning = false;
         }
     }
 
-    // Denna metod anropas från LevelEnd-skriptet när spelaren når slutet av en nivå
+    // ===== PUBLIKA METODER FÃ–R ATT STARTA SPELET =====
+
+    /// <summary>
+    /// Anropas frÃ¥n StartMenu nÃ¤r spelaren trycker "Play"
+    /// </summary>
+    public void StartNewGame()
+    {
+        Debug.Log("Starting new game - going to tutorial");
+        currentLevel = 0; // Tutorial
+        LoadScene(tutorialScene);
+        ResetPlayerData();
+    }
+
+    /// <summary>
+    /// Anropas nÃ¤r en level Ã¤r klar
+    /// </summary>
     public void CompleteLevel()
     {
         if (isTransitioning) return;
         isTransitioning = true;
 
         Debug.Log($"Level {currentLevel} completed!");
-
-        // Visa level complete UI om det finns
-        if (levelCompleteUI != null)
-        {
-            levelCompleteUI.SetActive(true);
-        }
-
-        // Meddela spelaren
-        GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
-        if (messageSystem != null)
-        {
-            messageSystem.ShowBoostMessage("LEVEL COMPLETE!");
-        }
-
-        // Spara spelardata
         SavePlayerData();
 
-        // Starta nästa nivå efter en kort fördröjning
-        Invoke("StartNextLevel", levelTransitionDelay);
+        // BestÃ¤m vad som hÃ¤nder hÃ¤rnÃ¤st
+        if (currentLevel == 0) // Tutorial klar
+        {
+            Debug.Log("Tutorial complete - going to Level 1");
+            currentLevel = 1;
+            LoadScene("Level1");
+        }
+        else if (currentLevel == 1) // Level1 klar â†’ LoadingScreen
+        {
+            Debug.Log("Level 1 complete - going to loading screen");
+            currentLevel = 2; // SÃ¤tt nÃ¤sta level
+            LoadScene(loadingScene);
+        }
+        else if (currentLevel == 2) // Level2 klar â†’ LoadingScreen  
+        {
+            Debug.Log("Level 2 complete - going to loading screen");
+            currentLevel = 3;
+            LoadScene(loadingScene);
+        }
+        else if (currentLevel == 3) // Level3 klar â†’ LoadingScreen
+        {
+            Debug.Log("Level 3 complete - going to loading screen");
+            currentLevel = 4;
+            LoadScene(loadingScene);
+        }
+        else if (currentLevel == 4) // Level4 klar â†’ EndScene
+        {
+            Debug.Log("Level 4 complete - going to end scene");
+            LoadScene(endScene);
+        }
+        else if (currentLevel >= maxGameLevel) // SÃ¤kerhet
+        {
+            Debug.Log("All levels complete - going to end scene");
+            LoadScene(endScene);
+        }
     }
 
+    /// <summary>
+    /// Anropas frÃ¥n LoadingScreen nÃ¤r spelaren trycker continue
+    /// </summary>
     public void StartNextLevel()
     {
-        // Gå till nästa nivå
-        currentLevel++;
+        Debug.Log($"Starting Level {currentLevel}");
+        LoadScene($"Level{currentLevel}");
+    }
 
-        if (currentLevel > maxLevel)
+    /// <summary>
+    /// Starta om nuvarande level
+    /// </summary>
+    public void RestartLevel()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+    }
+
+    /// <summary>
+    /// GÃ¥ tillbaka till huvudmenyn
+    /// </summary>
+    public void ReturnToMainMenu()
+    {
+        currentLevel = -1;
+        LoadScene(startMenuScene);
+    }
+
+    // ===== PRIVATA METODER =====
+
+    private void LoadScene(string sceneName)
+    {
+        Debug.Log($"LevelManager: Attempting to load scene: {sceneName}");
+
+        // Kontrollera om scenen finns
+        if (SceneExists(sceneName))
         {
-            Debug.Log("All levels completed! Loading end scene.");
-            // Sista nivån klar, gå till slutscen
-            SceneManager.LoadScene("EndScene");
+            SceneManager.LoadScene(sceneName);
         }
         else
         {
-            Debug.Log($"Loading next level: Level{currentLevel}");
-            // Ladda nästa nivå
-            SceneManager.LoadScene("Level" + currentLevel);
+            Debug.LogError($"Scene '{sceneName}' does not exist! Check Build Settings.");
+
+            // Fallback baserat pÃ¥ vad som fÃ¶rvÃ¤ntades
+            if (sceneName.Contains("Level"))
+            {
+                // FÃ¶rsÃ¶k ladda nÃ¤sta scen i build settings
+                int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+                if (nextIndex < SceneManager.sceneCountInBuildSettings)
+                {
+                    SceneManager.LoadScene(nextIndex);
+                }
+            }
+            else
+            {
+                // GÃ¥ tillbaka till fÃ¶rsta scenen
+                SceneManager.LoadScene(0);
+            }
         }
     }
 
-    public void RestartLevel()
+    private bool SceneExists(string sceneName)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+            string sceneNameFromPath = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+
+            if (sceneNameFromPath == sceneName)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void SavePlayerData()
     {
-        // Hitta spelaren och spara dess data
         PlaneHealthSystem player = FindObjectOfType<PlaneHealthSystem>();
         if (player != null)
         {
@@ -120,37 +226,24 @@ public class LevelManager : MonoBehaviour
             Debug.Log($"Saved player health: {playerHealth}%");
         }
 
-        // Spara score
         if (ScoreManager.Instance != null)
         {
             playerScore = ScoreManager.Instance.GetCurrentScore();
             Debug.Log($"Saved player score: {playerScore}");
         }
-
-        // Spara powerups (detta behöver implementeras i ett PowerupManager-skript)
-        // collectedPowerups = PowerupManager.Instance.GetCollectedCount();
     }
 
-    public void RestorePlayerData()
+    private void RestorePlayerData()
     {
-        // Återställ spelardata i nya nivån
         PlaneHealthSystem player = FindObjectOfType<PlaneHealthSystem>();
         if (player != null)
         {
-            // Anpassa om du behöver sätta exakt värde
-            // Sätt hälsan baserad på sparad hälsa (med ett minimum)
-            float healthToSet = Mathf.Max(playerHealth, 50f);
-
-            // Detta kräver en ny metod i PlaneHealthSystem för att sätta hälsan direkt
-            // player.SetHealth(healthToSet);
-
-            // Ge lite skydd vid ny nivå
-            player.ApplyShieldBoost(50f);
-
-            Debug.Log($"Restored player health and added shield boost");
+            // Ge lite extra hÃ¤lsa fÃ¶r nya nivÃ¥er
+            float healthToRestore = Mathf.Max(playerHealth, 50f);
+            player.ApplyShieldBoost(healthToRestore);
+            Debug.Log($"Restored player with health bonus");
         }
 
-        // Återställ score
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.SetScore(playerScore);
@@ -158,10 +251,27 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Debug-metod för att testa nivåövergång
+    private void ResetPlayerData()
+    {
+        playerHealth = 100f;
+        playerScore = 0;
+    }
+
+    // ===== DEBUG METODER =====
     [ContextMenu("Test Complete Level")]
     public void TestCompleteLevel()
     {
         CompleteLevel();
     }
+
+    [ContextMenu("Test Start New Game")]
+    public void TestStartNewGame()
+    {
+        StartNewGame();
+    }
+
+    // ===== GETTERS =====
+    public int GetCurrentLevel() => currentLevel;
+    public bool IsInTutorial() => currentLevel == 0;
+    public bool IsInGameLevel() => currentLevel >= 1 && currentLevel <= maxGameLevel;
 }

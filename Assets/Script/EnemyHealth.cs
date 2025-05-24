@@ -293,6 +293,9 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.Log($"{gameObject.name} - TakeDamage called with damage: {damage}");
+        Debug.Log($"Current health before: {currentHealth}, isDying: {isDying}, initialized: {initialized}");
+
         if (!initialized || isDying) return;
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
@@ -306,6 +309,7 @@ public class EnemyHealth : MonoBehaviour
         {
             StartDying();
         }
+        Debug.Log($"Current health after: {currentHealth}");
     }
 
     public void StartDying()

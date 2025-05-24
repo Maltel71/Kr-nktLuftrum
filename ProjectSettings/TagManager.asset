@@ -15,6 +15,7 @@ TagManager:
   - MissileTarget
   - Flare
   - Missile Player
+  - Shell
   layers:
   - Default
   - TransparentFX

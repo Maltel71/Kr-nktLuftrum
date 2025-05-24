@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelTrigger : MonoBehaviour
@@ -11,7 +10,7 @@ public class LevelTrigger : MonoBehaviour
     [SerializeField] private float triggerHeight = 20f;
     [SerializeField] private float triggerDepth = 20f;
     [SerializeField] private bool useProximityTrigger = true;
-    [SerializeField] private float proximityDistance = 45f; // Ändrat till 45
+    [SerializeField] private float proximityDistance = 200f; // Ökad från 45 till 200
 
     // Variabler för att spåra spelarens rörelse
     private float closestDistance = float.MaxValue;
@@ -20,6 +19,16 @@ public class LevelTrigger : MonoBehaviour
 
     private void Start()
     {
+        // Automatiskt hitta LevelEnd på samma GameObject om inte satt
+        if (levelEnd == null)
+        {
+            levelEnd = GetComponent<LevelEnd>();
+            if (levelEnd != null)
+            {
+                Debug.Log("LevelTrigger: Automatically found LevelEnd on same GameObject");
+            }
+        }
+
         // Kontrollera och säkerställ en stor trigger
         triggerCollider = GetComponent<BoxCollider>();
         if (triggerCollider == null)
@@ -29,12 +38,16 @@ public class LevelTrigger : MonoBehaviour
         triggerCollider.isTrigger = true;
         triggerCollider.size = new Vector3(triggerWidth, triggerHeight, triggerDepth);
 
+        ValidateSetup();
+    }
+
+    private void ValidateSetup()
+    {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             Debug.Log("Found player with tag: " + player.tag);
 
-            // Kolla efter colliders på både spelarobjektet OCH alla dess barn
             Collider[] playerColliders = player.GetComponentsInChildren<Collider>();
             if (playerColliders != null && playerColliders.Length > 0)
             {
@@ -43,7 +56,6 @@ public class LevelTrigger : MonoBehaviour
                 {
                     Debug.Log($"Found collider on {col.gameObject.name}: {col.GetType().Name}, IsTrigger: {col.isTrigger}");
 
-                    // Om vi hittar en collider med isTrigger=true, ge användbar feedback
                     if (col.isTrigger)
                     {
                         Debug.LogWarning($"The collider on {col.gameObject.name} is a trigger. This might prevent trigger interactions.");
@@ -61,33 +73,27 @@ public class LevelTrigger : MonoBehaviour
     {
         if (hasTriggered) return;
 
-        // Hitta avståndet till spelaren
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
 
-            // Spåra närmaste avstånd
             if (distance < closestDistance)
             {
                 closestDistance = distance;
             }
 
-            // Kontrollera om spelaren börjar röra sig bort efter att ha kommit nära
             if (distance < lastDistance)
             {
-                // Spelaren närmar sig
                 isMovingAway = false;
             }
             else if (distance > lastDistance && distance < 60f)
             {
-                // Spelaren rör sig bort OCH är fortfarande relativt nära
                 if (!isMovingAway)
                 {
                     isMovingAway = true;
                     Debug.Log("Player has reached closest point and is now moving away!");
 
-                    // Om spelaren har kommit tillräckligt nära och börjar röra sig bort, slutför nivån
                     if (closestDistance < 45f)
                     {
                         Debug.Log("Triggering level completion at closest approach: " + closestDistance);
@@ -98,14 +104,12 @@ public class LevelTrigger : MonoBehaviour
 
             lastDistance = distance;
 
-            // Använd standardnärhetstriggning också
             if (useProximityTrigger && distance < proximityDistance && !hasTriggered)
             {
                 Debug.Log("Proximity trigger activated! Distance: " + distance);
                 TriggerLevelCompletion();
             }
 
-            // Logga avståndet var 60:e frame för att inte spamma konsollen
             if (Time.frameCount % 60 == 0)
             {
                 Debug.Log("Distance to player: " + distance + ", Closest so far: " + closestDistance);
@@ -113,7 +117,6 @@ public class LevelTrigger : MonoBehaviour
         }
     }
 
-    // Om något kolliderar med triggern
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Something ENTERED trigger: " + other.gameObject.name + " with tag: " + other.tag);
@@ -129,7 +132,6 @@ public class LevelTrigger : MonoBehaviour
         }
     }
 
-    // Om något stannar kvar inuti triggern
     private void OnTriggerStay(Collider other)
     {
         if (!hasTriggered && other.CompareTag("Player"))
@@ -157,7 +159,6 @@ public class LevelTrigger : MonoBehaviour
         }
     }
 
-    // Visualisera triggerzonen i editorn
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
