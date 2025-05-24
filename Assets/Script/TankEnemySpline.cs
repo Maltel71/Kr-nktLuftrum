@@ -197,7 +197,7 @@ public class TankEnemySpline : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"damageSmokeEmitterPrefab är null för {gameObject.name}!");
+            //Debug.LogError($"damageSmokeEmitterPrefab är null för {gameObject.name}!");
         }
     }
 
