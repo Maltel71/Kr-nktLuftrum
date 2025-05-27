@@ -13,6 +13,7 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private float attackDamage = 40f;
     [SerializeField] private float attackInterval = 2f;
     [SerializeField] private float bulletSpeed = 5f;
+    [SerializeField] private float bulletLifetime = 2f; // Boss kulor
 
     [Header("Attack Patterns")]
     [SerializeField] private float spreadAngle = 45f;

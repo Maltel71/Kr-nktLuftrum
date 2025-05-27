@@ -7,7 +7,8 @@ public class BulletSystem : MonoBehaviour
     [SerializeField] private bool isEnemyProjectile;
     [SerializeField] private float damage = 10f;
     [SerializeField] private float speed = 1000f;
-    [SerializeField] private float bulletLifetime = 3f;
+    //[SerializeField] private float bulletLifetime = 3f;
+    private float assignedLifetime; // Ny variabel för mottagen lifetime
 
     [Header("Effects")]
     [SerializeField] private GameObject hitEffectPrefab;
@@ -47,18 +48,19 @@ public class BulletSystem : MonoBehaviour
 
     private IEnumerator AutoDeactivate()
     {
-        yield return new WaitForSeconds(bulletLifetime);
+        yield return new WaitForSeconds(assignedLifetime); // Använd assignedLifetime istället
         if (gameObject.activeInHierarchy && !hasCollided)
         {
             ReturnToPool();
         }
     }
 
-    public void Initialize(Vector3 shootDirection, bool isEnemy = false, float damageAmount = 10f)
+    public void Initialize(Vector3 shootDirection, bool isEnemy = false, float damageAmount = 10f, float lifetime = 3f)
     {
         direction = shootDirection;
         isEnemyProjectile = isEnemy;
         damage = damageAmount;
+        assignedLifetime = lifetime; // Spara den mottagna lifetime
         gameObject.tag = isEnemy ? "Enemy Bullet" : "Player Bullet";
         hasCollided = false;
     }

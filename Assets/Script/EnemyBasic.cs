@@ -18,6 +18,7 @@ public class EnemyBasic : MonoBehaviour
     [SerializeField] private Transform rightGun;
     [SerializeField] private float fireRate = 1f;
     [SerializeField] private float bulletDamage = 20f;
+    [SerializeField] private float bulletLifetime = 0.3f; // Fiendens kulor
 
     [Header("Collision Settings")]
     //[SerializeField] private float collisionDamage = 25f;
@@ -27,6 +28,8 @@ public class EnemyBasic : MonoBehaviour
 
     [Header("Shooting Settings")]
     [SerializeField] private bool continuousShooting = false;
+
+
 
 
     private float nextFireTime;
@@ -121,14 +124,13 @@ public class EnemyBasic : MonoBehaviour
         Transform currentGun = useLeftGun ? leftGun : rightGun;
         Vector3 shootDirection = transform.forward;
 
-        // Använd bullet pool istället för Instantiate
-        GameObject bullet = BulletPool.Instance.GetBullet(false); // false för fiendeskott
+        GameObject bullet = BulletPool.Instance.GetBullet(false);
         bullet.transform.position = currentGun.position;
         bullet.transform.rotation = Quaternion.LookRotation(shootDirection);
 
         if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
         {
-            bulletSystem.Initialize(shootDirection, true, bulletDamage);
+            bulletSystem.Initialize(shootDirection, true, bulletDamage, bulletLifetime);
         }
 
         audioManager?.PlayEnemyShootSound();
