@@ -294,7 +294,7 @@ public class ExplosionPool : MonoBehaviour
 
             explosion.SetActive(false);
             explosion.transform.position = transform.position;
-            DebugLog("Explosion returned to pool");
+            //DebugLog("Explosion returned to pool");
         }
     }
 
@@ -302,7 +302,7 @@ public class ExplosionPool : MonoBehaviour
     {
         if (showDebugLogs)
         {
-            Debug.Log($"[ExplosionPool] {message}");
+            //Debug.Log($"[ExplosionPool] {message}");
         }
     }
 

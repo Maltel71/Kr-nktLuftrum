@@ -85,13 +85,13 @@ public class BulletPool : MonoBehaviour
             {
                 bullet.SetActive(true);
                 totalBulletsReused++;
-                DebugLog($"Reusing {(isPlayerBullet ? "player" : "enemy")} bullet. Total reused: {totalBulletsReused}");
+                //DebugLog($"Reusing {(isPlayerBullet ? "player" : "enemy")} bullet. Total reused: {totalBulletsReused}");
                 return bullet;
             }
         }
 
         // Om alla skott är aktiva, skapa ett nytt
-        DebugLog($"Pool exhausted for {(isPlayerBullet ? "player" : "enemy")} bullets, creating new bullet");
+        //DebugLog($"Pool exhausted for {(isPlayerBullet ? "player" : "enemy")} bullets, creating new bullet");
         GameObject newBullet = Instantiate(
             isPlayerBullet ? playerBulletPrefab : enemyBulletPrefab,
             transform
@@ -105,14 +105,14 @@ public class BulletPool : MonoBehaviour
     {
         bullet.SetActive(false);
         bullet.transform.position = transform.position;
-        DebugLog("Bullet returned to pool");
+        //DebugLog("Bullet returned to pool");
     }
 
     private void DebugLog(string message)
     {
         if (showDebugLogs)
         {
-            Debug.Log($"[BulletPool] {message}");
+            //Debug.Log($"[BulletPool] {message}");
         }
     }
 

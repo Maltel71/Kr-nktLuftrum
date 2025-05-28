@@ -106,13 +106,13 @@ public class LevelTrigger : MonoBehaviour
 
             if (useProximityTrigger && distance < proximityDistance && !hasTriggered)
             {
-                Debug.Log("Proximity trigger activated! Distance: " + distance);
+                //Debug.Log("Proximity trigger activated! Distance: " + distance);
                 TriggerLevelCompletion();
             }
 
             if (Time.frameCount % 60 == 0)
             {
-                Debug.Log("Distance to player: " + distance + ", Closest so far: " + closestDistance);
+                //Debug.Log("Distance to player: " + distance + ", Closest so far: " + closestDistance);
             }
         }
     }

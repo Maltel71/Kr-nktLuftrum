@@ -15,7 +15,7 @@ public class WeaponSystem : MonoBehaviour
 
     [Header("Visual Settings")]
     [SerializeField] private GameObject mainGunVisual;
-    [SerializeField] private GameObject dualGunsVisual; // En enda mesh för båda extra vapnen
+    [SerializeField] private GameObject dualGunsVisual; 
 
     [Header("Shells Settings")]
     [SerializeField] private Transform mainShellEjectionPoint;

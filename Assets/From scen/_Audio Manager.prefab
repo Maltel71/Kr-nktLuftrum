@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3198985920029736294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3997607103370578842}
+  - component: {fileID: 8592711683259519027}
+  m_Layer: 0
+  m_Name: _Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3997607103370578842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198985920029736294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 961.0781, y: 92.17515, z: 73.59917}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8592711683259519027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198985920029736294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2383526ac9b704eb4bcd8c932d1576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 0}
+  engineSource: {fileID: 0}
+  radioSource: {fileID: 0}
+  bulletsSource: {fileID: 0}
+  missilesSource: {fileID: 0}
+  bombsSource: {fileID: 0}
+  explosionsSource: {fileID: 0}
+  specialSource: {fileID: 0}
+  masterVolume: 1
+  musicVolume: 0.5
+  engineVolume: 0.6
+  radioVolume: 0.3
+  isMusicEnabled: 1
+  isRadioEnabled: 1
+  backgroundMusic: {fileID: 8300000, guid: 3091166dcf4e734449271b1ceaffd1db, type: 3}
+  engineSound: {fileID: 8300000, guid: 23ef7fa6779f1914aacddaf3366d97f3, type: 3}
+  playerShootSound: {fileID: 8300000, guid: 6b0c05bc2c6e4cf4298231604c58c748, type: 3}
+  enemyShootSound: {fileID: 8300000, guid: 6b0c05bc2c6e4cf4298231604c58c748, type: 3}
+  hitSound: {fileID: 8300000, guid: f88670eda07cd484aad79a15c2a735b6, type: 3}
+  flareSound: {fileID: 0}
+  playerShootVolume: 0.3
+  enemyShootVolume: 0.23
+  hitVolume: 0.6
+  flareVolume: 0.7
+  missileLaunchSound: {fileID: 8300000, guid: 1f11acadc80182c48a98c4a6fff1ebd3, type: 3}
+  missileHitSound: {fileID: 8300000, guid: e4583df7880f6eb4aacee3cac93a4ccf, type: 3}
+  missileLaunchVolume: 0.1
+  missileHitVolume: 0.1
+  bombDropSound: {fileID: 8300000, guid: f66e812e961c5ef47b944f0a23154756, type: 3}
+  bombFallingSound: {fileID: 0}
+  bombExplosionSound: {fileID: 8300000, guid: 53eae6c9ac1c25f43905fae8b1bc89a7, type: 3}
+  bombDropVolume: 0.7
+  bombFallingVolume: 0.5
+  bombExplosionVolume: 0.7
+  boostSound: {fileID: 0}
+  airRaidSiren: {fileID: 0}
+  bossAlertSound: {fileID: 0}
+  boostVolume: 0
+  sirenVolume: 0.01
+  bossAlertVolume: 0.5
+  radioStart: {fileID: 8300000, guid: 213414df5e30c9f4a8f4351528fdebe7, type: 3}
+  radioEnd: {fileID: 0}
+  radioMessages: []
+  radioDelay: 2
+  helicopterSound: {fileID: 0}
+  boatEngineSound: {fileID: 0}
+  tankMovementSound: {fileID: 0}
+  waterSplashSound: {fileID: 0}
+  sandImpactSound: {fileID: 0}
+  metalHitSound: {fileID: 0}
+  vehicleVolume: 0.6
+  environmentVolume: 0.5
+  audioPoolSize: 15
+  prewarmSoundsOnStart: 1
+  usePreloadedSounds: 1

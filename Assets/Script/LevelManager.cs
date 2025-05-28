@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private string endScene = "EndScene";
 
     [Header("Level Transition")]
-    [SerializeField] private float levelTransitionDelay = 2f;
+    //[SerializeField] private float levelTransitionDelay = 2f;
     [SerializeField] private GameObject levelCompleteUI;
 
     // Spara spelardata mellan nivåer
@@ -99,6 +99,35 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void CompleteLevel()
     {
+        Debug.Log("=== LevelManager.CompleteLevel() CALLED ===");
+        Debug.Log($"isTransitioning: {isTransitioning}");
+        Debug.Log($"currentLevel: {currentLevel}");
+
+        if (isTransitioning)
+        {
+            Debug.LogWarning("Already transitioning - returning early");
+            return;
+        }
+
+        isTransitioning = true;
+
+        Debug.Log($"Level {currentLevel} completed!");
+        SavePlayerData();
+
+        // Resten av din befintliga CompleteLevel() kod...
+        if (currentLevel == 0) // Tutorial klar
+        {
+            Debug.Log("Tutorial complete - going to Level 1");
+            currentLevel = 1;
+            LoadScene("Level1");
+        }
+        else if (currentLevel == 1) // Level1 klar → LoadingScreen
+        {
+            Debug.Log("Level 1 complete - going to loading screen");
+            currentLevel = 2;
+            LoadScene(loadingScene);
+        }
+
         if (isTransitioning) return;
         isTransitioning = true;
 

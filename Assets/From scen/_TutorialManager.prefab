@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8507805366026959566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1815957511110774477}
+  - component: {fileID: 5819625743579353755}
+  m_Layer: 0
+  m_Name: _TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1815957511110774477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507805366026959566}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5819625743579353755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507805366026959566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625a5ce28a03d1d4f8171513a9836b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayBetweenSteps: 1
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  tutorialSound: {fileID: 0}
+  tutorialSteps:
+  - type: 0
+    description: Move Left
+    instruction: Use A
+    keyBinding: A
+  - type: 1
+    description: Move  Right
+    instruction: Use D
+    keyBinding: D
+  - type: 2
+    description: Move Forward
+    instruction: Use W
+    keyBinding: W
+  - type: 3
+    description: Move Backwards
+    instruction: Use S
+    keyBinding: S
+  - type: 4
+    description: Shoot Gun
+    instruction: Use Space
+    keyBinding: Space
+  - type: 6
+    description: Shoot Missile
+    instruction: Use M
+    keyBinding: M
+  - type: 5
+    description: Drop Bombs
+    instruction: Use B
+    keyBinding: B
+  - type: 7
+    description: Use Flares
+    instruction: Use F
+    keyBinding: F

@@ -5168,6 +5168,10 @@ MonoBehaviour:
   splineContainer: {fileID: 0}
   speed: 60
   loopPath: 0
+  updateFrequency: 1
+  destroyAtEnd: 1
+  alignWithSpline: 1
+  showDebugLogs: 0
 --- !u!114 &6927417615880013616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5217,14 +5221,15 @@ MonoBehaviour:
   useWaveMovement: 0
   waveAmplitude: 4
   waveFrequency: 4
-  shootingRange: 350
+  shootingRange: 500
   destroyDistanceBehindPlayer: 900
   leftGun: {fileID: 7646961857588846981}
   rightGun: {fileID: 166175435407655208}
   fireRate: 2
-  bulletDamage: 10
+  bulletDamage: 20
+  bulletLifetime: 1
   playerCollisionDamage: 400
-  collisionExplosionType: 1
+  collisionExplosionType: 0
   continuousShooting: 0
 --- !u!114 &4207716207756207608
 MonoBehaviour:

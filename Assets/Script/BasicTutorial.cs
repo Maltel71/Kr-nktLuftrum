@@ -8,11 +8,11 @@ using UnityEngine.SceneManagement; // TILLAGD för scenhantering
 public class BasicTutorial : MonoBehaviour
 {
     [Header("UI Referenser")]
-    [SerializeField] private GameObject tutorialPanel;
-    [SerializeField] private TextMeshProUGUI tutorialText;
-    [SerializeField] private TextMeshProUGUI instructionText;
-    [SerializeField] private GameObject progressIndicator;
-    [SerializeField] private Button skipButton;
+    //[SerializeField] private GameObject tutorialPanel;
+    //[SerializeField] private TextMeshProUGUI tutorialText;
+    //[SerializeField] private TextMeshProUGUI instructionText;
+    //[SerializeField] private GameObject progressIndicator;
+    //[SerializeField] private Button skipButton;
 
     [Header("Tutorial Inställningar")]
     [SerializeField] private float delayBetweenSteps = 1.0f;
@@ -60,11 +60,11 @@ public class BasicTutorial : MonoBehaviour
 
     private void Start()
     {
-        if (skipButton != null)
-            skipButton.onClick.AddListener(SkipTutorial);
+        //if (skipButton != null)
+            //skipButton.onClick.AddListener(SkipTutorial);
 
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(false);
+        //if (tutorialPanel != null)
+           //tutorialPanel.SetActive(false);
 
         Invoke("StartTutorial", 1.0f);
     }
@@ -151,7 +151,7 @@ public class BasicTutorial : MonoBehaviour
         }
 
         tutorialActive = true;
-        ShowTutorialPanel(true);
+        //ShowTutorialPanel(true);
         NextStep();
     }
 
@@ -200,21 +200,21 @@ public class BasicTutorial : MonoBehaviour
     {
         return stepType switch
         {
-            TutorialStep.StepType.MoveLeft => "Bra! Du rörde planet åt vänster.",
-            TutorialStep.StepType.MoveRight => "Utmärkt! Du rörde planet åt höger.",
-            TutorialStep.StepType.MoveForward => "Perfekt! Du flög framåt.",
-            TutorialStep.StepType.MoveBackward => "Bra! Du flög bakåt.",
-            TutorialStep.StepType.Shoot => "Perfekt! Du sköt med vapnet.",
-            TutorialStep.StepType.Bomb => "Bra gjort! Du släppte en bomb.",
-            TutorialStep.StepType.Missile => "Missil avfyrad!",
-            TutorialStep.StepType.Flare => "Flare utlöst!",
-            _ => "Steg slutfört!"
+            TutorialStep.StepType.MoveLeft => "Good! You moved the plane to the left.",
+            TutorialStep.StepType.MoveRight => "Excellent! You moved the plane to the right.",
+            TutorialStep.StepType.MoveForward => "Perfect! You flew forward.",
+            TutorialStep.StepType.MoveBackward => "Good! You flew backward.",
+            TutorialStep.StepType.Shoot => "Perfect! You fired the weapon.",
+            TutorialStep.StepType.Bomb => "Well done! You dropped a bomb..",
+            TutorialStep.StepType.Missile => "Missile fired",
+            TutorialStep.StepType.Flare => "Flare fired!",
+            _ => "Step completed"
         };
     }
 
     private IEnumerator AdvanceToNextStepAfterDelay()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         NextStep();
     }
 
@@ -222,30 +222,30 @@ public class BasicTutorial : MonoBehaviour
     {
         if (messageSystem != null)
         {
-            string message = "Nytt tutorialsteg: " + step.type.ToString();
+            string message = "New tutorial step: " + step.type.ToString();
             if (!string.IsNullOrEmpty(step.keyBinding))
             {
-                message += " Använd " + step.keyBinding;
+                message += " Use " + step.keyBinding;
             }
             messageSystem.ShowBoostMessage(message);
         }
     }
 
-    private void ShowTutorialPanel(bool show)
-    {
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(show);
-    }
+    //private void ShowTutorialPanel(bool show)
+    //{
+        //if (tutorialPanel != null)
+            //tutorialPanel.SetActive(show);
+    //}
 
     private void CompleteTutorial()
     {
         tutorialActive = false;
-        ShowTutorialPanel(false);
+        //ShowTutorialPanel(false);
 
         // Visa slutmeddelande
         if (messageSystem != null)
         {
-            messageSystem.ShowBoostMessage("Tutorial klar! Level 1 startar nu!");
+            messageSystem.ShowBoostMessage("Tutorial completed - Lets go to war");
         }
 
         // Ladda Level 1
@@ -316,7 +316,7 @@ public class BasicTutorial : MonoBehaviour
 
         tutorialActive = false;
         StopAllCoroutines();
-        ShowTutorialPanel(false);
+        //ShowTutorialPanel(false);
 
         Debug.Log("BasicTutorial: Tutorial skipped - loading Level1");
 
