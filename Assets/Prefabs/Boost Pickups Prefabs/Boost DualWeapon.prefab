@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 5423196982232831254}
   m_Layer: 9
   m_Name: Boost DualWeapon
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,3 +267,4 @@ MonoBehaviour:
   bobHeight: 0.5
   rotationSpeed: 90
   boostLifetime: 10
+  ignorePlayerBullets: 1

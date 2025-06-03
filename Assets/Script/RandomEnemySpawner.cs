@@ -24,13 +24,13 @@ public class RandomEnemySpawner : MonoBehaviour
     {
         if (enemyPrefabs == null || enemyPrefabs.Length == 0)
         {
-            Debug.LogError("No enemy prefabs defined!");
+            //Debug.LogError("No enemy prefabs defined!");
             return null;
         }
 
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("No spawn points defined!");
+            //Debug.LogError("No spawn points defined!");
             return null;
         }
 
@@ -38,7 +38,7 @@ public class RandomEnemySpawner : MonoBehaviour
         Transform spawnPoint = spawnPoints[spawnPointIndex];
 
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
-        Debug.Log($"Spawned enemy {enemyIndex} at spawnpoint {spawnPointIndex}: {spawnPoint.position}");
+        //Debug.Log($"Spawned enemy {enemyIndex} at spawnpoint {spawnPointIndex}: {spawnPoint.position}");
 
         RandomEnemyMovement movement = enemy.GetComponent<RandomEnemyMovement>();
         if (movement != null)

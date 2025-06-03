@@ -7000,6 +7000,7 @@ MonoBehaviour:
   scoreText: {fileID: 1400278582}
   highScorePanel: {fileID: 1193457581}
   highScoreTexts: []
+  autoFindScoreText: 1
 --- !u!4 &452077950
 Transform:
   m_ObjectHideFlags: 0
@@ -10718,6 +10719,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1914456180626160717, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1914456180626160717, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
       propertyPath: currentLevel
       value: 3
       objectReference: {fileID: 0}
@@ -10769,6 +10774,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '"Level Manager'
       objectReference: {fileID: 0}
+    - target: {fileID: 8886964423740572213, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10789,7 +10798,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 834690316}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d5ded98a6f5a3142b6e6ec42ebfb314, type: 3}
   m_Name: 
@@ -19886,7 +19895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1656626385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19894,7 +19903,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656626384}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e2383526ac9b704eb4bcd8c932d1576, type: 3}
   m_Name: 
@@ -26364,7 +26373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: moveSpeed
-      value: 1600
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: bombOffset
@@ -26592,10 +26601,10 @@ SceneRoots:
   - {fileID: 371827927}
   - {fileID: 353606370}
   - {fileID: 43998367}
-  - {fileID: 1398540351}
-  - {fileID: 834690315}
   - {fileID: 1044569034}
   - {fileID: 1656626386}
+  - {fileID: 1398540351}
+  - {fileID: 834690315}
   - {fileID: 934734364}
   - {fileID: 251386235}
   - {fileID: 1683426445}

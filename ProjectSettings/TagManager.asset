@@ -16,6 +16,8 @@ TagManager:
   - Flare
   - Missile Player
   - Shell
+  - Building
+  - Boost
   layers:
   - Default
   - TransparentFX

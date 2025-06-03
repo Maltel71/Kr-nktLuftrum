@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource engineSource;
     [SerializeField] private AudioSource radioSource;
 
-    // Snabba ljud källor för låg latency
+    // Snabba ljud kÃ¤llor fÃ¶r lÃ¥g latency
     [SerializeField] private AudioSource bulletsSource;
     [SerializeField] private AudioSource missilesSource;
     [SerializeField] private AudioSource bombsSource;
@@ -106,8 +106,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float radioDelay = 30f;
     #endregion
 
-    #region Miljöljud
-    [Header("Fordons & Miljöljud")]
+    #region MiljÃ¶ljud
+    [Header("Fordons & MiljÃ¶ljud")]
     [SerializeField] private AudioClip helicopterSound;
     [SerializeField] private AudioClip boatEngineSound;
     [SerializeField] private AudioClip tankMovementSound;
@@ -124,7 +124,7 @@ public class AudioManager : MonoBehaviour
     private Queue<AudioSource> audioSourcePool;
     #endregion
 
-    #region Prewarming - PRELOAD FÖR ZERO LATENCY
+    #region Prewarming - PRELOAD FÃ–R ZERO LATENCY
     [Header("Prewarming")]
     [SerializeField] private bool prewarmSoundsOnStart = true;
     [SerializeField] private bool usePreloadedSounds = true;
@@ -146,12 +146,12 @@ public class AudioManager : MonoBehaviour
 
     private void SetupAudioSources()
     {
-        // Konfigurera alla ljudkällor för optimal prestanda
+        // Konfigurera alla ljudkÃ¤llor fÃ¶r optimal prestanda
         SetupAudioSource(ref musicSource, true, false);
         SetupAudioSource(ref engineSource, true, false);
         SetupAudioSource(ref radioSource, false, false);
 
-        // Snabba källor för action-ljud
+        // Snabba kÃ¤llor fÃ¶r action-ljud
         SetupAudioSource(ref bulletsSource, false, true);
         SetupAudioSource(ref missilesSource, false, true);
         SetupAudioSource(ref bombsSource, false, true);
@@ -171,15 +171,15 @@ public class AudioManager : MonoBehaviour
 
         if (lowLatency)
         {
-            // KRITISKA inställningar för låg latency
-            source.priority = 0; // HÖGSTA prioritet (0 = högst)
+            // KRITISKA instÃ¤llningar fÃ¶r lÃ¥g latency
+            source.priority = 0; // HÃ–GSTA prioritet (0 = hÃ¶gst)
             source.bypassEffects = true; // Ingen processing
             source.bypassListenerEffects = true; // Ingen listener processing
             source.bypassReverbZones = true; // Ingen reverb
-            source.rolloffMode = AudioRolloffMode.Linear; // Enklare beräkning
+            source.rolloffMode = AudioRolloffMode.Linear; // Enklare berÃ¤kning
             source.dopplerLevel = 0f; // Ingen doppler effect
             source.spread = 0f; // Mono ljud
-            source.spatialBlend = 0f; // 2D ljud för snabbhet
+            source.spatialBlend = 0f; // 2D ljud fÃ¶r snabbhet
         }
     }
 
@@ -201,7 +201,7 @@ public class AudioManager : MonoBehaviour
     {
         isMusicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
         isRadioEnabled = PlayerPrefs.GetInt("RadioEnabled", 1) == 1;
-        Debug.Log($"[AudioManager] Ljudinställningar laddade - Musik: {isMusicEnabled}, Radio: {isRadioEnabled}");
+        Debug.Log($"[AudioManager] LjudinstÃ¤llningar laddade - Musik: {isMusicEnabled}, Radio: {isRadioEnabled}");
     }
 
     private void StartGameAudio()
@@ -211,7 +211,7 @@ public class AudioManager : MonoBehaviour
             PlayBackgroundMusic();
         }
 
-        StartEngine();
+        // StartEngine(); // <-- KOMMENTERA BORT ELLER TA BORT
 
         if (isRadioEnabled)
         {
@@ -224,7 +224,7 @@ public class AudioManager : MonoBehaviour
         yield return null;
         Debug.Log("[AudioManager] Starting ULTRA sound prewarming...");
 
-        // Preload de mest använda ljuden i sina källor
+        // Preload de mest anvÃ¤nda ljuden i sina kÃ¤llor
         if (usePreloadedSounds)
         {
             PreloadCriticalSounds();
@@ -238,7 +238,7 @@ public class AudioManager : MonoBehaviour
 
         AudioClip[] clipsToPrewarm = new AudioClip[]
         {
-            // KRITISKA ljud först (mest latency-känsliga)
+            // KRITISKA ljud fÃ¶rst (mest latency-kÃ¤nsliga)
             playerShootSound,
             enemyShootSound,
             hitSound,
@@ -278,7 +278,7 @@ public class AudioManager : MonoBehaviour
 
     private void PreloadCriticalSounds()
     {
-        // Preload de mest kritiska ljuden i sina dedikerade källor
+        // Preload de mest kritiska ljuden i sina dedikerade kÃ¤llor
         if (bulletsSource != null && playerShootSound != null)
         {
             bulletsSource.clip = playerShootSound;
@@ -308,7 +308,7 @@ public class AudioManager : MonoBehaviour
             if (musicSource != null && backgroundMusic != null)
             {
                 musicSource.Play();
-                Debug.Log("[AudioManager] Musik påslagen");
+                Debug.Log("[AudioManager] Musik pÃ¥slagen");
             }
         }
         else
@@ -316,7 +316,7 @@ public class AudioManager : MonoBehaviour
             if (musicSource != null)
             {
                 musicSource.Pause();
-                Debug.Log("[AudioManager] Musik avstängd");
+                Debug.Log("[AudioManager] Musik avstÃ¤ngd");
             }
         }
 
@@ -356,16 +356,83 @@ public class AudioManager : MonoBehaviour
             if (radioSource != null)
             {
                 radioSource.Stop();
-                Debug.Log("[AudioManager] Radio avstängd");
+                Debug.Log("[AudioManager] Radio avstÃ¤ngd");
             }
         }
         else
         {
-            Debug.Log("[AudioManager] Radio påslagen");
+            Debug.Log("[AudioManager] Radio pÃ¥slagen");
         }
 
         PlayerPrefs.SetInt("RadioEnabled", isRadioEnabled ? 1 : 0);
         PlayerPrefs.Save();
+    }
+    // LÃ¤gg till EFTER ToggleRadio() metoden:
+
+    public void PlaySpecificBackgroundMusic(AudioClip musicClip)
+    {
+        if (!isMusicEnabled || musicClip == null || musicSource == null)
+            return;
+
+        if (musicSource.clip != musicClip)
+        {
+            musicSource.Stop();
+            musicSource.clip = musicClip;
+            musicSource.volume = musicVolume * masterVolume;
+            musicSource.loop = true;
+            musicSource.Play();
+
+            Debug.Log($"[AudioManager] Spelar ny bakgrundsmusik: {musicClip.name}");
+        }
+        else if (!musicSource.isPlaying)
+        {
+            musicSource.Play();
+            Debug.Log($"[AudioManager] Ã…terupptar bakgrundsmusik: {musicClip.name}");
+        }
+    }
+
+    public void StopBackgroundMusic()
+    {
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+            musicSource.clip = null;
+            Debug.Log("[AudioManager] Bakgrundsmusik stoppad");
+        }
+    }
+
+    public void StartEngineSound()
+    {
+        Debug.Log($"[AudioManager] StartEngineSound() anropad - engineSound: {engineSound != null}, engineSource: {engineSource != null}, isEnginePlaying: {isEnginePlaying}");
+
+        if (engineSound != null && engineSource != null && !isEnginePlaying)
+        {
+            engineSource.clip = engineSound;
+            engineSource.volume = engineVolume * masterVolume;
+            engineSource.Play();
+            isEnginePlaying = true;
+            Debug.Log("[AudioManager] âœˆï¸ Motor startad");
+        }
+        else
+        {
+            Debug.Log("[AudioManager] âŒ Kunde inte starta motor - kontrollera villkoren ovan");
+        }
+    }
+
+    public void StopEngineSound()
+    {
+        Debug.Log($"[AudioManager] StopEngineSound() anropad - engineSource: {engineSource != null}, isEnginePlaying: {isEnginePlaying}");
+
+        if (engineSource != null && isEnginePlaying)
+        {
+            engineSource.Stop();
+            isEnginePlaying = false;
+            Debug.Log("[AudioManager] â¹ï¸ Motor stoppad");
+        }
+        else
+        {
+            Debug.Log("[AudioManager] âŒ Kunde inte stoppa motor eller redan stoppad");
+        }
     }
 
     public bool IsMusicEnabled() => isMusicEnabled;
@@ -415,13 +482,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlayHitSound()
     {
-        // Använd slumpmässig pitch för variation men snabbare implementation
+        // AnvÃ¤nd slumpmÃ¤ssig pitch fÃ¶r variation men snabbare implementation
         if (explosionsSource != null)
         {
             float randomPitch = Random.Range(0.8f, 1.2f);
             explosionsSource.pitch = randomPitch;
             PlayFastSound(hitSound, explosionsSource, hitVolume);
-            // Återställ pitch direkt efter
+            // Ã…terstÃ¤ll pitch direkt efter
             explosionsSource.pitch = 1f;
         }
     }
@@ -441,7 +508,7 @@ public class AudioManager : MonoBehaviour
     public void PlayMissileHitSound()
     {
         PlayFastSound(missileHitSound, missilesSource, missileHitVolume);
-        // Spela även explosionsljud
+        // Spela Ã¤ven explosionsljud
         PlayBombSound(BombSoundType.Explosion);
     }
     #endregion
@@ -481,7 +548,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Bakåtkompatibilitetsmetoder
+    // BakÃ¥tkompatibilitetsmetoder
     public void PlayBombDropSound()
     {
         PlayBombSound(BombSoundType.Drop);
@@ -515,7 +582,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Bakåtkompatibilitet
+    // BakÃ¥tkompatibilitet
     public void PlayShootSound()
     {
         PlayPlayerShootSound();
@@ -523,7 +590,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDeathSound()
     {
-        // Tom metod för bakåtkompatibilitet - ingen deathsound som du ville
+        // Tom metod fÃ¶r bakÃ¥tkompatibilitet - ingen deathsound som du ville
     }
     #endregion
 
@@ -590,7 +657,7 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    #region Fordons- och Miljöljud
+    #region Fordons- och MiljÃ¶ljud
     public void PlayVehicleEngineSound(VehicleType vehicleType, Vector3 position)
     {
         AudioClip clip = vehicleType switch
@@ -683,18 +750,18 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null || source == null) return;
 
-        // DIREKT avspelning utan att stoppa - låter flera ljud spelas samtidigt
+        // DIREKT avspelning utan att stoppa - lÃ¥ter flera ljud spelas samtidigt
         source.volume = volume * masterVolume;
         source.pitch = 1f;
-        source.PlayOneShot(clip); // PlayOneShot är faktiskt snabbare för korta ljud
+        source.PlayOneShot(clip); // PlayOneShot Ã¤r faktiskt snabbare fÃ¶r korta ljud
     }
 
-    // ALTERNATIV metod för ännu lägre latency - kräver förladdat ljud
+    // ALTERNATIV metod fÃ¶r Ã¤nnu lÃ¤gre latency - krÃ¤ver fÃ¶rladdat ljud
     private void PlayPreloadedSound(AudioClip clip, AudioSource source, float volume)
     {
         if (clip == null || source == null) return;
 
-        // Om samma ljud redan är laddat, spela direkt
+        // Om samma ljud redan Ã¤r laddat, spela direkt
         if (source.clip == clip)
         {
             source.volume = volume * masterVolume;
@@ -744,7 +811,7 @@ public class AudioManager : MonoBehaviour
             musicSource.volume = musicVolume * masterVolume;
         if (engineSource != null)
             engineSource.volume = engineVolume * masterVolume;
-        // AudioSources för vapen uppdateras vid nästa avspelning
+        // AudioSources fÃ¶r vapen uppdateras vid nÃ¤sta avspelning
     }
 
     public void StopAllSounds()

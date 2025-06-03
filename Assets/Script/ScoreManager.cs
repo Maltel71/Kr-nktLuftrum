@@ -41,6 +41,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private GameObject highScorePanel;
     [SerializeField] private TextMeshProUGUI[] highScoreTexts;
 
+    [Header("Auto-find UI")]
+    [SerializeField] private bool autoFindScoreText = true;
+
     private int currentScore = 0;
     private List<int> highScores = new List<int>();
     private const int MAX_SCORES = 5;
@@ -59,6 +62,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     GameObject go = new GameObject("ScoreManager");
                     instance = go.AddComponent<ScoreManager>();
+                    DontDestroyOnLoad(go);
                 }
             }
             return instance;
@@ -86,11 +90,54 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
+        // Försök hitta score text automatiskt om den inte är tilldelad
+        if (scoreText == null && autoFindScoreText)
+        {
+            FindScoreText();
+        }
+
         UpdateScoreDisplay();
+
         if (highScorePanel != null)
         {
             highScorePanel.SetActive(false);
         }
+
+        Debug.Log($"ScoreManager Start: Score text = {(scoreText != null ? "Found" : "NULL")}, Current score = {currentScore}");
+    }
+
+    private void FindScoreText()
+    {
+        // Leta efter score text med olika möjliga namn
+        string[] possibleNames = { "ScoreText", "Score", "ScoreDisplay", "UI_Score", "Text_Score" };
+
+        foreach (string name in possibleNames)
+        {
+            GameObject found = GameObject.Find(name);
+            if (found != null)
+            {
+                scoreText = found.GetComponent<TextMeshProUGUI>();
+                if (scoreText != null)
+                {
+                    Debug.Log($"ScoreManager: Hittade score text automatiskt: {name}");
+                    return;
+                }
+            }
+        }
+
+        // Backup: Leta i alla TextMeshPro komponenter efter text som innehåller "score"
+        TextMeshProUGUI[] allTexts = FindObjectsOfType<TextMeshProUGUI>();
+        foreach (var text in allTexts)
+        {
+            if (text.text.ToLower().Contains("score"))
+            {
+                scoreText = text;
+                Debug.Log($"ScoreManager: Hittade score text via innehåll: {text.gameObject.name}");
+                return;
+            }
+        }
+
+        Debug.LogWarning("ScoreManager: Kunde inte hitta score text automatiskt!");
     }
 
     private void Update()
@@ -127,15 +174,26 @@ public class ScoreManager : MonoBehaviour
     private void AddPoints(int points)
     {
         currentScore += points;
-        //Debug.Log($"Added {points} points. New total: {currentScore}");
+        Debug.Log($"Added {points} points. New total: {currentScore}");
         UpdateScoreDisplay();
     }
 
     private void UpdateScoreDisplay()
     {
+        // Försök hitta score text igen om den är null
+        if (scoreText == null && autoFindScoreText)
+        {
+            FindScoreText();
+        }
+
         if (scoreText != null)
         {
             scoreText.text = $"Score {currentScore}";
+            Debug.Log($"Score UI uppdaterad: {currentScore}");
+        }
+        else
+        {
+            Debug.LogWarning("ScoreManager: Kan inte uppdatera score - scoreText är null!");
         }
     }
 
@@ -215,5 +273,19 @@ public class ScoreManager : MonoBehaviour
     {
         currentScore = score;
         UpdateScoreDisplay();
+    }
+
+    // Debug metod
+    [ContextMenu("Force Find Score Text")]
+    public void ForceFindScoreText()
+    {
+        FindScoreText();
+        UpdateScoreDisplay();
+    }
+
+    [ContextMenu("Test Add Points")]
+    public void TestAddPoints()
+    {
+        AddEnemyShipPoints();
     }
 }

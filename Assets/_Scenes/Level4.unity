@@ -16155,6 +16155,7 @@ MonoBehaviour:
   scoreText: {fileID: 1400278582}
   highScorePanel: {fileID: 1193457581}
   highScoreTexts: []
+  autoFindScoreText: 1
 --- !u!4 &452077950
 Transform:
   m_ObjectHideFlags: 0
@@ -28204,7 +28205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1656626385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28212,7 +28213,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656626384}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e2383526ac9b704eb4bcd8c932d1576, type: 3}
   m_Name: 
@@ -28280,7 +28281,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656626384}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 961.0781, y: 92.17515, z: 73.59917}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -28440,6 +28441,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1914456180626160717, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1914456180626160717, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
       propertyPath: currentLevel
       value: 4
       objectReference: {fileID: 0}
@@ -28491,6 +28496,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '"Level Manager'
       objectReference: {fileID: 0}
+    - target: {fileID: 8886964423740572213, guid: 9096cf9daf6eb9248819de24268a29f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28511,7 +28520,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682957123}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d5ded98a6f5a3142b6e6ec42ebfb314, type: 3}
   m_Name: 
@@ -28540,7 +28549,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685955577}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33511,7 +33520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: moveSpeed
-      value: 1600
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 4442874176952517364, guid: ded79420045f3ec4fb336fb1165f8aa0, type: 3}
       propertyPath: bombOffset
@@ -34159,15 +34168,15 @@ SceneRoots:
   - {fileID: 1955023219}
   - {fileID: 669434553}
   - {fileID: 1982745159}
-  - {fileID: 1044569034}
-  - {fileID: 74462437}
   - {fileID: 1685955578}
+  - {fileID: 1656626386}
+  - {fileID: 1044569034}
   - {fileID: 1682957122}
+  - {fileID: 782141793}
+  - {fileID: 74462437}
   - {fileID: 768209431}
   - {fileID: 371827927}
   - {fileID: 43998367}
-  - {fileID: 782141793}
-  - {fileID: 1656626386}
   - {fileID: 1176585706}
   - {fileID: 1307385690}
   - {fileID: 243901276}

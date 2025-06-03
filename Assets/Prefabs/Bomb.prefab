@@ -341,10 +341,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6617dac449be56049b5e4e0a86433f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionDuration: 3
-  explosionRadius: 10
-  explosionForce: 20
+  explosionDuration: 2
+  explosionRadius: 4
+  explosionForce: 6
   explosionDamage: 50
+  explosionHeightOffset: 40
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  explodeOnTags:
+  - Ground
+  - Building
+  - Vehicle
+  - BombTarget
+  - Enemy
 --- !u!136 &4649419463657451770
 CapsuleCollider:
   m_ObjectHideFlags: 0
