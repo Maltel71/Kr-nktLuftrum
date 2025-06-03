@@ -160,7 +160,7 @@ MonoBehaviour:
   masterVolume: 1
   musicVolume: 0.5
   engineVolume: 0.581
-  radioVolume: 0.4
+  radioVolume: 0.2
   isMusicEnabled: 1
   isRadioEnabled: 1
   backgroundMusic: {fileID: 0}
@@ -175,14 +175,14 @@ MonoBehaviour:
   flareVolume: 0.1
   missileLaunchSound: {fileID: 8300000, guid: 1f11acadc80182c48a98c4a6fff1ebd3, type: 3}
   missileHitSound: {fileID: 8300000, guid: 4260443261a227c4990f0e912be56de6, type: 3}
-  missileLaunchVolume: 0.1
-  missileHitVolume: 0.1
+  missileLaunchVolume: 0.05
+  missileHitVolume: 0.05
   bombDropSound: {fileID: 8300000, guid: f66e812e961c5ef47b944f0a23154756, type: 3}
   bombFallingSound: {fileID: 0}
   bombExplosionSound: {fileID: 8300000, guid: 4260443261a227c4990f0e912be56de6, type: 3}
-  bombDropVolume: 0.4
-  bombFallingVolume: 0.2
-  bombExplosionVolume: 0.4
+  bombDropVolume: 0.1
+  bombFallingVolume: 0.05
+  bombExplosionVolume: 0.1
   boostSound: {fileID: 0}
   airRaidSiren: {fileID: 0}
   bossAlertSound: {fileID: 0}
@@ -192,7 +192,7 @@ MonoBehaviour:
   radioStart: {fileID: 8300000, guid: 213414df5e30c9f4a8f4351528fdebe7, type: 3}
   radioEnd: {fileID: 0}
   radioMessages: []
-  radioDelay: 120
+  radioDelay: 140
   helicopterSound: {fileID: 0}
   boatEngineSound: {fileID: 0}
   tankMovementSound: {fileID: 0}
@@ -202,7 +202,7 @@ MonoBehaviour:
   vehicleVolume: 0.6
   environmentVolume: 0.5
   audioPoolSize: 25
-  prewarmSoundsOnStart: 1
+  prewarmSoundsOnStart: 0
   usePreloadedSounds: 1
 --- !u!114 &59738914
 MonoBehaviour:
