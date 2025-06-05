@@ -304,8 +304,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"{gameObject.name} - TakeDamage called with damage: {damage}");
-        Debug.Log($"Current health before: {currentHealth}, isDying: {isDying}, initialized: {initialized}");
+        //Debug.Log($"{gameObject.name} - TakeDamage called with damage: {damage}");
+        //Debug.Log($"Current health before: {currentHealth}, isDying: {isDying}, initialized: {initialized}");
 
         if (!initialized || isDying) return;
 

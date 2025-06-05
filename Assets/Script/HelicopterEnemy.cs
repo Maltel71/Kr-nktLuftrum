@@ -3,106 +3,98 @@ using UnityEngine;
 public class HelicopterEnemy : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 4f;
+    [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float hoverHeight = 15f;
-    [SerializeField] private float hoverRadius = 10f;
+    [SerializeField] private float circleRadius = 12f;
     [SerializeField] private float rotationSpeed = 2f;
-
-    [Header("Rotor")]
-    [SerializeField] private Transform mainRotor;
-    [SerializeField] private Transform tailRotor;
-    [SerializeField] private float mainRotorSpeed = 1000f;
-    [SerializeField] private float tailRotorSpeed = 2000f;
 
     [Header("Combat")]
     [SerializeField] private Transform[] gunPoints;
-    [SerializeField] private float fireRate = 0.3f;
+    [SerializeField] private float fireRate = 0.5f;
     [SerializeField] private float bulletSpeed = 30f;
     [SerializeField] private float bulletDamage = 15f;
     [SerializeField] private float attackRange = 25f;
-    [SerializeField] private float aimAheadMultiplier = 0.5f;
+    [SerializeField] private float bulletLifetime = 2f;
 
-    [Header("Behavior")]
-    [SerializeField] private float strafeSpeed = 8f;
-    [SerializeField] private float strafeChangeInterval = 3f;
+    [Header("Flight Settings")]
+    [SerializeField] private float minDistanceToPlayer = 8f;
+    [SerializeField] private float destroyDistanceBehindPlayer = 30f;
 
     private Transform target;
     private float nextFireTime;
-    private float nextStrafeChange;
     private int currentGunIndex;
-    private float strafeDirection = 1f;
-    private Vector3 hoverCenter;
-    private float hoverAngle;
     private EnemyHealth healthSystem;
     private AudioManager audioManager;
+    private bool helicopterSoundPlaying = false;
+    private float circleAngle;
 
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player")?.transform;
         healthSystem = GetComponent<EnemyHealth>();
         audioManager = AudioManager.Instance;
-        hoverCenter = transform.position;
 
         // Spela helikopterljud
-        if (audioManager != null)
+        StartHelicopterSound();
+
+        // Om inga gunPoints angivits, använd transform position
+        if (gunPoints == null || gunPoints.Length == 0)
         {
-            audioManager.PlayVehicleEngineSound(VehicleType.Helicopter, transform.position);
+            gunPoints = new Transform[1] { transform };
         }
+
+        // Sätt slumpmässig startvinkel för cirkling
+        circleAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
     }
 
     void Update()
     {
-        if (healthSystem != null && healthSystem.IsDying) return;
+        if (healthSystem != null && healthSystem.IsDying)
+        {
+            StopHelicopterSound();
+            return;
+        }
+
         if (target == null) return;
 
-        UpdateRotors();
         HandleMovement();
         HandleCombat();
-    }
-
-    void UpdateRotors()
-    {
-        if (mainRotor != null)
-            mainRotor.Rotate(0, mainRotorSpeed * Time.deltaTime, 0);
-
-        if (tailRotor != null)
-            tailRotor.Rotate(tailRotorSpeed * Time.deltaTime, 0, 0);
+        CheckIfBehindPlayer();
     }
 
     void HandleMovement()
     {
-        // Cirkulär rörelse runt spelarens position
-        hoverAngle += moveSpeed * Time.deltaTime;
+        Vector3 playerPos = target.position;
+        Vector3 currentPos = transform.position;
 
-        Vector3 offset = new Vector3(
-            Mathf.Sin(hoverAngle) * hoverRadius,
-            0,
-            Mathf.Cos(hoverAngle) * hoverRadius
+        // Beräkna önskad position (cirkel runt spelaren)
+        circleAngle += moveSpeed * 0.5f * Time.deltaTime;
+
+        Vector3 targetPosition = playerPos + new Vector3(
+            Mathf.Cos(circleAngle) * circleRadius,
+            hoverHeight,
+            Mathf.Sin(circleAngle) * circleRadius
         );
 
-        Vector3 targetPos = target.position + offset;
-        targetPos.y = hoverHeight;
+        // Flyg mot målpositionen med mjuk rörelse
+        transform.position = Vector3.Lerp(currentPos, targetPosition, moveSpeed * 0.5f * Time.deltaTime);
 
-        // Strafing för att undvika att vara ett lätt mål
-        if (Time.time > nextStrafeChange)
+        // ALLTID rotera för att titta mot spelaren
+        Vector3 lookDirection = playerPos - transform.position;
+        lookDirection.y = 0; // Håll rotation på horisontellt plan
+
+        if (lookDirection.magnitude > 0.1f)
         {
-            strafeDirection = -strafeDirection;
-            nextStrafeChange = Time.time + strafeChangeInterval;
-        }
-
-        Vector3 strafeOffset = transform.right * strafeDirection * strafeSpeed * Time.deltaTime;
-        targetPos += strafeOffset;
-
-        // Mjuk förflyttning
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 2f);
-
-        // Rotera mot spelaren
-        Vector3 lookDirection = target.position - transform.position;
-        lookDirection.y = 0;
-        if (lookDirection != Vector3.zero)
-        {
+            // Prova olika rotations-offset för att hitta rätt front
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // Lägg till 90 grader om helikoptern har fel front
+            // Prova dessa en i taget:
+            targetRotation *= Quaternion.Euler(0, 90, 0);  // Rotera 90° höger
+                                                           // targetRotation *= Quaternion.Euler(0, -90, 0); // Rotera 90° vänster  
+                                                           // targetRotation *= Quaternion.Euler(0, 180, 0); // Rotera 180°
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * 2f * Time.deltaTime);
         }
     }
 
@@ -123,15 +115,16 @@ public class HelicopterEnemy : MonoBehaviour
 
         Transform gunPoint = gunPoints[currentGunIndex];
 
-        // Sikta framför spelaren baserat på dess rörelse
+        // Beräkna riktning till spelaren med förutsägelse
         Vector3 targetVelocity = Vector3.zero;
         if (target.TryGetComponent<Rigidbody>(out var targetRb))
         {
             targetVelocity = targetRb.linearVelocity;
         }
 
-        Vector3 aimPoint = target.position + targetVelocity * aimAheadMultiplier;
-        Vector3 shootDirection = (aimPoint - gunPoint.position).normalized;
+        // Sikta framför spelaren baserat på hastighet
+        Vector3 predictedPosition = target.position + targetVelocity * 0.3f;
+        Vector3 shootDirection = (predictedPosition - gunPoint.position).normalized;
 
         // Använd bullet pool
         GameObject bullet = BulletPool.Instance.GetBullet(false);
@@ -140,13 +133,26 @@ public class HelicopterEnemy : MonoBehaviour
 
         if (bullet.TryGetComponent<BulletSystem>(out var bulletSystem))
         {
-            bulletSystem.Initialize(shootDirection, true, bulletDamage);
+            bulletSystem.Initialize(shootDirection, true, bulletDamage, bulletLifetime);
         }
 
         audioManager?.PlayEnemyShootSound();
 
         // Byt mellan vapenpunkter
         currentGunIndex = (currentGunIndex + 1) % gunPoints.Length;
+    }
+
+    private void CheckIfBehindPlayer()
+    {
+        if (target != null)
+        {
+            // Om helikoptern är för långt bakom spelaren
+            if (transform.position.z < target.position.z - destroyDistanceBehindPlayer)
+            {
+                StopHelicopterSound();
+                Destroy(gameObject);
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -173,10 +179,26 @@ public class HelicopterEnemy : MonoBehaviour
                 }
                 else
                 {
+                    StopHelicopterSound();
                     Destroy(gameObject);
                 }
             }
         }
+    }
+
+    private void StartHelicopterSound()
+    {
+        if (audioManager != null && !helicopterSoundPlaying)
+        {
+            audioManager.PlayVehicleEngineSound(VehicleType.Helicopter, transform.position);
+            helicopterSoundPlaying = true;
+        }
+    }
+
+    private void StopHelicopterSound()
+    {
+        helicopterSoundPlaying = false;
+        // AudioManager hanterar själv när ljuden ska stoppas
     }
 
     // För att andra script ska kunna justera beteende
@@ -184,15 +206,20 @@ public class HelicopterEnemy : MonoBehaviour
     {
         if (aggressive)
         {
-            fireRate = 0.2f;
-            moveSpeed = 6f;
-            strafeSpeed = 10f;
+            fireRate = 0.3f;
+            moveSpeed = 8f;
+            attackRange = 30f;
         }
         else
         {
-            fireRate = 0.4f;
-            moveSpeed = 4f;
-            strafeSpeed = 8f;
+            fireRate = 0.5f;
+            moveSpeed = 6f;
+            attackRange = 25f;
         }
+    }
+
+    private void OnDestroy()
+    {
+        StopHelicopterSound();
     }
 }

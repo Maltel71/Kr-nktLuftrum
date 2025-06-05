@@ -155,19 +155,19 @@ public class ScoreManager : MonoBehaviour
 
     public void AddEnemyShipPoints()
     {
-        Debug.Log($"Adding enemy ship points: {_enemyShipPoints}");
+        //Debug.Log($"Adding enemy ship points: {_enemyShipPoints}");
         AddPoints(_enemyShipPoints);
     }
 
     public void AddBossPoints()
     {
-        Debug.Log($"Adding boss points: {_bossPoints}");
+        //Debug.Log($"Adding boss points: {_bossPoints}");
         AddPoints(_bossPoints);
     }
 
     public void AddBombTargetPoints()
     {
-        Debug.Log($"Adding bomb target points: {_bombTargetPoints}");
+        //Debug.Log($"Adding bomb target points: {_bombTargetPoints}");
         AddPoints(_bombTargetPoints);
     }
 

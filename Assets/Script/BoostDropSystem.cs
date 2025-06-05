@@ -26,7 +26,7 @@ public class BoostDropSystem : MonoBehaviour
             if (Random.value <= config.dropChance)
             {
                 DropBoost(position, config.boostPrefab);
-                Debug.Log($"Droppar boost: {config.boostPrefab.name}");
+                //Debug.Log($"Droppar boost: {config.boostPrefab.name}");
                 break;
             }
         }

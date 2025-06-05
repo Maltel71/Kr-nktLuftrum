@@ -160,8 +160,9 @@ MonoBehaviour:
   healthAmount: 0
   speedBoostAmount: 0
   shieldAmount: 0
-  fireRateMultiplier: 1.5
+  fireRateMultiplier: 1
   boostDuration: 10
+  showDebugLogs: 1
 --- !u!114 &2911484429332721063
 MonoBehaviour:
   m_ObjectHideFlags: 0

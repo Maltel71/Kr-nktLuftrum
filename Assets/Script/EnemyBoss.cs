@@ -102,7 +102,7 @@ public class EnemyBoss : MonoBehaviour
 
         if (showDebugLogs && Time.frameCount % 60 == 0) // Debug varje sekund
         {
-            Debug.Log($"Boss Attack Check - Distance: {distanceToPlayer:F1}, Detection Range: {detectionRange}, Can Attack: {distanceToPlayer <= detectionRange}");
+            //Debug.Log($"Boss Attack Check - Distance: {distanceToPlayer:F1}, Detection Range: {detectionRange}, Can Attack: {distanceToPlayer <= detectionRange}");
         }
 
         // FÖRENKLAD: Skjut bara baserat på avstånd
