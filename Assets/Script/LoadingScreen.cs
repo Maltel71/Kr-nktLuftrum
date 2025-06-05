@@ -87,6 +87,13 @@ public class LoadingScreen : MonoBehaviour
 
     private void Awake()
     {
+        // VIKTIGT: Stoppa poängräkning så fort LoadingScreen laddas
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.PauseSurvivalScoring();
+            Debug.Log("[LoadingScreen] Pausade poängräkning i Awake()");
+        }
+
         if (loadingPanel != null)
             loadingPanel.SetActive(true);
     }
@@ -94,6 +101,13 @@ public class LoadingScreen : MonoBehaviour
     private void Start()
     {
         Debug.Log("LoadingScreen Start() called");
+
+        // EXTRA säkerhet: Stoppa poängräkning igen
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.PauseSurvivalScoring();
+            Debug.Log("[LoadingScreen] Pausade poängräkning i Start()");
+        }
 
         if (LevelManager.Instance != null)
         {
@@ -354,6 +368,13 @@ public class LoadingScreen : MonoBehaviour
             Debug.Log("Loading panel deactivated");
         }
 
+        // VIKTIGT: När vi lämnar LoadingScreen, återuppta poängräkningen för nästa level
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.ResumeSurvivalScoring();
+            Debug.Log("[LoadingScreen] Återupptog poängräkning innan scenändring");
+        }
+
         if (LevelManager.Instance != null)
         {
             int nextLevel = LevelManager.Instance.currentLevel;
@@ -452,5 +473,15 @@ public class LoadingScreen : MonoBehaviour
     public void Show(int currentLevel)
     {
         ShowLoadingScreen(currentLevel);
+    }
+
+    // VIKTIGT: Säkerställ att poängen pausas om objektet förstörs
+    private void OnDestroy()
+    {
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.PauseSurvivalScoring();
+            Debug.Log("[LoadingScreen] Pausade poängräkning i OnDestroy()");
+        }
     }
 }

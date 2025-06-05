@@ -55,10 +55,6 @@ public class AirplaneController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI missilesText;
     [SerializeField] private TextMeshProUGUI bombsText;
 
-    [Header("Debug Speed Boost")]
-    [SerializeField] private bool showSpeedDebug = true;
-    [SerializeField] private bool speedBoostActive = false; // För att spåra boost status
-
     private Vector2 touchStart;
     private Vector2 movement;
     private Vector3 velocity = Vector3.zero;
@@ -67,6 +63,7 @@ public class AirplaneController : MonoBehaviour
     private bool isFrozen = false;
     private Rigidbody rb;
     private float originalMoveSpeed;
+    private bool speedBoostActive = false;
 
     private void Start()
     {
@@ -102,18 +99,6 @@ public class AirplaneController : MonoBehaviour
 
     private void Update()
     {
-        // DEBUG: Testa speed boost med T-knappen
-        if (showSpeedDebug && Input.GetKeyDown(KeyCode.T))
-        {
-            TestSpeedBoost();
-        }
-
-        // DEBUG: Visa aktuell hastighet
-        if (showSpeedDebug && Input.GetKeyDown(KeyCode.Y))
-        {
-            Debug.Log($"Current moveSpeed: {moveSpeed}, Original: {originalMoveSpeed}, Boost Active: {speedBoostActive}");
-        }
-
         if (isFrozen)
         {
             HandleFrozenState();
@@ -159,14 +144,12 @@ public class AirplaneController : MonoBehaviour
             DropBomb();
         }
 
-        // NYTT: Radio musik toggle med R-knappen
         if (Input.GetKeyDown(KeyCode.R))
         {
             ToggleRadioMusic();
         }
     }
 
-    // NYTT: Metod för att togglea radio musik
     private void ToggleRadioMusic()
     {
         AudioManager audioManager = AudioManager.Instance;
@@ -174,16 +157,12 @@ public class AirplaneController : MonoBehaviour
         {
             audioManager.ToggleMusic();
 
-            // Visa meddelande till spelaren
             GameMessageSystem messageSystem = FindObjectOfType<GameMessageSystem>();
             if (messageSystem != null)
             {
                 string status = audioManager.IsMusicEnabled() ? "ON" : "OFF";
                 messageSystem.ShowBoostMessage($"Radio: {status}");
             }
-
-            // Debug för att se i konsolen
-            Debug.Log($"Radio music toggled: {(audioManager.IsMusicEnabled() ? "ON" : "OFF")}");
         }
     }
 
@@ -267,13 +246,6 @@ public class AirplaneController : MonoBehaviour
         {
             float currentSpeed = movement.y < 0 ? moveSpeed * backwardSpeedMultiplier : moveSpeed;
             Vector3 targetPosition = transform.position + new Vector3(movement.x, 0, movement.y) * currentSpeed * Time.deltaTime;
-
-            // DEBUG utskrift var 2:a sekund
-            if (showSpeedDebug && Time.frameCount % 120 == 0) // Var 2:a sekund vid 60 FPS
-            {
-                Debug.Log($"Movement speed: {currentSpeed} (base: {moveSpeed}, boost: {speedBoostActive})");
-            }
-
             targetPosition.x = Mathf.Clamp(targetPosition.x, startPosition.x - horizontalBoundary, startPosition.x + horizontalBoundary);
             targetPosition.z = Mathf.Clamp(targetPosition.z, startPosition.z + maxBackwardDistance, startPosition.z + maxForwardDistance);
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothness);
@@ -423,75 +395,29 @@ public class AirplaneController : MonoBehaviour
         horizontalBoundary = horizontal;
     }
 
-    // FÖRBÄTTRAD ApplySpeedBoost metod:
     public IEnumerator ApplySpeedBoost(float multiplier, float duration)
     {
-        if (showSpeedDebug)
-            Debug.Log($"=== SPEED BOOST START ===");
-
-        if (showSpeedDebug)
-            Debug.Log($"Original speed: {moveSpeed}");
-
-        if (showSpeedDebug)
-            Debug.Log($"Stored original speed: {originalMoveSpeed}");
-
-        if (showSpeedDebug)
-            Debug.Log($"Multiplier: {multiplier}");
-
-        if (showSpeedDebug)
-            Debug.Log($"Duration: {duration}");
-
         // Säkerhetskontroll
         if (speedBoostActive)
         {
-            if (showSpeedDebug)
-                Debug.Log("Speed boost already active - resetting to original first");
-
-            // Återställ till original först
             moveSpeed = originalMoveSpeed;
         }
 
         speedBoostActive = true;
-
-        // Applicera boost
         moveSpeed = originalMoveSpeed * multiplier;
 
-        if (showSpeedDebug)
-            Debug.Log($"Speed BOOSTED to: {moveSpeed}");
-
-        // Vänta under boost-perioden
         yield return new WaitForSeconds(duration);
 
-        // Återställ till ursprungshastighet
         moveSpeed = originalMoveSpeed;
         speedBoostActive = false;
-
-        if (showSpeedDebug)
-            Debug.Log($"=== SPEED BOOST END ===");
-
-        if (showSpeedDebug)
-            Debug.Log($"Speed restored to: {moveSpeed}");
     }
 
-    // FÖRBÄTTRAD ResetMoveSpeed metod:
     public void ResetMoveSpeed()
     {
-        if (showSpeedDebug)
-            Debug.Log($"ResetMoveSpeed called - restoring to original: {originalMoveSpeed}");
-
         moveSpeed = originalMoveSpeed;
         speedBoostActive = false;
     }
 
-    // DEBUG METOD med rimligare hastighet:
-    public void TestSpeedBoost()
-    {
-        Debug.Log("=== TESTING SPEED BOOST ===");
-        Debug.Log($"Before: moveSpeed = {moveSpeed}");
-        StartCoroutine(ApplySpeedBoost(1.3f, 5f)); // 1.3x hastighet i 5 sekunder (istället för 2x)
-    }
-
-    // Publika metoder för att kontrollera boost status:
     public bool IsSpeedBoostActive()
     {
         return speedBoostActive;

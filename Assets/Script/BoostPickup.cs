@@ -26,13 +26,10 @@ public class BoostPickup : MonoBehaviour
 
     [Header("Boost Values")]
     [SerializeField] private float healthAmount = 50f;
-    [SerializeField] private float speedBoostAmount = 1.3f;   // MINSKAT från 1.5f till 1.3f (30% snabbare istället för 50%)
+    [SerializeField] private float speedBoostAmount = 1.3f;
     [SerializeField] private float shieldAmount = 100f;
     [SerializeField] private float fireRateMultiplier = 2f;
-    [SerializeField] private float boostDuration = 8f;        // MINSKAT från 10f till 8f sekunder       
-
-    [Header("Debug")]
-    [SerializeField] private bool showDebugLogs = true;
+    [SerializeField] private float boostDuration = 8f;
 
     private Vector3 startPosition;
     private float timeSinceSpawn;
@@ -74,9 +71,6 @@ public class BoostPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player") || isPickedUp || isDestroyed) return;
 
-        if (showDebugLogs)
-            Debug.Log($"[BoostPickup] Kollision med: {other.gameObject.name}, Boost: {boostType}");
-
         isPickedUp = true;
         isDestroyed = true;
 
@@ -105,9 +99,6 @@ public class BoostPickup : MonoBehaviour
         {
             string message = GetBoostMessage();
             messageSystem.ShowBoostMessage(message);
-
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Visar meddelande: {message}");
         }
     }
 
@@ -171,8 +162,6 @@ public class BoostPickup : MonoBehaviour
         if (planeHealth != null)
         {
             planeHealth.AddHealth(healthAmount);
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Health boost applied: +{healthAmount}");
         }
     }
 
@@ -181,8 +170,6 @@ public class BoostPickup : MonoBehaviour
         if (planeHealth != null)
         {
             planeHealth.ApplyShieldBoost(shieldAmount);
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Shield boost applied: +{shieldAmount}");
         }
     }
 
@@ -190,31 +177,18 @@ public class BoostPickup : MonoBehaviour
     {
         if (airplaneController == null) return;
 
-        if (showDebugLogs)
-            Debug.Log($"[BoostPickup] Speed Boost - Multiplier: {speedBoostAmount}, Duration: {boostDuration}");
-
-        // FÖRENKLAD VERSION: Använd bara ActiveBoostUI systemet
         if (ActiveBoostUI.Instance != null)
         {
-            // Kolla om speed boost redan är aktiv
             if (ActiveBoostUI.Instance.IsBoostActive(ActiveBoostUI.BoostType.SpeedBoost))
             {
-                // NYTT: Sätt till MAX istället för att lägga ihop
+                // Sätt till max istället för att lägga ihop
                 float remainingTime = ActiveBoostUI.Instance.GetRemainingTime(ActiveBoostUI.BoostType.SpeedBoost);
-                float newDuration = Mathf.Max(remainingTime, boostDuration); // Max istället för +
-
-                if (showDebugLogs)
-                    Debug.Log($"[BoostPickup] Speed Boost already active ({remainingTime}s left) - setting to max: {newDuration}s");
-
+                float newDuration = Mathf.Max(remainingTime, boostDuration);
                 ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.SpeedBoost, newDuration);
             }
             else
             {
                 // Starta ny speed boost
-                if (showDebugLogs)
-                    Debug.Log($"[BoostPickup] Starting new Speed Boost");
-
-                // Starta både coroutine OCH UI
                 airplaneController.StartCoroutine(airplaneController.ApplySpeedBoost(speedBoostAmount, boostDuration));
                 ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.SpeedBoost, boostDuration);
             }
@@ -222,9 +196,6 @@ public class BoostPickup : MonoBehaviour
         else
         {
             // Fallback om ActiveBoostUI saknas
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] ActiveBoostUI missing - using fallback coroutine");
-
             airplaneController.StartCoroutine(airplaneController.ApplySpeedBoost(speedBoostAmount, boostDuration));
         }
     }
@@ -233,33 +204,23 @@ public class BoostPickup : MonoBehaviour
     {
         if (weaponSystem != null)
         {
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Fire Rate Boost - Multiplier: {fireRateMultiplier}, Duration: {boostDuration}");
-
-            // Lägg till i UI med MAX-logik
             if (ActiveBoostUI.Instance != null)
             {
                 if (ActiveBoostUI.Instance.IsBoostActive(ActiveBoostUI.BoostType.FireRateBoost))
                 {
-                    // NYTT: Max istället för att lägga ihop
+                    // Max istället för att lägga ihop
                     float remainingTime = ActiveBoostUI.Instance.GetRemainingTime(ActiveBoostUI.BoostType.FireRateBoost);
                     float newDuration = Mathf.Max(remainingTime, boostDuration);
-
-                    if (showDebugLogs)
-                        Debug.Log($"[BoostPickup] Fire Rate already active ({remainingTime}s) - setting to max: {newDuration}s");
-
                     ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.FireRateBoost, newDuration);
                 }
                 else
                 {
                     ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.FireRateBoost, boostDuration);
-                    // Starta coroutine bara för nya boosts
                     StartCoroutine(weaponSystem.ApplyFireRateBoost(fireRateMultiplier, boostDuration));
                 }
             }
             else
             {
-                // Fallback
                 StartCoroutine(weaponSystem.ApplyFireRateBoost(fireRateMultiplier, boostDuration));
             }
         }
@@ -269,33 +230,23 @@ public class BoostPickup : MonoBehaviour
     {
         if (weaponSystem != null)
         {
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Dual Weapons Boost - Duration: {boostDuration}");
-
-            // Lägg till i UI med MAX-logik
             if (ActiveBoostUI.Instance != null)
             {
                 if (ActiveBoostUI.Instance.IsBoostActive(ActiveBoostUI.BoostType.DualWeapons))
                 {
-                    // NYTT: Max istället för att lägga ihop
+                    // Max istället för att lägga ihop
                     float remainingTime = ActiveBoostUI.Instance.GetRemainingTime(ActiveBoostUI.BoostType.DualWeapons);
                     float newDuration = Mathf.Max(remainingTime, boostDuration);
-
-                    if (showDebugLogs)
-                        Debug.Log($"[BoostPickup] Dual Weapons already active ({remainingTime}s) - setting to max: {newDuration}s");
-
                     ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.DualWeapons, newDuration);
                 }
                 else
                 {
                     ActiveBoostUI.Instance.AddBoost(ActiveBoostUI.BoostType.DualWeapons, boostDuration);
-                    // Aktivera dual weapons bara för nya boosts
                     weaponSystem.EnableDualWeapons(boostDuration);
                 }
             }
             else
             {
-                // Fallback
                 weaponSystem.EnableDualWeapons(boostDuration);
             }
         }
@@ -306,8 +257,6 @@ public class BoostPickup : MonoBehaviour
         if (airplaneController != null)
         {
             airplaneController.AddFlares(1);
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Added 1 flare");
         }
     }
 
@@ -316,8 +265,6 @@ public class BoostPickup : MonoBehaviour
         if (airplaneController != null)
         {
             airplaneController.AddMissiles(1);
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Added 1 missile");
         }
     }
 
@@ -326,42 +273,12 @@ public class BoostPickup : MonoBehaviour
         if (airplaneController != null)
         {
             airplaneController.AddBombs(1);
-            if (showDebugLogs)
-                Debug.Log($"[BoostPickup] Added 1 bomb");
         }
     }
 
     private void OnDestroy()
     {
-        // Extra säkerhet för att förhindra eventuella race conditions
         isDestroyed = true;
         isPickedUp = true;
-    }
-
-    // DEBUG METODER
-    [ContextMenu("Test Speed Boost")]
-    public void TestSpeedBoost()
-    {
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            var airplaneController = player.GetComponent<AirplaneController>();
-            if (airplaneController != null)
-            {
-                Debug.Log("[BoostPickup] Testing Speed Boost...");
-                ApplySpeedBoost(airplaneController);
-            }
-        }
-    }
-
-    [ContextMenu("Show Current Config")]
-    public void ShowCurrentConfig()
-    {
-        Debug.Log($"[BoostPickup] === BOOST CONFIG ===");
-        Debug.Log($"Type: {boostType}");
-        Debug.Log($"Speed Multiplier: {speedBoostAmount}");
-        Debug.Log($"Duration: {boostDuration}");
-        Debug.Log($"Health Amount: {healthAmount}");
-        Debug.Log($"Shield Amount: {shieldAmount}");
     }
 }

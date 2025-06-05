@@ -48,7 +48,9 @@ public class ScoreManager : MonoBehaviour
     private List<int> highScores = new List<int>();
     private const int MAX_SCORES = 5;
     private static ScoreManager instance;
-    private bool isGameActive = true;
+
+    // FIXA: Endast överlevnadspoäng pausas, inte hela systemet
+    private bool survivalScoringActive = true;
     private float timeSurvived = 0f;
 
     public static ScoreManager Instance
@@ -142,7 +144,8 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (isGameActive)
+        // FIXA: Bara räkna överlevnadspoäng om det är aktiverat
+        if (survivalScoringActive)
         {
             timeSurvived += Time.deltaTime;
             if (timeSurvived >= 1f)
@@ -155,19 +158,16 @@ public class ScoreManager : MonoBehaviour
 
     public void AddEnemyShipPoints()
     {
-        //Debug.Log($"Adding enemy ship points: {_enemyShipPoints}");
         AddPoints(_enemyShipPoints);
     }
 
     public void AddBossPoints()
     {
-        //Debug.Log($"Adding boss points: {_bossPoints}");
         AddPoints(_bossPoints);
     }
 
     public void AddBombTargetPoints()
     {
-        //Debug.Log($"Adding bomb target points: {_bombTargetPoints}");
         AddPoints(_bombTargetPoints);
     }
 
@@ -189,7 +189,6 @@ public class ScoreManager : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.text = $"Score {currentScore}";
-            Debug.Log($"Score UI uppdaterad: {currentScore}");
         }
         else
         {
@@ -197,9 +196,39 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // FIXA: Nya metoder för att kontrollera överlevnadspoäng
+    public void PauseSurvivalScoring()
+    {
+        survivalScoringActive = false;
+        Debug.Log("ScoreManager: Överlevnadspoäng pausad");
+    }
+
+    public void ResumeSurvivalScoring()
+    {
+        survivalScoringActive = true;
+        timeSurvived = 0f; // Reset timer
+        Debug.Log("ScoreManager: Överlevnadspoäng återupptagen");
+    }
+
+    // Bakåtkompatibilitet - dessa metoder finns kvar men gör samma sak
     public void StopGame()
     {
-        isGameActive = false;
+        PauseSurvivalScoring();
+    }
+
+    public void StartSurvivalScoring()
+    {
+        ResumeSurvivalScoring();
+    }
+
+    public void PauseGame()
+    {
+        PauseSurvivalScoring();
+    }
+
+    public void ResumeGame()
+    {
+        ResumeSurvivalScoring();
     }
 
     public void ShowHighScores()
@@ -275,7 +304,10 @@ public class ScoreManager : MonoBehaviour
         UpdateScoreDisplay();
     }
 
-    // Debug metod
+    // Status-kontroll
+    public bool IsSurvivalScoringActive() => survivalScoringActive;
+
+    // Debug metoder
     [ContextMenu("Force Find Score Text")]
     public void ForceFindScoreText()
     {
@@ -287,5 +319,14 @@ public class ScoreManager : MonoBehaviour
     public void TestAddPoints()
     {
         AddEnemyShipPoints();
+    }
+
+    [ContextMenu("Toggle Survival Scoring")]
+    public void ToggleSurvivalScoring()
+    {
+        if (survivalScoringActive)
+            PauseSurvivalScoring();
+        else
+            ResumeSurvivalScoring();
     }
 }
